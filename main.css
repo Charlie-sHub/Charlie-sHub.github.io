@@ -30,8 +30,7 @@ body {
 
 body {
     font-size: 16px;
-    line-height: 1.5;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: 'JetBrains Mono';
     background: var(--background-color);
     color: var(--foreground-color);
 }
@@ -109,11 +108,12 @@ header h1 {
 
 .contacts a {
     padding: 4px 8px;
-    background: rgba(169, 183, 198, 0.1);
+    background: var(--gutter-background);
     border-radius: 30px;
     text-decoration: none;
     font-weight: 500;
     margin-right: 8px;
+    margin-bottom: 4px;
     padding-right: 12px;
     display: inline-flex;
     font-size: 14px;
@@ -123,12 +123,8 @@ header h1 {
 }
 
 .contacts a:hover {
-    background: rgba(169, 183, 198, 0.479);
+    background: var(--foreground-color);
     color: var(--constructor-color);
-}
-
-.contacts a:active {
-    background: rgba(169, 183, 198, 0.05);
 }
 
 .contacts .icon {
