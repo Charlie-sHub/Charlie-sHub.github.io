@@ -1,0 +1,284 @@
+:root {
+    --theme-color: #4cbd48;
+    /* Flutter method call color */
+    --theme-color-rgb: 76, 189, 72;
+    --background-color: #181818;
+    --foreground-color: #a9b7c6;
+    --gutter-background: #2c2c2c;
+    --caret-row: #1a1a1a;
+    --keyword-color: #de8134;
+    --string-color: #de9e24;
+    --method-color: #4cbd48;
+    --class-color: #009999;
+    --parameter-color: #c680b5;
+    --variable-color: #9b58c6;
+    --type-parameter: #c6c62f;
+    --interface-color: #c6c30a;
+    --library-color: #48c6b1;
+    --enum-color: #2777c6;
+    --constructor-color: #80faff;
+    --comment-color: #77b767;
+    --braces-color: #dadada;
+}
+
+html,
+body {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: var(--background-color);
+    color: var(--foreground-color);
+}
+
+a {
+    color: var(--library-color);
+}
+
+h1 {
+    font-size: 3em;
+    line-height: 1.2;
+    color: var(--constructor-color);
+}
+
+h2 {
+    font-size: 2.5em;
+    line-height: 1.25;
+    margin: 0.75em 0 0.5em;
+    color: var(--keyword-color);
+}
+
+main {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+header,
+section,
+footer {
+    margin: 40px 0;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.avatar {
+    border: 4px solid var(--caret-row);
+    border-radius: 50%;
+    width: 20%;
+    margin-right: 40px;
+    height: auto;
+}
+
+.header-content {
+    width: 100%;
+    min-width: 0;
+}
+
+header h1 {
+    line-height: 1.2;
+    margin: 0;
+}
+
+.subtitle {
+    margin: 1em 0;
+    color: var(--method-color);
+}
+
+.subtitle span.dot {
+    font-size: 14px;
+    opacity: 0.5;
+    color: var(--comment-color);
+}
+
+.subtitle span[role="img"] {
+    vertical-align: middle;
+    font-size: 1.5em;
+}
+
+.contacts a {
+    padding: 4px 8px;
+    background: rgba(169, 183, 198, 0.1);
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 8px;
+    padding-right: 12px;
+    display: inline-flex;
+    font-size: 14px;
+    align-items: center;
+    vertical-align: middle;
+    color: var(--library-color);
+}
+
+.contacts a:hover {
+    background: rgba(169, 183, 198, 0.479);
+    color: var(--constructor-color);
+}
+
+.contacts a:active {
+    background: rgba(169, 183, 198, 0.05);
+}
+
+.contacts .icon {
+    width: 80px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
+.contacts img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Widgets */
+.branding {
+    margin-top: -0.25em;
+    margin-bottom: 2em;
+    color: var(--variable-color);
+}
+
+.widget {
+    --preloader-color: var(--theme-color);
+}
+
+.widget+.widget {
+    margin-top: 16px;
+}
+
+codersrank-summary {
+    --bg-color: transparent;
+    --badge-bg-color: var(--gutter-background);
+    --badge-text-color: var(--foreground-color);
+    --badges-padding: 0px;
+    --badge-padding: 8px;
+    --badge-margin: 16px;
+    --badge-border-radius: 30px;
+    --badge-rank-font-size: 16px;
+    --badge-technology-font-size: 18px;
+    --badge-location-font-size: 16px;
+    --badge-icon-size: 32px;
+    --badge-border: 1px solid rgba(76, 189, 72, 0.2);
+    --badge-box-shadow: none;
+}
+
+.activity-widget {
+    padding: 8px;
+    border-radius: 30px;
+    background: var(--gutter-background);
+}
+
+codersrank-activity {
+    --bg-color-0: var(--gutter-background);
+    --bg-color-1: rgba(76, 189, 72, 0.25);
+    --bg-color-2: rgba(76, 189, 72, 0.5);
+    --bg-color-3: rgba(76, 189, 72, 0.75);
+    --bg-color-4: rgba(76, 189, 72, 1);
+    --label-text-color: var(--comment-color);
+    --svg-width: 1080px;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding-top: 100px;
+    margin-top: -100px;
+}
+
+codersrank-skills-chart {
+    --label-text-color: var(--comment-color);
+    --chart-bg-color: var(--gutter-background);
+    --chart-border-radius: 8px;
+    --axis-bg-color: transparent;
+    --label-font-size: 12px;
+    overflow: hidden;
+}
+
+codersrank-portfolio,
+codersrank-work-experience,
+codersrank-education {
+    --item-bg-color: var(--gutter-background);
+    --item-border-radius: 30px;
+    --item-spacing: 16px;
+    --item-padding: 16px;
+    --logo-size: 64px;
+    --tag-bg-color: rgba(169, 183, 198, 0.075);
+}
+
+codersrank-portfolio {
+    --grid-columns: 2;
+    --link-text-color: var(--library-color);
+    --link-bg-color: rgba(169, 183, 198, 0.1);
+    --link-hover-bg-color: rgba(169, 183, 198, 0.15);
+    --link-active-bg-color: rgba(169, 183, 198, 0.05);
+    --link-border-radius: 30px;
+    --link-padding: 4px 8px;
+    --link-text-transform: none;
+    --link-font-weight: 500;
+    --link-margin: 8px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: var(--comment-color);
+}
+
+@media (max-width: 768px) {
+    header {
+        display: block;
+    }
+
+    .avatar {
+        width: 160px;
+        margin-bottom: 20px;
+    }
+
+    codersrank-portfolio,
+    codersrank-work-exprerience,
+    codersrank-education {
+        --grid-columns: 1;
+        --item-spacing: 8px;
+        --logo-size: 48px;
+    }
+}
+
+@media (max-width: 640px) {
+    main {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .widget+.widget {
+        margin-top: 8px;
+    }
+
+    codersrank-summary {
+        --badge-margin: 8px;
+    }
+
+    codersrank-activity {
+        --svg-width: 640px
+    }
+}
