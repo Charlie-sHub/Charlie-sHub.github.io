@@ -1,0 +1,141 @@
+# AGENTS.md
+
+## Purpose
+
+This file tells coding agents how to operate safely in this repository.
+
+It is **not** the main project specification.
+Before making changes, read `SPECIFICATIONS.md` and treat it as the primary source for project direction, constraints, architecture, and open decisions.
+
+This file should stay focused on:
+- agent behavior
+- edit discipline
+- ambiguity handling
+- workflow rules
+
+---
+
+## Primary references
+
+Check these sources in this order:
+
+1. direct user request
+2. `SPECIFICATIONS.md`
+3. existing repo code and structure
+4. `README.md`
+
+Do not duplicate stable project direction here if it already belongs in `SPECIFICATIONS.md`.
+
+---
+
+## Before making changes
+
+1. Read `SPECIFICATIONS.md` first.
+2. Extract only the parts relevant to the task.
+3. Check whether the request, current code, and repository docs agree.
+
+If you find a contradiction:
+- state it explicitly
+- do not guess
+- ask for clarification before making the change
+
+Examples of contradiction:
+- the request conflicts with `SPECIFICATIONS.md`
+- the codebase has drifted from documented direction
+- the task would force a decision that the spec still marks as open
+
+If the spec leaves something intentionally open, choose the smallest reasonable and reversible implementation consistent with the current direction.
+
+---
+
+## Editing rules
+
+- Make the smallest change that fully solves the task.
+- Do not perform unrelated refactors.
+- Do not add speculative features.
+- Do not introduce abstraction unless the current task clearly needs it.
+- Do not silently change project direction through implementation.
+- Prefer extending existing patterns already present in the repo over importing a new pattern casually.
+
+If a requested change would materially alter project direction, architecture, scope, or documentation policy, surface that first instead of quietly implementing it.
+
+---
+
+## Public-facing content rules
+
+This repository is public.
+Treat repository-visible code comments, docs, content structure, and copy as public-facing material.
+
+Keep public-facing writing:
+- clear
+- grounded
+- professional
+- practical
+
+Avoid:
+- internal-only planning language
+- manipulative audience-optimization language
+- inflated claims
+- sensitive details better kept outside the repo
+
+Do not drift into a stronger security identity than the documented evidence supports.
+
+---
+
+## Documentation discipline
+
+Keep the documents aligned, but do not duplicate them unnecessarily.
+
+Use them like this:
+- `SPECIFICATIONS.md`: project direction, constraints, architecture, open decisions
+- `README.md`: public repo introduction and usage context
+- `AGENTS.md`: agent operating instructions
+
+Update:
+- `SPECIFICATIONS.md` when durable project direction changes
+- `AGENTS.md` when agent workflow guidance changes
+- `README.md` when public-facing repo explanation or setup guidance changes
+
+If the information already belongs in `SPECIFICATIONS.md`, prefer updating that file rather than repeating it here.
+
+---
+
+## Ambiguity handling
+
+Ask for clarification before changing code when:
+- the task conflicts with `SPECIFICATIONS.md`
+- multiple valid interpretations would lead to meaningfully different implementations
+- the task would lock in an open product, UX, UI, schema, or architecture decision
+- the safe public/private boundary is unclear
+
+If clarification is not strictly required, proceed with the least risky interpretation and keep the implementation easy to revise.
+
+---
+
+## Quality bar for changes
+
+Every change should aim to be:
+- scoped
+- understandable
+- maintainable
+- consistent with the repo’s documented direction
+- easy for a human maintainer to review
+
+AI assistance is allowed, but do not treat generated output as correct by default.
+Committed changes should be understandable and reviewable by a human.
+
+---
+
+## Commit messages
+
+When asked to prepare a commit message:
+- inspect the staged diff first
+- write a short subject in past tense
+- keep it specific enough to describe the actual change
+- avoid vague or overly broad subjects
+
+Examples:
+- `updated AGENTS guidance`
+- `added content validation`
+- `renamed theme tokens`
+- `removed legacy assets`
