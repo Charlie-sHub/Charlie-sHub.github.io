@@ -1,0 +1,23 @@
+# Local tooling
+.codex
+.codex/
+.fvm/
+.idea/
+.vscode/
+*.iml
+
+# Dart and Flutter build output
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+.packages
+.pub/
+build/
+
+# Generated source
+*.config.dart
+*.freezed.dart
+*.g.dart
+*.gr.dart
+*.mocks.dart

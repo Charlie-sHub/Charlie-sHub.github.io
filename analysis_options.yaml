@@ -1,0 +1,40 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - '**/*.config.dart'
+    - '**/*.freezed.dart'
+    - '**/*.g.dart'
+    - '**/*.gr.dart'
+    - '**/*.mocks.dart'
+    - '**/firebase_options.dart'
+    - '**/generated_plugin_registrant.dart'
+    - '.dart_tool/**'
+    - '.idea/**'
+    - '.vscode/**'
+    - 'android/**'
+    - 'build/**'
+    - 'gen/**'
+    - 'ios/**'
+    - 'lib/generated/**'
+    - 'lib/injection.config.dart'
+  errors:
+    missing_return: error
+    one_member_abstracts: ignore
+    prefer_relative_imports: ignore
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: true
+    prefer_expression_function_bodies: true
+
+coverage:
+  ignore:
+    - '**/*.config.dart'
+    - '**/*.freezed.dart'
+    - '**/*.g.dart'
+    - '**/*.gr.dart'
