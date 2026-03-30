@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Course",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "content"],
+  "$defs": {
+    "media_asset_path": {
+      "type": "string",
+      "pattern": "^assets/media/.+"
+    },
+    "document_asset_path": {
+      "type": "string",
+      "pattern": "^assets/documents/.+"
+    },
+    "nullable_media_asset_path": {
+      "anyOf": [
+        { "$ref": "#/$defs/media_asset_path" },
+        { "type": "null" }
+      ]
+    },
+    "nullable_document_asset_path": {
+      "anyOf": [
+        { "$ref": "#/$defs/document_asset_path" },
+        { "type": "null" }
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "slug", "source_path"],
+      "properties": {
+        "type": { "const": "course" },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "source_path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "url"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" }
+      }
+    }
+  },
+  "properties": {
+    "meta": { "$ref": "#/$defs/meta" },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "summary", "course_details", "topics_covered", "relevance"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "badgeImagePath": { "$ref": "#/$defs/nullable_media_asset_path" },
+        "certificatePdfPath": { "$ref": "#/$defs/nullable_document_asset_path" },
+        "course_details": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["provider", "platform", "format", "level"],
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "platform": { "type": "string", "minLength": 1 },
+            "format": { "type": "string", "minLength": 1 },
+            "level": { "type": "string", "minLength": 1 },
+            "program_context": { "type": "string", "minLength": 1 }
+          }
+        },
+        "topics_covered": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "relevance": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "key_takeaways": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "proof": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/link" }
+        }
+      }
+    }
+  }
+}

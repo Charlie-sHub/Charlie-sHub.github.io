@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "type": "project",
+    "slug": "world_on",
+    "source_path": "projects/world_on/project_notes.md",
+    "start_date": "2020-06",
+    "end_date": "2023-03",
+    "is_ongoing": false
+  },
+  "content": {
+    "title": "World On",
+    "summary": "World On was a cross-platform social adventure app designed to bring MMO-style mission systems into the real world. Users could discover location-based experiences, complete them in physical spaces, and receive digital rewards. The project reached a working MVP and closed beta on Android.",
+    "thumbnailPath": "assets/media/content/projects/world_on/world_on_home_and_search.png",
+    "heroImagePath": "assets/media/content/projects/world_on/world_on_home_and_search.png",
+    "galleryImagePaths": [
+      "assets/media/content/projects/world_on/world_on_home_and_search.png",
+      "assets/media/content/projects/world_on/world_on_login.png",
+      "assets/media/content/projects/world_on/world_on_profile_and_store.png",
+      "assets/media/content/projects/world_on/world_on_experience.png"
+    ],
+    "role_and_scope": "I led most of the development work for this iteration of the product, including implementation, planning, documentation, and day-to-day execution. There were occasional collaborators, including graphic designers and other contributors, but I was the main person responsible for turning the concept into a working MVP.",
+    "product_context": "The product aimed to get people out of their homes and into real-world exploration, fun, and social connection. The core user flow was:\n\n- discover nearby experiences through a location-based feed\n- review photos, descriptions, tags, and steps\n- complete the activity in the real world\n- receive experience points and any creator-defined reward\n- build a profile through participation and creation\n\nUser-generated content was central to the product. Creators defined the concept, description, steps, tags, photos, difficulty, and rewards for each experience. The longer-term vision included augmented reality-inspired ideas, but the MVP stayed simpler.",
+    "stack": [
+      "Flutter",
+      "Firebase Auth",
+      "Firestore",
+      "Realtime Database",
+      "Cloud Functions",
+      "Storage",
+      "Messaging",
+      "Analytics",
+      "Crashlytics"
+    ],
+    "implementation": "The product combined geolocation-driven discovery with user-generated content and reward mechanics. Key implementation areas included:\n\n- location-based experience discovery and feed logic\n- profile and social-style app structure\n- experience creation flows with descriptions, steps, tags, and photos\n- reward and progression mechanics\n- Firebase-backed backend behavior and app architecture\n\nThe beta ran on Android and reached Play Store distribution in closed beta. The iOS version was started but never completed.",
+    "outcomes": [
+      "Turned a broad product idea into a functioning MVP.",
+      "Released the Android app to a closed beta through the Play Store.",
+      "Supported small-scale real user testing with a few dozen users.",
+      "Iterated on UX/UI from development feedback.",
+      "Did not progress to a finished iOS release or large-scale adoption."
+    ],
+    "security_and_quality": "- Authentication was handled through Firebase Auth.\n- The app involved location-based discovery, which made privacy and data handling relevant from a practical standpoint.\n- User-generated content introduced moderation and abuse-risk considerations.\n- Creator-defined rewards created trust and abuse concerns that would matter more at scale.\n\nThis was not a project built around advanced security architecture, but it already involved practical concerns around auth, permissions, privacy, and user behavior controls.",
+    "lessons": [
+      "Building from scratch forces clarity in product structure and technical priorities.",
+      "Strong execution matters more than endless ideation.",
+      "Geolocation and user-generated content create strong product possibilities, but they also add complexity quickly.",
+      "Getting something into users' hands matters more than repeatedly redesigning the MVP in meetings.",
+      "The project reinforced the importance of turning ambitious ideas into concrete systems that real users can try."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "type": "about_me",
+    "slug": "about_me",
+    "source_path": "sources_of_truth/about_me.md"
+  },
+  "content": {
+    "title": "About Me",
+    "who_i_am_professionally": "I am a software developer with more than five years of experience building cross-platform applications for mobile and web, with most of that work centered on Flutter and Firebase. My background is in product development, architecture, implementation, and delivery, and I tend to work best in environments where clear thinking and careful execution matter.",
+    "current_positioning": "My strongest fit is as a security-oriented software developer: development is the base of my experience, and security is the direction I am growing into. I am especially interested in the overlap between software engineering and secure system behavior, where testing, validation, permissions, data handling, and reliability all matter.",
+    "development_background": "My background is in building and shipping software rather than staying narrowly inside one layer of the stack. I have worked across client delivery, freelance product development, and building products from scratch, which gave me a practical habit of thinking about architecture, implementation, testing, deployment, and iteration as one connected system.\n\nThe work that suits me best is the kind where product thinking and engineering discipline meet: taking something ambiguous, shaping it into a usable system, and keeping the implementation understandable as it grows.",
+    "security_direction": "My move toward security is not a separate identity layered on top of development. It grows naturally out of how I already approach software: thinking through edge cases, permissions, validation, data handling, unintended behavior, and failure modes early rather than late.\n\nFormal cybersecurity training and certifications have given that instinct a clearer framework across areas such as security operations, networking, incident response, risk management, and defensive thinking. The direction that fits me best is secure engineering and application security, especially in roles where development and security reinforce each other.",
+    "strengths_and_working_style": [
+      "Structured planning before implementation.",
+      "Clean, maintainable execution.",
+      "Strong testing and validation habits.",
+      "Systems thinking and attention to how components interact.",
+      "Risk-aware engineering without unnecessary drama or hype.",
+      "Clear communication with both technical and non-technical stakeholders."
+    ],
+    "selected_skills_and_tools": [
+      {
+        "label": "Languages and frameworks",
+        "items": [
+          "Flutter",
+          "Dart",
+          "JavaScript",
+          "TypeScript",
+          "Python",
+          "Java."
+        ]
+      },
+      {
+        "label": "Backend and cloud",
+        "items": [
+          "Firebase",
+          "Firestore",
+          "REST APIs",
+          "GraphQL",
+          "Google Cloud."
+        ]
+      },
+      {
+        "label": "Engineering practices",
+        "items": [
+          "automated testing",
+          "Domain-Driven Design",
+          "Clean Architecture",
+          "API integration",
+          "scalable application structure."
+        ]
+      },
+      {
+        "label": "Security-related knowledge",
+        "items": [
+          "secure software development",
+          "application security fundamentals",
+          "validation",
+          "risk-aware engineering",
+          "MITRE ATT&CK",
+          "MITRE D3FEND",
+          "MITRE ATLAS."
+        ]
+      },
+      {
+        "label": "Workflow and tooling",
+        "items": [
+          "Git",
+          "GitHub",
+          "Notion",
+          "Jira",
+          "Android Studio",
+          "VS Code."
+        ]
+      }
+    ],
+    "how_i_build_software": "I prefer to build software in a way that stays understandable over time. That usually means defining the structure early, keeping responsibilities clear, validating assumptions as I go, and avoiding unnecessary complexity. I care about code quality, but not as an abstract ideal; I care because maintainability, clarity, and predictable behavior make systems easier to improve and easier to trust.",
+    "how_development_and_security_connect": "For me, development and security connect through disciplined engineering. Secure software is not only about adding controls at the end. It is also about designing systems carefully, handling data responsibly, thinking about failure cases, and reducing the gap between intended behavior and real behavior. That is the overlap I want to keep working in: building real products while bringing more security-focused thinking into how those products are planned, implemented, and maintained."
+  }
+}

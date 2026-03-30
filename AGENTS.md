@@ -135,7 +135,7 @@ When asked to prepare a commit message:
 - avoid vague or overly broad subjects
 
 Examples:
-- `updated AGENTS guidance`
-- `added content validation`
-- `renamed theme tokens`
-- `removed legacy assets`
+- `Updated AGENTS guidance`
+- `Added content validation`
+- `Renamed theme tokens`
+- `Removed legacy assets`

@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "slug": "comptia_security_plus",
+      "title": "CompTIA Security+",
+      "file": "comptia_security_plus.json",
+      "source_path": "security/certifications/comptia/comptia_security_plus.md",
+      "earned_date": "2026-03"
+    },
+    {
+      "slug": "isc2_certified_in_cybersecurity",
+      "title": "ISC2 Certified in Cybersecurity (CC)",
+      "file": "isc2_certified_in_cybersecurity.json",
+      "source_path": "security/certifications/isc2/isc2_certified_in_cybersecurity.md",
+      "earned_date": "2026-01"
+    },
+    {
+      "slug": "ibm_cybersecurity",
+      "title": "IBM Cybersecurity Analyst Professional Certificate",
+      "file": "ibm_cybersecurity.json",
+      "source_path": "security/certifications/ibm/ibm_cybersecurity.md",
+      "earned_date": "2025-12"
+    },
+    {
+      "slug": "google_cybersecurity",
+      "title": "Google Cybersecurity Professional Certificate",
+      "file": "google_cybersecurity.json",
+      "source_path": "security/certifications/google/google_cybersecurity.md",
+      "earned_date": "2025-10"
+    }
+  ]
+}

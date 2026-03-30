@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "type": "project",
+    "slug": "pami",
+    "source_path": "projects/pami/project_notes.md",
+    "start_date": "2024-12",
+    "end_date": null,
+    "is_ongoing": true
+  },
+  "content": {
+    "title": "PAMi",
+    "summary": "PAMi is an in-progress location-aware exchange platform built around temporary shout-outs that help nearby users connect in real life for quick, lightweight exchanges. The MVP includes shout-out creation, map-based discovery, messaging, transaction verification, karma, notifications, onboarding, and lightweight analytics, with a clear focus on maintainability, privacy, and progressive delivery.",
+    "thumbnailPath": null,
+    "heroImagePath": null,
+    "galleryImagePaths": [],
+    "role_and_scope": "PAMi is still in development, so the strongest current evidence is in the engineering work itself: architecture, domain modeling, data flows, CI quality gates, release planning, and security- and privacy-related decisions across the MVP. At this stage, the value is best reflected in implementation quality and delivery discipline rather than adoption metrics.",
+    "product_context": "The product is a nearby exchange platform where users can post temporary shout-outs, discover relevant opportunities on a map, express interest, chat, verify an exchange, and leave karma feedback. The direction is centered on utility, trust, and proximity rather than long-form social networking.\n\nThe MVP scope includes:\n\n- account and profile management\n- map filtering by category, proximity, and recency\n- shout-out posting and editing\n- text chat\n- QR or manual transaction verification\n- simplified karma\n- smart notifications\n- exchange history\n- in-app feedback\n- onboarding\n- minimal analytics",
+    "stack": [
+      "Flutter and Dart",
+      "Firebase Auth",
+      "Firestore",
+      "Analytics",
+      "Crashlytics",
+      "Remote Config",
+      "Cloud Functions",
+      "Messaging",
+      "Storage",
+      "`flutter_bloc`",
+      "`freezed`",
+      "`injectable`",
+      "`dartz`",
+      "`auto_route`",
+      "geolocation and map tooling",
+      "QR tooling"
+    ],
+    "implementation": "PAMi follows Domain-Driven Design with vertical feature slices across `domain`, `application`, `data`, and `views`, plus shared `core` utilities. The domain layer defines entities, value objects, failures, and repository interfaces without Flutter or Firebase imports. The application layer uses explicit BLoC roles for forms, watchers, and actors. The data layer contains production repositories, development fakes, DTOs, and a FirestoreX-style adapter pattern for access, pagination, converters, batched writes, and geo helpers. The presentation layer is feature-scoped, uses Auto Route, and keeps business logic out of widgets.\n\nOther implementation details already visible in the source material include:\n\n- explicit `freezed` and `json_serializable` DTO conventions\n- UTC timestamps and enums stored as strings\n- `fromDomain` and `toDomain` mapping patterns\n- Firestore collections for users, shout-outs, transactions, transaction messages, karma, notifications, and feedback\n- geo indexing and shout-out recency or category filtering in the planned data model\n- CI flows covering code generation, linting, tests, coverage enforcement, and staged release expectations",
+    "outcomes": [
+      "The product does not yet have user traction, so its current portfolio value comes from engineering quality rather than adoption metrics.",
+      "The source material shows a layered, feature-first architecture with explicit domain modeling and strong separation between UI, application, domain, and data concerns.",
+      "The project enforces linting, testing, code generation, branch conventions, and CI quality gates, with coverage enforced around an 80% threshold.",
+      "It supports both development fakes and production repositories, plus structured release, security, and observability expectations."
+    ],
+    "security_and_quality": "Security and privacy are treated as explicit design concerns rather than afterthoughts. The source material calls for:\n\n- Firestore rules that enforce authentication, ownership, schema validation, scoped access, and denial of privilege escalation\n- PII minimization and privacy disclosures\n- secrets never being committed to the repository\n- structured observability without sensitive data\n- minimal analytics that avoid PII\n- anti-replay protection for QR verification when Cloud Functions are used\n\nThe repository audit also shows functional error handling, environment-aware repository implementations, and CI practices that avoid exposing real secrets. Some release-hardening work still remained at the time of the audit, including final production signing and app-ID setup.",
+    "lessons": [
+      "Even an early-stage product benefits from disciplined architecture when the domain includes auth, geolocation, chat, transactions, karma, and notifications.",
+      "Clear layered boundaries and vertical feature slices make a codebase easier to scale without losing feature coherence.",
+      "Security, privacy, CI, and testing are stronger when they are specified early instead of postponed until launch.",
+      "Before launch, proof of quality should come from architecture, test discipline, and workflow maturity rather than inflated claims."
+    ]
+  }
+}

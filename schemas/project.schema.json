@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "content"],
+  "$defs": {
+    "year_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "media_asset_path": {
+      "type": "string",
+      "pattern": "^assets/media/.+"
+    },
+    "nullable_media_asset_path": {
+      "anyOf": [
+        { "$ref": "#/$defs/media_asset_path" },
+        { "type": "null" }
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "slug", "source_path", "start_date", "end_date", "is_ongoing"],
+      "properties": {
+        "type": { "const": "project" },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "source_path": { "type": "string", "minLength": 1 },
+        "start_date": { "$ref": "#/$defs/year_month" },
+        "end_date": {
+          "anyOf": [
+            { "$ref": "#/$defs/year_month" },
+            { "type": "null" }
+          ]
+        },
+        "is_ongoing": { "type": "boolean" }
+      }
+    },
+    "media_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "asset_path": { "type": "string", "minLength": 1 }
+      },
+      "anyOf": [
+        { "required": ["url"] },
+        { "required": ["asset_path"] }
+      ]
+    }
+  },
+  "properties": {
+    "meta": { "$ref": "#/$defs/meta" },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "summary",
+        "role_and_scope",
+        "product_context",
+        "stack",
+        "implementation",
+        "outcomes"
+      ],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "thumbnailPath": { "$ref": "#/$defs/nullable_media_asset_path" },
+        "heroImagePath": { "$ref": "#/$defs/nullable_media_asset_path" },
+        "galleryImagePaths": {
+          "type": "array",
+          "default": [],
+          "items": { "$ref": "#/$defs/media_asset_path" }
+        },
+        "role_and_scope": { "type": "string", "minLength": 1 },
+        "product_context": { "type": "string", "minLength": 1 },
+        "stack": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "implementation": { "type": "string", "minLength": 1 },
+        "security_and_quality": { "type": "string", "minLength": 1 },
+        "outcomes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "lessons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "links_and_media": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/media_item" }
+        }
+      }
+    }
+  }
+}

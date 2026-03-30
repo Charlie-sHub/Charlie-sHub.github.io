@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "type": "certificate",
+    "slug": "google_cybersecurity",
+    "source_path": "security/certifications/google/google_cybersecurity.md",
+    "earned_date": "2025-10"
+  },
+  "content": {
+    "title": "Google Cybersecurity Professional Certificate",
+    "summary": "The Google Cybersecurity Professional Certificate is a beginner-oriented program for entry-level cybersecurity work. It combines foundations, hands-on tools, incident response concepts, and professional preparation across eight courses.",
+    "badgeImagePath": null,
+    "certificatePdfPath": "assets/documents/certifications/google_cybersecurity_professional_certificate_v2.pdf",
+    "credential_details": {
+      "issuer": "Google",
+      "platform": "Coursera",
+      "credential_type": "professional certificate",
+      "level": "beginner to entry-level",
+      "program_size": "8 courses",
+      "focus": "foundational analyst skills, hands-on labs, and early-career readiness"
+    },
+    "knowledge_areas": [
+      "Foundations of cybersecurity: field overview, roles, ethics, CISSP domains, the CIA triad, and common controls.",
+      "Security risk management: threats, vulnerabilities, risk treatment, frameworks, controls, and audits.",
+      "Network security: network architectures, TCP/IP, common protocols, intrusion tactics, firewalls, VPNs, and hardening.",
+      "Linux and SQL: command-line work, permissions, file systems, queries, joins, and filters.",
+      "Assets, threats, and vulnerabilities: asset classification, encryption and hashing, authentication, authorization, and attack-surface thinking.",
+      "Detection and response: incident lifecycle, packet analysis, artifacts, logs, IDS, and SIEM workflows.",
+      "Python automation: variables, loops, conditionals, functions, regex, file I/O, and debugging for security tasks.",
+      "Job preparation: escalation, stakeholder communication, ethics, AI in workflows, and professional readiness."
+    ],
+    "learning_outcomes": [
+      "Build a solid baseline in security principles, risk management, and incident response.",
+      "Work with common analyst-oriented tools and environments, including Linux, SQL, SIEM, IDS, and Python.",
+      "Understand how networks, assets, vulnerabilities, and detection workflows connect in practical security work.",
+      "Strengthen communication and escalation habits for entry-level cybersecurity roles."
+    ],
+    "tools_and_frameworks": [
+      "Tools and platforms: Python, Linux, SQL, SIEM, IDS.",
+      "Core frameworks and concepts: CIA triad, NIST CSF, incident response lifecycle, threat modeling, CVEs, and MITRE-style taxonomy.",
+      "Typical artifacts: risk assessments, packet captures, SIEM queries, logs, SQL queries, Linux scripts, and Python automation scripts."
+    ],
+    "proof": [
+      {
+        "label": "Credly badge: Google Cybersecurity Professional Certificate",
+        "url": "https://www.credly.com/badges/312c559d-f01f-4475-be32-25015a9c1936"
+      }
+    ]
+  }
+}

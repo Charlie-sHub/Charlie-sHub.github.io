@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "type": "case_study",
+    "slug": "data_exfiltration_via_agent_tools",
+    "source_path": "security/case_studies/data_exfiltration_via_agent_tools_case_study.md",
+    "incident_code": "AML.CS0037"
+  },
+  "content": {
+    "title": "Data Exfiltration via Agent Tools in Copilot Studio [AML.CS0037]",
+    "summary": "In October 2024, Microsoft released a video showcasing how McKinsey & Co. leverages Copilot Studio to run an autonomous AI agent that helps with customer service needs, specifically by monitoring a customer service inbox where customers send their requests. The agent determines the best consultant to handle each request based on customer history and forwards the request, including relevant context, to the appropriate consultant.\n\nThen, in early 2025, Zenity demonstrated how an attacker could abuse such an agent to exfiltrate sensitive data from the organization via prompt injection techniques, coercing the agent into revealing its internal configuration and using its own tool integrations to extract data from connected systems. The researchers reported the behavior to Microsoft, which confirmed the issue and applied mitigations a month afterward; however, the underlying threat of prompt injection against AI agents remains a significant concern. The potential impact of such attacks is severe, as they can lead to unauthorized data disclosure without the need for traditional credential compromise or malware deployment.\n\nThis case demonstrates how autonomous AI agents can be coerced into unauthorized data disclosure without traditional exploitation of credentials, malware, or infrastructure vulnerabilities.",
+    "incident_overview": "This was a controlled proof-of-concept demonstration performed in a test environment designed to resemble the Copilot Studio deployment shown in Microsoft’s public demo.\n\nFirst, the researchers set up a testing environment with an autonomous agent that closely resembled the one used by McKinsey in their Copilot Studio demo, including similar tool integrations and configurations. During the test, the following actions were taken:\n\n- For targeting and identification, the researchers interacted with the customer support email address monitored by the AI agent. By sending test emails and observing automated responses, attackers could infer that an inbox is managed by an autonomous agent.\n- To achieve initial access, the researchers used prompt injection by sending crafted emails containing malicious prompt content. These prompts were interpreted by the agent as authoritative instructions, resulting in successful prompt injection without exploiting authentication or software vulnerabilities.\n- The researchers demonstrated how to discover agent capabilities through iterative prompt refinement. They coerced the agent into revealing details about its internal configuration, including access to \"Customer Support Account Owners.csv\" and a get-records tool capable of retrieving CRM data.\n- The researchers crafted prompts instructing the agent to retrieve all available data from the identified data sources, resulting in full disclosure of the file contents.\n- Then, data exfiltration via agent tools was achieved when the researchers instructed the agent to retrieve all available account records and send them to an external email address controlled by the researchers using its built-in email tool.\n- The demonstrated behavior resulted in complete, zero-click, non-persistent exfiltration of sensitive organizational data using only the AI agent’s legitimate capabilities, without any credential compromise, lateral movement, or malware deployment.",
+    "adversary_objectives": "There were no real adversaries in this case study, as it was a proof-of-concept demonstration performed by security researchers; hypothetical adversary objectives would include obtaining sensitive organizational data such as customer information, internal documents, or proprietary business data. This information could then be used for financial gain, competitive advantage, or to facilitate further attacks. Prompt injection techniques like these could also be used to obtain credentials or access tokens, enabling deeper infiltration into the target environment or more directly causing damage for the impact itself—for example, coercing the agent to delete data or perform other destructive actions.\n\nThe objectives of the security researchers were to demonstrate the risks associated with autonomous AI agents, raise awareness about prompt injection vulnerabilities, and encourage organizations to implement stronger security measures when deploying such agents, specifically by disclosing their findings to Microsoft to apply mitigations.",
+    "attack_mapping": {
+      "tactics": [
+        "Impact [TA0040]",
+        "Initial Access [TA0001]",
+        "Discovery [TA0007]",
+        "Execution [TA0002]",
+        "Command and Control [TA0011]",
+        "Exfiltration [TA0010]"
+      ],
+      "techniques": [
+        "**Initial Access**: Exploit Public-Facing Application [T1190]",
+        "**Execution**: Malicious File / Content [T1204.002]",
+        "**Defense Evasion**: Obfuscated/Encrypted Content [T1027]",
+        "**Discovery**: System Information Discovery [T1082], Permission Group Discovery [T1069]",
+        "**Command and Control**: Email [T1071.003]",
+        "**Exfiltration**: Exfiltration Over Application Layer Protocol [T1041], Automated Exfiltration [T1020]",
+        "**Impact**: Data from Information Repositories [T1213], Data Manipulation / Exposure [T1530]"
+      ],
+      "procedure_examples": [
+        "A potential attacker could abuse an AI agent trigger by leveraging Exploit Public-Facing Application [T1190] and by supplying maliciously crafted prompts, Execution: Malicious Content [T1204.002] took place.",
+        "During the discovery phase, an attacker could coerce the agent into performing System Information Discovery [T1082] and Permission Group Discovery [T1069].",
+        "Data from Information Repositories [T1213] could be gathered by attackers using the system information previously obtained.",
+        "Attackers could further abuse backend integrations by instructing the agent to invoke connected CRM tools, exfiltrating records via Exfiltration Over Application Layer Protocol: Email [T1041], without exploiting any credential or bypassing authentication. In addition as data exfiltration was fully autonomous, it aligns with Automated Exfiltration [T1020], constituting a zero-click, non-persistent attack.",
+        "Application Layer Protocol: Email [T1071.003] effectively served as the command and control channel for the AI agent, receiving instructions and returning exfiltrated data.",
+        "The demonstrated impact resulted in large-scale Data Exposure [T1530]."
+      ]
+    },
+    "defensive_analysis": "The main defensive weakness shown here is that prompt injection remains difficult to eliminate completely, especially when an agent can interpret untrusted content and then act through connected tools. Even so, the risk can be reduced substantially. In this case, insufficient input validation and weak tool-access boundaries allowed the agent to be manipulated without any need for credential compromise or malware. In practice, agents like this can behave as implicit privileged users while lacking the monitoring, restriction, and oversight normally applied to human or service accounts.\n\nDefensive successes include Microsoft's prompt response to the researchers' disclosure, quickly implementing mitigations to reduce the risk of similar attacks in the future. This highlights the importance of responsible disclosure and collaboration between security researchers and vendors to enhance AI security.",
+    "lessons_learned": [
+      "Assume that AI agents can be manipulated through prompt injection, especially when they consume untrusted content.",
+      "Limit tool access, data access, and outbound actions so that a compromised prompt path does not immediately become a data-exfiltration path.",
+      "Treat agents as high-risk execution layers that require monitoring, anomaly detection, and explicit trust boundaries.",
+      "Avoid deploying autonomous agents faster than the surrounding security model can support them."
+    ],
+    "reflection": "This case is useful because it frames AI agents as security boundaries rather than convenience features. The most important takeaway is that prompt injection is not only a model-behavior issue; it can become an access-control and data-handling issue when agents are allowed to call tools and act on connected systems.\n\nThe ATLAS mapping also helps clarify the attack path. It makes the transition from prompt manipulation to capability discovery, collection, and exfiltration much easier to explain and reason about defensively.",
+    "references": [
+      {
+        "label": "Data Exfiltration via Agent Tools in Copilot Studio (AML.CS0037)",
+        "url": "https://atlas.mitre.org/studies/AML.CS0037"
+      },
+      {
+        "label": "AgentFlayer: Discovery Phase of AI Agents in Copilot Studio",
+        "url": "https://labs.zenity.io/p/a-copilot-studio-story-discovery-phase-in-ai-agents-f917"
+      },
+      {
+        "label": "AgentFlayer: When AIjacking Leads to Full Data Exfiltration in Copilot Studio",
+        "url": "https://labs.zenity.io/p/a-copilot-studio-story-2-when-aijacking-leads-to-full-data-exfiltration-bc4a"
+      },
+      {
+        "label": "We Hacked Copilot Studio: The AI Agent Risk Hiding in Your Environment",
+        "url": "https://youtu.be/vOnwIbS998U"
+      }
+    ],
+    "defensive_mapping": "_Scope note: Many of the following defensive techniques apply indirectly, as MITRE D3FEND does not yet fully model AI agent–specific controls. The mappings below therefore emphasize traditional detection, isolation, and containment measures relevant to the demonstrated outcomes._\n\n- Exploit Public-Facing Application [T1190]\n\n  - Hardening: Segment Address Offset Randomization, Process Segment Execution Prevention\n  - Detection: Protocol Metadata Anomaly Detection, Remote Terminal Session Detection, Network Traffic Signature Analysis, Inbound Session Volume Analysis, Client-server Payload Profiling, Per Host Download-Upload Ratio Analysis, Network Traffic Community Deviation, Database Query String Analysis\n  - Isolation: Network Traffic Filtering, Inbound Traffic Filtering\n\n- Malicious File [T1204.002]\n\n  - Hardening: File Encryption\n  - Detection: Emulated File Analysis, Dynamic Analysis, Remote Terminal Session Detection, Network Traffic Signature Analysis, Per Host Download-Upload Ratio Analysis, Relay Pattern Analysis, Network Traffic Community Deviation, Client-server Payload Profiling, Protocol Metadata Anomaly Detection, Homoglyph Detection, Identifier Activity Analysis, User Geolocation Logon Pattern Analysis, URL Analysis, File Integrity Monitoring, File Analysis, URL Reputation Analysis\n  - Isolation: Executable Denylisting, Executable Allowlisting, Network Traffic Filtering, Local File Permissions, Content Quarantine, Content Modification, Content Filtering, Remote File Access Mediation, Outbound Traffic Filtering\n  - Eviction: File Eviction\n  - Restoration: Restore File\n  - Deception: Decoy File\n\n- Obfuscated/Encrypted Content [T1027]\n\n  - Hardening: File Encryption\n  - Detection: Dynamic Analysis, Emulated File Analysis, File Integrity Monitoring, File Analysis\n  - Isolation: Content Quarantine, Content Modification, Executable Denylisting, Executable Allowlisting, Local File Permissions, Content Filtering, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- System Information Discovery [T1082]\n\n  - Detection: System Call Analysis, Process Spawn Analysis\n  - Isolation: Executable Allowlisting, Executable Denylisting, Hardware-based Process Isolation, System Call Filtering\n  - Deception: Decoy Environment\n\n- Email [T1071.003]\n\n  - Hardening: File Encryption\n  - Detection: Client-server Payload Profiling, Network Traffic Community Deviation, Relay Pattern Analysis, Remote Terminal Session Detection, Per Host Download-Upload Ratio Analysis, Application Protocol Command Analysis, Protocol Metadata Anomaly Detection, Certificate Analysis, Network Traffic Signature Analysis, User Geolocation Logon Pattern Analysis, File Integrity Monitoring, File Analysis\n  - Isolation: Network Traffic Filtering, Content Modification, Content Quarantine, Local File Permissions, Outbound Traffic Filtering, Content Filtering, Remote File Access Mediation\n  - Eviction: File Eviction\n  - Restoration: Restore File\n  - Deception: Decoy File\n\n- Exfiltration Over C2 Channel [T1041]\n\n  - Hardening: File Encryption\n  - Detection: Network Traffic Community Deviation, Per Host Download-Upload Ratio Analysis, Protocol Metadata Anomaly Detection, Client-server Payload Profiling, Remote Terminal Session Detection, Certificate Analysis, Network Traffic Signature Analysis, File Integrity Monitoring, User Geolocation Logon Pattern Analysis, File Analysis\n  - Isolation: Network Traffic Filtering, Local File Permissions, Content Modification, Content Quarantine, Content Filtering, Remote File Access Mediation\n  - Eviction: File Eviction\n  - Restoration: Restore File\n  - Deception: Decoy File\n\n- Automated Exfiltration [T1020]\n\n  - Detection: Client-server Payload Profiling, Network Traffic Community Deviation, Per Host Download-Upload Ratio Analysis, Protocol Metadata Anomaly Detection, Remote Terminal Session Detection, Network Traffic Signature Analysis, User Geolocation Logon Pattern Analysis\n  - Isolation: Network Traffic Filtering\n\n- Data from Information Repositories [T1213]\n\n  - Isolation: Network Resource Access Mediation\n  - Modelling: Data Inventory\n  - Restoration: Restore Database\n  - Deception: Decoy Network Resource",
+    "atlas_mapping": {
+      "summary": "This activity maps cleanly to MITRE ATLAS because it involves prompt injection against an AI agent, capability discovery, data collection through connected tools, and exfiltration through the agent's own workflow.",
+      "tactics_and_techniques": [
+        "Reconnaissance [AML.TA0002] - Active Scanning [AML.T0006]",
+        "Resource Development [AML.TA0003] - LLM Prompt Crafting [AML.T0065]",
+        "Initial Access [AML.TA0004] - Prompt Infiltration via Public-Facing Application [AML.T0093]",
+        "Execution [AML.TA0005] - LLM Prompt Injection: Trigger [AML.T0051.002], LLM Prompt Injection [AML.T0051]",
+        "Discovery [AML.TA0008] - Discover AI Agent Configuration: Activation Triggers [AML.T0084.002], Discover AI Agent Configuration: Tool Definitions [AML.T0084.001], Discover AI Agent Configuration: Embedded Knowledge [AML.T0084.000]",
+        "AI Model Access [AML.TA0000] - AI-Enabled Product or Service [AML.T0047]",
+        "Collection [AML.TA0009] - Data from AI Services: RAG Databases [AML.T0085.000], Data from AI Services: AI Agent Tools [AML.T0085.001]",
+        "Exfiltration [AML.TA0010] - Exfiltration via AI Agent Tool Invocation [AML.T0086]"
+      ],
+      "procedure_examples": [
+        "A potential attacker could interact with an AI agent via Prompt Infiltration via Public-Facing Application [AML.T0093], causing LLM Prompt Injection [AML.T0051] when crafted prompts are processed by the agent.",
+        "During Discovery, an attacker could coerce the agent to reveal internal configuration details and access scope, aligning with Discover AI Agent Configuration [AML.T0084].",
+        "Using the configuration information previously obtained, an attacker could instruct the agent to retrieve Data from AI Services [AML.T0085].",
+        "The attacker could further direct the agent to invoke connected CRM tools, exfiltrating records via Exfiltration via AI Agent Tool Invocation [AML.T0086] without credential compromise."
+      ]
+    }
+  }
+}

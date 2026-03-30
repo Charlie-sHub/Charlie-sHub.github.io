@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "type": "certificate",
+    "slug": "comptia_security_plus",
+    "source_path": "security/certifications/comptia/comptia_security_plus.md",
+    "earned_date": "2026-03"
+  },
+  "content": {
+    "title": "CompTIA Security+",
+    "summary": "CompTIA Security+ is a vendor-neutral cybersecurity certification focused on practical security knowledge, threat awareness, and operational decision-making. It is positioned as an entry-to-intermediate credential for early security roles and as a gateway to more advanced CompTIA certifications.",
+    "badgeImagePath": null,
+    "certificatePdfPath": "assets/documents/certifications/comptia_security_plus_ce_certificate.pdf",
+    "credential_details": {
+      "issuer": "CompTIA",
+      "credential_type": "cybersecurity certification",
+      "level": "entry to intermediate",
+      "version": "Security+ (SY0-701)",
+      "intended_audience": "aspiring SOC analysts, junior security engineers, system administrators, and DevSecOps practitioners"
+    },
+    "knowledge_areas": [
+      "General security concepts: CIA triad, security controls, risk concepts, and governance fundamentals.",
+      "Threats, vulnerabilities, and mitigations: malware, social engineering, threat actors, vulnerability types, and defensive responses.",
+      "Security architecture: secure network design, cloud and hybrid environments, virtualization, and Zero Trust concepts.",
+      "Security operations: monitoring, logging, incident response, digital forensics basics, and IAM operations.",
+      "Security program management and oversight: risk management, compliance, security policies, and third-party risk."
+    ],
+    "learning_outcomes": [
+      "Analyze common cyber threats and map them to appropriate mitigations.",
+      "Reason about secure architectures across on-premises, cloud, and hybrid environments.",
+      "Apply incident response principles in realistic operational scenarios.",
+      "Explain authentication, authorization, and access-control flows clearly.",
+      "Connect technical controls to governance and business-risk requirements."
+    ],
+    "tools_and_frameworks": [
+      "Core frameworks and concepts: CIA triad, defense in depth, IAM, incident response lifecycle, and NIST-style security thinking.",
+      "Tooling concepts: SIEM, IDS/IPS, firewalls, WAFs, IAM systems, and endpoint protection platforms.",
+      "Exposure type: operational reasoning and decision-making rather than product-specific configuration."
+    ],
+    "proof": [
+      {
+        "label": "Credly badge: CompTIA Security+",
+        "url": "https://www.credly.com/badges/650cf195-1bfb-4dca-b5a6-a6b7058d9d43"
+      }
+    ]
+  }
+}

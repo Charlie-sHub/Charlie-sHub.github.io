@@ -75,7 +75,7 @@ Treat security as part of disciplined software construction, not as a cosmetic a
 Repository-visible documentation should be clear, practical, and professional.
 
 ### 4.6 The project should be easy to extend
-Adding projects, write-ups, certifications, and resources should not require restructuring the site.
+Adding projects, case studies, certifications, courses, and resume metadata should not require restructuring the site.
 
 ---
 
@@ -89,7 +89,7 @@ The site should remain understandable to readers with different levels of techni
 
 ### In scope
 - portfolio website implementation
-- structure for projects, certifications, write-ups, and related content
+- structure for projects, case studies, certifications, courses, resume metadata, and related content
 - repository-visible documentation required to maintain the project
 - secure and maintainable implementation decisions
 - clear presentation of technical work
@@ -105,22 +105,46 @@ The site should remain understandable to readers with different levels of techni
 
 ---
 
-## 7. Website content model
+## 7. Website content and asset model
 
 The website should be content-driven and JSON-first.
 
 Preferred direction:
-- public website content stored as public-safe JSON assets under `assets/content/`
+- `assets/content/` stores structured, public-safe JSON content
+- `assets/media/` stores images and other visual assets
+- `assets/documents/` stores PDFs and other downloadable supporting documents
+- JSON remains the source of structured public content and metadata
+- images and downloadable documents are supporting assets referenced from JSON where appropriate
 - content may originate from private source material elsewhere, but this repository should favor structured public-safe JSON
-- Flutter should load content from assets in a Flutter-friendly way
+- Flutter should load content and supporting assets from the repository in a Flutter-friendly way
 - new JSON content files should be addable without manual presentation-layer changes for each entry
 - content discovery should be automatic where practical
 - ordering and curation should be driven primarily by explicit metadata in the content itself, especially priority
 - the system should support surfacing the most important items first without presentation-layer rewiring
-- supporting assets may also include PDFs where relevant
-- PDFs may be embedded or rendered in widgets where appropriate without needing to participate in the same structured JSON parsing and validation flow as JSON content files
+- supporting images and documents do not need to participate in the same structured parsing and validation flow as JSON content files
+- project image fields may remain optional so unfinished projects, including PAMi, do not require fake placeholders
+- the CV or resume PDF should be treated as a site-level downloadable document under `assets/documents/resume/`, while structured resume metadata may still live under `assets/content/resume/`
 
-Exact JSON schemas for projects, certifications, write-ups, resources, and related content remain intentionally open. They should be formalized later during normalization of source material.
+Current structured content areas under `assets/content/` should reflect the repository's current direction:
+- `about/`
+- `case_studies/`
+- `certifications/`
+- `courses/`
+- `projects/`
+- `resume/`
+
+Recommended supporting asset conventions:
+- UI or decorative imagery such as backgrounds, textures, and icons should live under `assets/media/ui/...`
+- content-tied images such as project screenshots, thumbnails, hero images, and certification badges should live under `assets/media/content/<section>/<slug>/...`
+- downloadable PDFs such as certification PDFs and CV or resume PDFs should live under `assets/documents/<section>/...`
+
+Slug and asset-directory naming conventions:
+- structured content `slug` values should use `snake_case`
+- asset directories derived from content slugs should also use `snake_case`
+- examples of preferred slug or asset-directory naming include `world_on`, `security_plus`, and `google_cybersecurity`
+- do not use `kebab-case` for content slugs or slug-derived asset directory names
+
+Exact JSON schemas, final image field names, and final document field names remain intentionally open. They should be formalized later during normalization of source material and implementation, without overdesigning the final schemas too early.
 
 Schema evolution should preserve extensibility. New content types or schema refinements should not force broad presentation-layer rewrites where that can reasonably be avoided.
 
@@ -129,21 +153,41 @@ Initial example structure:
 ```text
 assets/
   content/
-    projects/
+    about/
       *.json
-      *.pdf
-    writeups/
-      *.json
-    case-studies/
-      *.json
-    resources/
+    case_studies/
       *.json
     certifications/
       *.json
+    courses/
+      *.json
+    projects/
+      *.json
+    resume/
+      *.json
+  media/
+    ui/
+      backgrounds/
+      textures/
+      icons/
+    content/
+      projects/
+        world_on/
+        pami/
+      certifications/
+        security_plus/
+      courses/
+        google_cybersecurity/
+  documents/
+    certifications/
+      *.pdf
+    courses/
+      *.pdf
+    resume/
       *.pdf
 ```
 
-This structure may evolve, but content should remain easy to version, review, extend, and discover without being scattered unpredictably across the codebase.
+This structure may evolve, but the distinction between structured JSON content and supporting media or document assets should remain clear. Assets should stay easy to version, review, extend, and discover without being scattered unpredictably across the codebase.
 
 ---
 
@@ -182,12 +226,12 @@ Certifications should include more than titles where possible. Useful supporting
 - practical takeaways
 - labs or exercises, where worth highlighting
 
-### 8.5 Resources
-A curated resources section may include:
-- videos
-- articles
-- tools
-- references that genuinely helped shape technical growth
+### 8.5 Courses / technical learning
+This section may include:
+- completed courses
+- practical takeaways
+- labs or exercises, where worth highlighting
+- selected references that genuinely helped shape technical growth
 
 ### 8.6 About / working style
 This section may explain:
@@ -501,7 +545,7 @@ The following areas are expected to change as the project evolves:
 - how deep individual project breakdowns should go
 - whether a cleaner path-style routing model becomes worthwhile later
 - whether search and filtering become worthwhile later
-- whether resources and write-ups deserve separate navigation priority
+- whether courses and case studies deserve separate navigation priority
 - whether any experimental features are actually worth implementing
 
 Open items should be resolved progressively rather than guessed too early.

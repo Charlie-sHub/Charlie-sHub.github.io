@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "type": "certificate",
+    "slug": "isc2_certified_in_cybersecurity",
+    "source_path": "security/certifications/isc2/isc2_certified_in_cybersecurity.md",
+    "earned_date": "2026-01"
+  },
+  "content": {
+    "title": "ISC2 Certified in Cybersecurity (CC)",
+    "summary": "ISC2 Certified in Cybersecurity (CC) is a foundational, vendor-neutral cybersecurity certification for newcomers and career switchers. It focuses on core principles, governance, access control, network security, and operations rather than deep tool specialization.",
+    "badgeImagePath": null,
+    "certificatePdfPath": "assets/documents/certifications/isc2_certified_in_cybersecurity.pdf",
+    "credential_details": {
+      "issuer": "ISC2",
+      "credential_type": "cybersecurity certification",
+      "level": "foundational",
+      "program_scope": "5 core domains",
+      "intended_audience": "newcomers, career switchers, and early-career security candidates"
+    },
+    "knowledge_areas": [
+      "Security principles: CIA triad, defense in depth, shared responsibility, and security controls.",
+      "Business continuity, disaster recovery, and incident response concepts.",
+      "Access-control concepts: authentication, authorization, IAM, least privilege, and common access models.",
+      "Network security fundamentals: components, secure protocols, segmentation, and common threats.",
+      "Security operations: logging, monitoring, change management, asset protection, and physical security."
+    ],
+    "learning_outcomes": [
+      "Apply core cybersecurity principles using accurate professional terminology.",
+      "Understand how organizations manage risk, access control, resilience, and security operations.",
+      "Distinguish authentication, authorization, and common access-control models.",
+      "Describe incident response, business continuity, and disaster recovery clearly.",
+      "Build a foundation for more advanced certifications such as SSCP or CISSP."
+    ],
+    "tools_and_frameworks": [
+      "Core frameworks and concepts: CIA triad, defense in depth, least privilege, IAM, incident response lifecycle, resilience concepts, and governance-aligned security practice.",
+      "Exposure type: concept-heavy and tool-agnostic, intended to prepare learners for later hands-on operational work."
+    ],
+    "proof": [
+      {
+        "label": "Credly badge: ISC2 Certified in Cybersecurity (CC)",
+        "url": "https://www.credly.com/earner/earned/badge/8c089697-9a2f-4f8d-bf25-6ca955972e03"
+      }
+    ]
+  }
+}

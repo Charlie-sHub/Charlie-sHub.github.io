@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "type": "resume",
+    "slug": "resume",
+    "source_path": "sources_of_truth/master_resume.md"
+  },
+  "content": {
+    "name": "Carlos Mendez",
+    "location": "Bilbao, Spain",
+    "summary": "Flutter software developer with 5+ years of experience building cross-platform applications for mobile and web. Strong in structured planning, clean implementation, automated testing, and building maintainable systems from the ground up. Recently added formal cybersecurity training and certifications, and now targeting roles where software development and security reinforce each other.",
+    "resumePdfPath": "assets/documents/resume/carlos_mendez_dev.pdf",
+    "contact_links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://linkedin.com/in/carlos-mendez-gonzalez"
+      },
+      {
+        "label": "GitHub",
+        "url": "https://github.com/Charlie-sHub"
+      },
+      {
+        "label": "Portfolio",
+        "url": "https://charlie-shub.github.io"
+      }
+    ],
+    "core_skills": [
+      {
+        "label": "Languages & Frameworks",
+        "items": [
+          "Flutter",
+          "Dart",
+          "JavaScript",
+          "TypeScript",
+          "HTML",
+          "CSS",
+          "Python",
+          "Java"
+        ]
+      },
+      {
+        "label": "Backend & Cloud",
+        "items": [
+          "Firebase",
+          "Firestore",
+          "REST APIs",
+          "GraphQL",
+          "Google Cloud"
+        ]
+      },
+      {
+        "label": "Engineering & Architecture",
+        "items": [
+          "Automated testing",
+          "Test-Driven Development",
+          "Domain-Driven Design (DDD)",
+          "Clean Architecture",
+          "API integration",
+          "database design",
+          "scalable application structure"
+        ]
+      },
+      {
+        "label": "Security Knowledge & Frameworks",
+        "items": [
+          "Secure software development",
+          "application security fundamentals",
+          "validation",
+          "risk-aware engineering",
+          "MITRE ATT&CK",
+          "MITRE D3FEND",
+          "MITRE ATLAS"
+        ]
+      },
+      {
+        "label": "Workflow & Tools",
+        "items": [
+          "Git",
+          "GitHub",
+          "Notion",
+          "Jira",
+          "Agile workflows",
+          "Android Studio",
+          "VS Code"
+        ]
+      }
+    ],
+    "professional_experience": [
+      {
+        "title": "Freelance Software Developer",
+        "location": "Bilbao, Spain",
+        "start_date": "2024-12",
+        "end_date": "2025-10",
+        "is_ongoing": false,
+        "highlights": [
+          "Built two software products from scratch, owning architecture, implementation, testing, deployment, and iteration.",
+          "Developed cross-platform applications with Flutter and Firebase across frontend, application logic, backend integration, and release preparation.",
+          "Integrated AI functionality into one product as part of the user experience.",
+          "Applied a structured development approach focused on maintainability, clear architecture, and reliable execution.",
+          "Reached 80%+ automated test coverage in core application work."
+        ]
+      },
+      {
+        "title": "Software Developer",
+        "organization": "Media Mechanics",
+        "location": "Halifax, Canada",
+        "start_date": "2021-06",
+        "end_date": "2024-10",
+        "is_ongoing": false,
+        "highlights": [
+          "Built Flutter applications for mobile and web across client projects, improving usability, responsiveness, and product performance.",
+          "Integrated APIs and backend services to extend functionality and support smoother user experiences.",
+          "Worked with remote client teams in Agile workflows, contributing to planning, iteration, and delivery.",
+          "Produced biweekly stakeholder reports that translated technical progress into clear business-facing updates.",
+          "Built a functional web game prototype in six weeks using the Flame Engine."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "title": "Higher Technician in Multiplatform Application Development",
+        "institution": "CIFP Tartanga",
+        "location": "Erandio, Spain",
+        "start_date": "2018-09",
+        "end_date": "2020-05"
+      },
+      {
+        "title": "Higher Technician in Telecommunications and Computer Systems",
+        "institution": "CIFP Tartanga",
+        "location": "Erandio, Spain",
+        "start_date": "2016-09",
+        "end_date": "2018-05"
+      }
+    ],
+    "languages": [
+      {
+        "language": "Spanish",
+        "proficiency": "Native"
+      },
+      {
+        "language": "English",
+        "proficiency": "C2"
+      },
+      {
+        "language": "French",
+        "proficiency": "B1"
+      }
+    ]
+  }
+}

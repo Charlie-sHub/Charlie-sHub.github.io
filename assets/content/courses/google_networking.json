@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "type": "course",
+    "slug": "google_networking",
+    "source_path": "knowledge/courses/google_networking.md"
+  },
+  "content": {
+    "title": "The Bits and Bytes of Computer Networking",
+    "summary": "The Bits and Bytes of Computer Networking is a foundational networking course from Google. It explains how devices communicate, how data moves across networks, and why that understanding matters for troubleshooting, monitoring, and security work.",
+    "badgeImagePath": null,
+    "certificatePdfPath": null,
+    "course_details": {
+      "provider": "Google",
+      "platform": "Coursera",
+      "format": "multi-module online course",
+      "level": "foundational",
+      "program_context": "part of Google's IT curriculum"
+    },
+    "topics_covered": [
+      "Introduction to networking: core devices, LAN/WAN/wireless concepts, and the OSI and TCP/IP models.",
+      "The network layer: IPv4/IPv6, subnetting, ARP, ICMP, and routing.",
+      "The transport and application layers: TCP vs. UDP, ports, sockets, and common protocols such as HTTP, HTTPS, DNS, SMTP, and FTP.",
+      "Networking services: DNS, DHCP, NAT, VPNs, and proxies.",
+      "Connecting to the internet: ISP architecture, gateways, wireless, fiber, and cellular connectivity.",
+      "Troubleshooting and future directions: `ping`, `traceroute`, `ipconfig`/`ifconfig`, `netstat`, SDN, and IPv6 adoption."
+    ],
+    "relevance": [
+      "Provides the baseline needed to interpret logs, network behavior, and protocol-level attack paths.",
+      "Helps connect networking concepts to firewalling, IDS/IPS, SIEM work, and incident response.",
+      "Makes it easier to reason about misconfigurations, lateral movement, exfiltration, and other network-dependent security activity."
+    ],
+    "key_takeaways": [
+      "The TCP/IP and OSI models provide a practical framework for both communication and defense.",
+      "Routing, ports, and protocols are central to how modern attacks and mitigations work.",
+      "Security depends on understanding what normal network traffic looks like before abnormal behavior can be identified."
+    ]
+  }
+}

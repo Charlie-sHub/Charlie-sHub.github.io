@@ -27,8 +27,9 @@ The goal is not only to show finished work, but to show how that work is planned
 The current implementation direction is:
 
 - **Flutter Web** as the core stack
-- **content-first structure**, with public content stored under `assets/content/`
+- **content-first structure**, with structured public JSON under `assets/content/`, supporting images under `assets/media/`, and downloadable documents under `assets/documents/`
 - **horizontal layered architecture** rather than feature slices
+- **snake_case naming** for content slugs and slug-derived asset directories
 - **public-safe documentation** that explains the project without exposing internal planning material
 
 This repository is expected to evolve, but the direction is to keep the codebase understandable, durable, and easy to review.
@@ -41,7 +42,7 @@ It is also more engineered than a simple static portfolio strictly needs to be. 
 
 The site is intended to surface the strongest proof quickly, while still allowing deeper exploration.
 
-Core content areas include:
+Core content areas currently represented in `assets/content/` include:
 
 - **Home**  
   A clear introduction, areas of focus, and direct paths to projects, certifications, and contact details.
@@ -55,11 +56,14 @@ Core content areas include:
 - **Certifications**  
   Certifications supported by useful context where possible, such as summaries, practical takeaways, and selected supporting materials.
 
-- **Resources**  
-  Curated videos, articles, tools, and references that genuinely helped shape technical growth.
+- **Courses / Technical Learning**  
+  Structured learning material that supports the portfolio's technical direction without being treated as a project or case study.
 
 - **About / Working Style**  
   A concise explanation of how I approach architecture, maintainability, documentation, and the overlap between development and security.
+
+- **Resume**  
+  Structured resume metadata under `assets/content/resume/`, with the downloadable CV PDF handled separately under `assets/documents/resume/`.
 
 ---
 
@@ -122,11 +126,23 @@ lib/
 
 assets/
   content/
-    projects/
-    writeups/
-    case-studies/
+    about/
+    case_studies/
     certifications/
-    resources/
+    courses/
+    projects/
+    resume/
+  media/
+    ui/
+      backgrounds/
+      icons/
+    content/
+      projects/
+        pami/
+        world_on/
+  documents/
+    certifications/
+    resume/
 ```
 
 High-level layer roles:
@@ -142,7 +158,7 @@ Preferred content flow:
 asset content -> DTO -> validated domain object -> state -> presentation
 ```
 
-This keeps raw public content separate from trusted app state.
+This keeps raw public content separate from trusted app state. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
 
 ---
 

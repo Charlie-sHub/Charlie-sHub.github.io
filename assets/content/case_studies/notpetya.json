@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "type": "case_study",
+    "slug": "notpetya",
+    "source_path": "security/case_studies/notpetya_case_study.md",
+    "incident_code": "S0368"
+  },
+  "content": {
+    "title": "NotPetya [S0368]",
+    "summary": "Between 27 and 28 June 2017, one of the most impactful cyberattacks in history took place, focused on Ukrainian businesses and parts of the state apparatus itself, with significant spillovers in other countries like Germany (second biggest hit), France, Italy, Poland, Russia, UK, US and Australia. The attack was nicknamed NotPetya because, while it resembled Petya ransomware, this was used to obfuscate the true intention of the operation: to encrypt as many file systems as possible without any actual way to decrypt the files.\n\nIts impact has been estimated at over US$10 billion, though assessments vary and some analyses argue the real economic cost may have been significantly lower.",
+    "incident_overview": "The attack originated through a confirmed Supply Chain Compromise of M.E.Doc, a Ukrainian tax accounting package widely used in the country. A malicious software update was distributed through the vendor’s update server, providing the attacker with initial access into victim environments. Once executed, the malware used EternalBlue (CVE-2017-0144) and EternalRomance (CVE-2017-0145) to exploit SMBv1, along with a modified version of Mimikatz to harvest credentials and enable rapid Lateral Movement. Ultimately, NotPetya functioned as a wiper, irreversibly encrypting systems rather than providing any path to data recovery.",
+    "adversary_objectives": "The attack has been widely attributed to Sandworm Team and targeted Ukraine's digital infrastructure. Its main objective appears to have been large-scale disruption and economic damage in the context of the ongoing regional conflict.",
+    "attack_mapping": {
+      "tactics": [
+        "Impact [TA0040]",
+        "Lateral Movement [TA0008]",
+        "Discovery [TA0007]",
+        "Defense Evasion [TA0005]",
+        "Credential Access [TA0006]",
+        "Execution [TA0002]",
+        "Privilege Escalation [TA0004]",
+        "Initial Access [TA0001]"
+      ],
+      "techniques": [
+        "**Initial Access**: Supply Chain Compromise [T1195]",
+        "**Execution**: Scheduled Task [T1053.005], Service Execution [T1569.002], Windows Management Instrumentation [T1047]",
+        "**Privilege Escalation**: Scheduled Task [T1053.005]",
+        "**Defense Evasion**: Clear Windows Event Logs [T1070.001], Masquerading [T1036], System Binary Proxy Execution: Rundll32 [T1218.011]",
+        "**Credential Access**: LSASS Memory [T1003.001]",
+        "**Discovery**: File and Directory Discovery [T1083], Security Software Discovery [T1518.001]",
+        "**Lateral Movement**: Exploitation of Remote Services [T1210], SMB/Windows Admin Shares [T1021.002]",
+        "**Impact**: Data Encrypted for Impact [T1486], System Shutdown / Reboot [T1529], Loss of Productivity and Revenue [T0828]"
+      ],
+      "procedure_examples": [
+        "NotPetya used Valid Accounts [T1078.003] gathered via a modified version of Mimikatz (OS Credential Dumping: LSASS Memory [T1003.001]) to use later for Lateral Movement and Initial Access. In addition, lateral movement was achieved with two exploits in SMBv1, EternalBlue (CVE-2017-0144) and EternalRomance (CVE-2017-0145) (Exploitation of Remote Services [T1210])",
+        "Through a Scheduled Task [T1053.005] the malware rebooted the system one hour after infection (System Shutdown / Reboot [T1529])",
+        "The malware's Defense Evasion took shape mainly in the form of Masquerading [T1036], Clearing Windows Event Logs [T1070.001]",
+        "The encryption of user files and disks was done with 2048-bit RSA, but had no way of being reversed, which matches Data Encrypted for Impact [T1486] causing Loss of Productivity and Revenue [T0828]"
+      ]
+    },
+    "defensive_analysis": "The exact method by which the attackers initially compromised M.E.Doc and Intellect Service remains unknown, which limits certainty around the specific defensive failures at the vendor level. Subsequent investigations by Ukrainian authorities indicated that the attackers compromised M.E.Doc’s update infrastructure directly, enabling the distribution of a trojanized update.\n\nAffected organizations placed too much trust in third-party software, especially in this case M.E.Doc. Slow patching also played a major role: WannaCry had already shown how dangerous the same vulnerabilities could be, yet many organizations had still not applied the available fixes. Many environments also lacked effective internal segmentation, which made lateral movement easier and recovery more difficult, especially where backups were exposed to the same environment.\n\nSome organizations were better prepared. Environments that had patched the relevant vulnerabilities, segmented their networks, and maintained mature incident-response capability were better able to slow or contain the spread. The incident also prompted extensive collaboration between CERTs and industry responders.",
+    "lessons_learned": [
+      "The growing importance—and vulnerability—of the software supply chain. Implicit trust in third‑party software allowed NotPetya to spread widely through a compromised update mechanism.",
+      "The critical necessity of timely patch management. EternalBlue and EternalRomance had been patched months earlier following WannaCry, yet many organizations had not applied the updates.",
+      "Network segmentation significantly limits blast radius. Flat networks allowed the malware to propagate quickly, while better‑segmented environments slowed or contained the attack.",
+      "Backups must be isolated from production networks to remain useful during destructive attacks.",
+      "Strong credential hygiene and monitoring reduce the impact of credential theft during lateral movement.",
+      "Ransomware-like attacks may not be financially motivated; disruption itself can be the goal."
+    ],
+    "reflection": "This case is a useful reminder that cyber operations can be driven by geopolitical objectives and can create effects far beyond ordinary criminal activity. It shows how supply-chain compromise, credential theft, lateral movement, and destructive impact can combine into large-scale operational damage.\n\nIt is also a strong case for framework-based analysis. The attack maps clearly to ATT&CK and D3FEND, which makes it easier to explain both how the operation worked and where defenders could have reduced the blast radius.",
+    "references": [
+      {
+        "label": "The Loop: NotPetya, Ukraine, and the Limits of Economic Impact",
+        "url": "https://theloop.ecpr.eu/notpetya-ukraine-and-the-limits-of-economic-impact-from-cyber-attacks/"
+      },
+      {
+        "label": "MITRE ATT&CK: NotPetya (S0368)",
+        "url": "https://attack.mitre.org/software/S0368/"
+      },
+      {
+        "label": "2017 Ukraine ransomware attacks (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/2017_Ukraine_ransomware_attacks"
+      },
+      {
+        "label": "MITRE D3FEND Framework",
+        "url": "https://d3fend.mitre.org/"
+      },
+      {
+        "label": "CrowdStrike Analysis: PetrWrap / NotPetya",
+        "url": "https://www.crowdstrike.com/en-us/blog/petrwrap-ransomware-technical-analysis-triple-threat-file-encryption-mft-encryption-credential-theft/"
+      }
+    ],
+    "defensive_mapping": "_Scope note: The following is a non-exhaustive, conceptual mapping of defensive approaches to observed techniques; it is not prescriptive._\n\n- Valid Accounts: Local Accounts [T1078.003]\n\n  - Hardening: Agent Authentication, Change Default Password\n  - Detection: Local Account Monitoring\n  - Isolation: User Account Permissions\n  - Eviction: Account Locking\n  - Restoration: Restore User Account Access, Unlock Account\n  - Modeling: Access Modeling\n\n- Scheduled Task/Job: Scheduled Task [T1053.005]\n\n  - Detection: Process Spawn Analysis, System Call Analysis, Process Self-Modification Detection, System Daemon Monitoring, Scheduled Job Analysis, Process Lineage Analysis\n  - Isolation: Application-based Process Isolation, Hardware-based Process Isolation, Kernel-based Process Isolation, Executable Allowlisting, Executable Denylisting, System Call Filtering\n  - Eviction: Process Termination, Process Suspension, Host Shutdown, Host Reboot\n\n- Windows Management Instrumentation [T1047]\n\n  - Detection: Protocol Metadata Anomaly Detection, Remote Terminal Session Detection, Network Traffic Community Deviation, System Call Analysis, Process Spawn Analysis, Administrative Network Activity Analysis, Network Traffic Signature Analysis, Per Host Download-Upload Ratio Analysis, Client-server Payload Profiling, User Geolocation Logon Pattern Analysis, Connection Attempt Analysis\n  - Isolation: Executable Denylisting, Executable Allowlisting, System Call Filtering, Network Traffic Filtering, Hardware-based Process Isolation\n\n- Scheduled Task/Job: Scheduled Task [T1053.005]\n\n  - Detection: Process Spawn Analysis, System Call Analysis, Process Self-Modification Detection, System Daemon Monitoring, Scheduled Job Analysis, Process Lineage Analysis\n  - Isolation: Application-based Process Isolation, Hardware-based Process Isolation, Kernel-based Process Isolation, Executable Allowlisting, Executable Denylisting, System Call Filtering\n  - Eviction: Process Termination, Process Suspension, Host Shutdown, Host Reboot\n\n- Masquerading [T1036]\n\n  - Hardening: File Encryption\n  - Detection: Emulated File Analysis, Dynamic Analysis, System Call Analysis, File Integrity Monitoring, File Analysis, Scheduled Job Analysis\n  - Isolation: Content Quarantine, Content Modification, Executable Denylisting, Executable Allowlisting, Local File Permissions, System Call Filtering, Content Filtering, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- System Binary Proxy Execution: Rundll32 [T1218.011]\n\n  - Hardening: File Encryption\n  - Detection: File Integrity Monitoring, Process Spawn Analysis, System Call Analysis, File Analysis\n  - Isolation: Hardware-based Process Isolation, Executable Allowlisting, Executable Denylisting, Content Modification, Content Quarantine, System Call Filtering, Content Filtering, Local File Permissions, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- OS Credential Dumping: LSASS Memory [T1003.001]\n\n  - Detection: Process Spawn Analysis, Process Self-Modification Detection, Process Lineage Analysis\n  - Isolation: System Call Filtering, Hardware-based Process Isolation, Application-based Process Isolation, Kernel-based Process Isolation, Web Session Access Mediation\n  - Eviction: Process Termination, Process Suspension, Host Shutdown, Host Reboot\n\n- File and Directory Discovery [T1083]\n\n  - Hardening: File Encryption\n  - Detection: File Integrity Monitoring, File Analysis\n  - Isolation: Content Quarantine, Content Modification, Local File Permissions, Remote File Access Mediation, Content Filtering\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- Software Discovery: Security Software Discovery [T1518.001]\n\n  - Detection: System Call Analysis\n  - Isolation: Content Quarantine, System Call FIltering\n  - Restoration: Restore Configuration\n  - Modeling: Configuration Inventory\n\n- Exploitation of Remote Services [T1210]\n\n  - Hardening: Process Segment Execution Prevention, Segment Address Offset Randomization, Stack Frame Canary Validation\n  - Detection: Per Host Download-Upload Ratio Analysis, Protocol Metadata Anomaly Detection, Client-server Payload Profiling, Connection Attempt Analysis, Network Traffic Community Deviation, Remote Terminal Session Detection, Network Traffic Signature Analysis, Process Code Segment Verification, User Geolocation Logon Pattern Analysis, Shadow Stack Comparisons, Memory Boundary Tracking\n  - Isolation: Network Traffic Filtering\n\n- Remote Services: SMB/Windows Admin Shares [T1021.002]\n  - Detection: Client-server Payload Profiling, Connection Attempt Analysis, Network Traffic Community Deviation, Per Host Download-Upload Ratio Analysis, Protocol Metadata Anomaly Detection, Remote Terminal Session Detection, Network Traffic Signature Analysis, User Geolocation Logon Pattern Analysis\n  - Isolation: Network Traffic Filtering\n\nATT&CK techniques without direct D3FEND mappings have been excluded",
+    "atlas_mapping": {
+      "summary": "ATLAS does not apply to this incident."
+    },
+    "indicators": {
+      "items": [
+        "The file **C:\\windows\\perfc.dat** contains the malware itself",
+        "NotPetya would also decompresses its resource named 0x3 of type RT_RCDATA, and writes the contents to **C:\\Windows\\dllhost.dat**",
+        "Remote command execution through network share (SMB)",
+        "Scheduled Task to reboot the system",
+        "Disk encryption and the fake ransom note clearly indicate compromise, though by that stage the system is already unrecoverable"
+      ],
+      "summary": "The following indicators include both technical artifacts and high-level behavioral indicators observed during infection."
+    }
+  }
+}

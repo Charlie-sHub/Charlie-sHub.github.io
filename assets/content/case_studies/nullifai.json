@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "type": "case_study",
+    "slug": "nullifai",
+    "source_path": "security/case_studies/nullifai_case_study.md",
+    "incident_code": "AML.CS0031"
+  },
+  "content": {
+    "title": "nullifAI [AML.CS0031]",
+    "summary": "In early 2025, ReversingLabs discovered malicious repositories hosted on the Hugging Face platform. Hugging Face is widely used for sharing machine-learning artifacts, many of which rely on Pickle, a Python serialization format that can execute arbitrary code during deserialization. The platform had security controls in place to scan, flag, and remove malicious Pickle files, but in this case those controls were bypassed through a technique that exploited weaknesses in both Pickle and the Picklescan tool used for scanning.\n\nThe discovery was made in early 2025, but the repositories in question had been set up roughly a year earlier. The actual impact is unclear because there is no reliable count of how many users downloaded and executed the malicious files. After disclosure, Hugging Face removed the repositories and patched Picklescan to identify threats even in intentionally broken Pickle files.\n\nWhile the incident took place in the context of an ML platform, it more closely aligns with a traditional supply chain attack, as AI was not directly involved in execution; instead, the platform acted as an attack surface rather than a target.",
+    "incident_overview": "In early 2024 the repositories \"glockr1/ballr7\" and \"who-r-u0000/0000000000000000000000000000000000000\" were set up. These contained Pickle files with malicious code that was not flagged as unsafe by Hugging Face and so stayed on the platform as legitimate repositories. The attack took advantage of the fact that Picklescan required a full deserialization of a file before scanning it, and the scan only checked for dangerous functions described in its blacklist.\n\nThe malicious code executed during deserialization, then intentionally caused the file to break so that decompilation and scanning could not complete. That behavior bypassed Hugging Face's security control. The payload then launched a platform-aware remote shell connected to a hardcoded IP address, giving the attacker command-and-control capability on the victim system.\n\nThere's no way to know exactly how many users fell victim to this attack during the time the repositories remained on the platform. In early 2025 researchers at ReversingLabs discovered these repositories and quickly informed Hugging Face's security team of their findings and the techniques used to bypass platform security controls.\n\nHugging Face removed the repositories and patched Picklescan to catch this kind of attack in the future. However, Pickle files remain fundamentally unsafe because they allow arbitrary code execution, and there may be other attack paths that Picklescan still cannot detect.",
+    "adversary_objectives": "There is no confirmed attribution or evidence of a specific targeting strategy. Hypothetical adversary objectives include achieving initial access to user systems through poisoned ML artifacts, potentially enabling follow-on activity such as credential access, information theft, or botnet-style exploitation.",
+    "attack_mapping": {
+      "tactics": [
+        "Resource Development [TA0042]",
+        "Initial Access [TA0001]",
+        "Defense Evasion [TA0005]",
+        "Execution [TA0002]",
+        "Command and Control [TA0011]"
+      ],
+      "techniques": [
+        "**Resource Development**: Malware [T1587.001]",
+        "**Initial Access**: Compromise Software Supply Chain [T1195.002]",
+        "**Execution**: Python [T1059.006], Indirect Command Execution [T1202], User Execution [T1204]",
+        "**Defense Evasion**: Obfuscated/Compressed Files and Information [T1027], Masquerading [T1036]",
+        "**Command and Control**: Application Layer Protocol [T1071]"
+      ],
+      "procedure_examples": [
+        "The threat actors crafted Malware [T1587.001] in the form of Pickle/PyTorch model artifacts with embedded Python payloads.",
+        "Hugging Face acts as a trusted third-party artifact repository. Access to victims’ systems was achieved with a Compromise Software Supply Chain [T1195.002] when users downloaded the poisoned model.",
+        "The malware was designed to execute Python [T1059.006] code then fail deserialization as users downloaded and ran the file, in other words Indirect Command Execution [T1202] took place as User Execution [T1204].",
+        "Masquerading [T1036] took place as the malware appeared as a legitimate ML model.",
+        "Application Layer Protocol [T1071] was used to establish the remote shell connection."
+      ]
+    },
+    "defensive_analysis": "The clearest defensive weakness in this case sits at the combination of unsafe artifact behavior and incomplete scanning design. Pickle already carries inherent risk because it allows arbitrary code execution during deserialization. In this specific incident, Picklescan made the problem worse by requiring full deserialization before scanning for dangerous behavior. The attackers then crafted files that executed code first and broke afterward, which prevented the scan from completing and bypassed the control entirely. Picklescan also depended on a blacklist of dangerous functions, which is a limited and brittle way to deal with evolving threats.\n\nHugging Face's response was stronger. The repositories were removed quickly after disclosure, and Picklescan was updated to detect threats even in intentionally broken files.",
+    "lessons_learned": [
+      "Users and organizations need to be wary even of open collaboration platforms, a zero-trust approach must be the default.",
+      "The inherent risks that come with certain technologies must be researched and acknowledged.",
+      "Security must be designed and implemented from the start to minimize the chances of attackers abusing vulnerabilities, like the ones in Pickle files and the Picklescan tool.",
+      "New technology brings new possibilities but also increases in attack surface and other security challenges."
+    ],
+    "reflection": "This case is useful because it shows how an unsafe default and an incomplete defensive assumption can combine into a straightforward bypass. A security control that only acts after dangerous behavior has already occurred is not a reliable boundary.\n\nIt also reinforces a broader point: attackers are quick to adopt new platforms and formats when those systems create fresh opportunities for initial access or remote execution.",
+    "references": [
+      {
+        "label": "Malicious Models on Hugging Face (CS0031)",
+        "url": "https://atlas.mitre.org/studies/AML.CS0031"
+      },
+      {
+        "label": "Case Studies | MITRE ATLAS™",
+        "url": "https://cdn.lawreportgroup.com/acuris/files/ACR-New/AI%20Incidents%20MITRE%20Case%20Studies.pdf"
+      },
+      {
+        "label": "Malicious ML models discovered on Hugging Face platform",
+        "url": "https://www.reversinglabs.com/blog/rl-identifies-malware-ml-model-hosted-on-hugging-face"
+      },
+      {
+        "label": "Malicious AI Models on Hugging Face Exploit Novel Attack Technique",
+        "url": "https://www.infosecurity-magazine.com/news/malicious-ai-models-hugging-face/"
+      },
+      {
+        "label": "Malicious ML Models on Hugging Face Leverage Broken Pickle Format to Evade Detection",
+        "url": "https://thehackernews.com/2025/02/malicious-ml-models-found-on-hugging.html"
+      }
+    ],
+    "defensive_mapping": "_Scope note: The following is a non-exhaustive, conceptual mapping of defensive approaches to observed techniques; it is not prescriptive._\n\n- Compromise Software Supply Chain [T1195.002]\n\n  - Hardening: Software Update\n  - Modelling: Software Inventory, Asset Vulnerability Enumeration\n  - Restoration: Restore Software\n\n- Python [T1059.006]\n\n  - Hardening: File Encryption\n  - Detection: Dynamic Analysis, Emulated File Analysis, File Integrity Monitoring, File Analysis\n  - Isolation: Content Modification, Content Quarantine, Executable Allowlisting, Executable Denylisting, Local File Permissions, Content Filtering, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- User Execution [T1204]\n\n  - Hardening: File Encryption\n  - Detection: Outbound Internet Web Traffic, Emulated File Analysis, Dynamic Analysis, Remote Terminal Session Detection, Network Traffic Signature Analysis, Per Host Download-Upload Ratio Analysis, Relay Pattern Analysis, Network Traffic Community Deviation, Client-server Payload Profiling, Protocol Metadata Anomaly Detection, Homoglyph Detection, Identifier Activity Analysis, User Geolocation Logon Pattern Analysis, URL Analysis, File Integrity Monitoring, File Analysis, URL Reputation Analysis\n  - Isolation: Executable Denylisting, Executable Allowlisting, Network Traffic Filtering, Local File Permissions, Content Quarantine, Content Modification, Content Filtering, Remote File Access Mediation, Outbound Traffic Filtering\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- Obfuscated/Compressed Files and Information [T1027]\n\n  - Hardening: File Encryption\n  - Detection: Dynamic Analysis, Emulated File Analysis, File Integrity Monitoring, File Analysis\n  - Isolation: Content Quarantine, Content Modification, Executable Denylisting, Executable Allowlisting, Local File Permissions, Content Filtering, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- Masquerading [T1036]\n\n  - Hardening: File Encryption\n  - Detection: Emulated File Analysis, Dynamic Analysis, System Call Analysis, File Integrity Monitoring, File Analysis, Scheduled Job Analysis\n  - Isolation: Content Quarantine, Content Modification, Executable Denylisting, Executable Allowlisting, Local File Permissions, System Call Filtering, Content Filtering, Remote File Access Mediation\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File\n\n- Application Layer Protocol [T1071]\n\n  - Hardening: File Encryption\n  - Detection: Relay Pattern Analysis, Client-server Payload Profiling, Per Host Download-Upload Ratio Analysis, Network Traffic Community Deviation, Certificate Analysis, Remote Terminal Session Detection, DNS Traffic Analysis, Protocol Metadata Anomaly Detection, File Carving, Network Traffic Signature Analysis, User Geolocation Logon Pattern Analysis\n  - Isolation: Content Quarantine, Content Modification, Network Traffic Filtering, DNS Denylisting, DNS Allowlisting, Local File Permissions, Content Filtering, Outbound Traffic Filtering\n  - Deception: Decoy File\n  - Eviction: File Eviction\n  - Restoration: Restore File",
+    "atlas_mapping": {
+      "summary": "Although this attack did not target model behavior or ML decision-making directly, it did occur within the AI supply chain and is therefore relevant to MITRE ATLAS. ATLAS helps categorize the artifact-distribution side of the incident, while ATT&CK and D3FEND remain more useful for the execution, evasion, and command-and-control details.",
+      "tactics_and_techniques": [
+        "AI Attack Staging [AML.TA0001] - Manipulate AI Model: Embed Malware [AML.T0018.002]",
+        "Resource Development [AML.TA0003] - Publish Poisoned Models [AML.T0058]",
+        "Defense Evasion [AML.TA0007] - Corrupt AI Model [AML.T0076]",
+        "Initial Access [AML.TA0004] - AI Supply Chain Compromise [AML.T0010]",
+        "Execution [AML.TA0005] - User Execution: Unsafe AI Artifacts [AML.T0011.000]",
+        "Command and Control [AML.TA0011] - Reverse Shell [AML.T0072]"
+      ]
+    },
+    "indicators": {
+      "items": [
+        "Two Repositories containing malicious files were identified:",
+        "glockr1/ballr7",
+        "PyTorch file's SHA1: 1733506c584dd6801accf7f58dc92a4a1285db1f",
+        "Pickle file's SHA1: 79601f536b1b351c695507bf37236139f42201b0",
+        "who-r-u0000/0000000000000000000000000000000000000",
+        "PyTorch file's SHA1: 0dcc38fc90eca38810805bb03b9f6bb44945bbc0",
+        "Pickle file's SHA1: 85c898c5db096635a21a9e8b5be0a58648205b47",
+        "Hardcoded IP address in the python script: 107.173.7.141"
+      ],
+      "summary": "The following indicators were identified through public reporting."
+    }
+  }
+}

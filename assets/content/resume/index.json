@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "slug": "resume",
+      "title": "Resume",
+      "file": "resume.json",
+      "source_path": "sources_of_truth/master_resume.md"
+    }
+  ]
+}

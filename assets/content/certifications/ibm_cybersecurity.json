@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "type": "certificate",
+    "slug": "ibm_cybersecurity",
+    "source_path": "security/certifications/ibm/ibm_cybersecurity.md",
+    "earned_date": "2025-12"
+  },
+  "content": {
+    "title": "IBM Cybersecurity Analyst Professional Certificate",
+    "summary": "The IBM Cybersecurity Analyst Professional Certificate is a beginner-friendly program covering security foundations, operating systems, networks, databases, architecture, compliance, incident response, penetration testing, AI in security, and career preparation. It combines theory with labs and tool-based practice.",
+    "badgeImagePath": null,
+    "certificatePdfPath": "assets/documents/certifications/ibm_cybersecurity_analyst.pdf",
+    "credential_details": {
+      "issuer": "IBM",
+      "platform": "Coursera",
+      "credential_type": "professional certificate",
+      "level": "beginner with intermediate tool and framework exposure",
+      "program_size": "14 courses",
+      "update_note": "2025"
+    },
+    "knowledge_areas": [
+      "Cybersecurity careers and role paths.",
+      "Core cybersecurity principles, including common threats, authentication, encryption, and defense in depth.",
+      "Security tools and common cyberattacks.",
+      "Operating system administration and security across Windows, Linux, and macOS.",
+      "Computer networks and network security.",
+      "Database essentials, vulnerabilities, and SQL-related risk.",
+      "Cybersecurity architecture and secure design.",
+      "Compliance frameworks, standards, regulations, and audit concepts.",
+      "Penetration testing, threat hunting, and cryptography.",
+      "Incident response and digital forensics.",
+      "Case-study analysis and capstone-style breach review.",
+      "Security+ and CySA+ preparation.",
+      "Generative AI for cybersecurity workflows.",
+      "Job-search and career-development preparation."
+    ],
+    "learning_outcomes": [
+      "Understand and apply widely used security principles and frameworks across operations, architecture, and governance.",
+      "Configure and harden systems and networks against common threats.",
+      "Detect, investigate, and respond to incidents using structured workflows and real tools.",
+      "Perform or support vulnerability assessment, penetration testing, and forensic analysis tasks.",
+      "Connect technical controls to compliance, audit, and business-risk requirements."
+    ],
+    "tools_and_frameworks": [
+      "Tools and lab environments: IBM QRadar, OWASP ZAP, Linux administration labs, network simulation labs, SQL injection labs, and forensics workflows.",
+      "Core frameworks and concepts: CIA triad, NIST CSF, MITRE ATT&CK, CIS Controls v8, Zero Trust, ISO 27001, NIST RMF, GDPR, PCI DSS, COBIT, and NIST AI RMF.",
+      "Output types mentioned in the source: audit templates, risk registers, secure architecture blueprints, penetration-test reports, forensic investigation logs, and AI-assisted threat-hunting workflows."
+    ],
+    "proof": [
+      {
+        "label": "Credly badge: IBM Cybersecurity Analyst Professional Certificate",
+        "url": "https://www.credly.com/badges/0e48b15c-5dd7-40b1-b88a-5ddfdbea9701"
+      }
+    ]
+  }
+}

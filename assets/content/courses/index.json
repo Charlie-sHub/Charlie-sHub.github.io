@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "slug": "google_networking",
+      "title": "The Bits and Bytes of Computer Networking",
+      "file": "google_networking.json",
+      "source_path": "knowledge/courses/google_networking.md"
+    }
+  ]
+}
