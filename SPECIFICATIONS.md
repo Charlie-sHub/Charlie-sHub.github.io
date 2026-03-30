@@ -311,14 +311,30 @@ Preferred implementation direction:
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
 
-### 11.6 Theme and configuration direction
+### 11.6 Testing direction
+Meaningful automated testing is part of the repository's engineering standard. Validation, content loading, state handling, and important presentation behavior should ship with automated coverage rather than be left as optional cleanup.
+
+Layer expectations:
+- `domain`: test validation rules, `dartz`-based value objects, entity construction from validated values, and edge cases around required fields, formats, ranges, and other normalization decisions
+- `data`: test DTO deserialization, raw JSON parsing, content and asset loading behavior, and failure cases such as missing fields, malformed values, missing assets, or unsupported shapes
+- `application`: test `Cubit` behavior through observable state transitions, especially `ContentCubit` loading, success, degraded, and failure paths, and any `ThemeCubit` behavior that materially changes presentation
+- `presentation`: use widget tests for meaningful behavior such as conditional rendering, content-driven UI behavior, and fallback or degraded states; avoid trivial render-only tests
+
+Testing guidance:
+- exercise the DTO-to-domain validation boundary directly so invalid content is rejected predictably before entering trusted app state
+- treat malformed or invalid content as a first-class test target
+- test failure paths and fallback UI behavior where the app is expected to degrade gracefully
+- cover the content-loading paths that determine whether entries under `assets/content/` are surfaced, rejected, or shown with fallback handling
+- prefer tests that verify important logic and important UI behavior over exhaustive tests for every small widget
+
+### 11.7 Theme and configuration direction
 Theme-related files should live under `lib/presentation/theme/`.
 
 Centralize colors, typography assignments, theme tokens, light/dark values, and blur or transparency tuning there or in closely related configuration so visual refinement does not require scattered edits.
 
 Aim for practical flexibility, not an overengineered design system.
 
-### 11.7 External dependencies
+### 11.8 External dependencies
 External dependencies should be chosen carefully.
 
 Avoid:
