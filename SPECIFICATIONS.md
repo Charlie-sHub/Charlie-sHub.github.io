@@ -44,6 +44,14 @@ Some parts are intentionally still open:
 
 This document should evolve as those decisions become concrete.
 
+### 2.1 Decision status model
+
+When this specification uses terms such as established, provisional, or open, interpret them as follows during implementation:
+
+- established: current project direction or constraint; implement against it unless the specification is updated
+- provisional: current preferred direction; implement in a way that fits it while keeping the result easy to revise
+- open: not yet decided; do not resolve it implicitly through implementation when doing so would materially shape UX, UI, schema, or architecture
+
 ---
 
 ## 3. High-level objectives
@@ -376,6 +384,13 @@ Theme-related files should live under `lib/presentation/theme/`.
 
 Centralize colors, typography assignments, theme tokens, light/dark values, and blur or transparency tuning there or in closely related configuration so visual refinement does not require scattered edits.
 
+UI code should avoid scattered literal styling values where practical. Prefer theme tokens, shared spacing constants, shared typography assignments, and shared container or card treatments so visual refinement stays centralized and easy to revise.
+
+Avoid:
+- repeated magic numbers for spacing, radius, opacity, blur, or similar visual tuning
+- one-off color values that bypass the theme or configuration layer
+- ad hoc visual fixes that solve a local issue by creating a separate styling path
+
 Aim for practical flexibility, not an overengineered design system.
 
 ### 11.8 External dependencies
@@ -433,6 +448,8 @@ Start with a clean structural base, then refine interaction patterns where the b
 
 > Current UI direction is provisional and subject to refinement during implementation.
 
+### 13.1 Visual direction
+
 The intended visual direction is minimalist, elegant, and deliberate.
 
 Preferred characteristics:
@@ -461,6 +478,63 @@ Avoid:
 - blur, transparency, or imagery that reduce readability or scannability
 
 The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Exact palette values, typography settings, and effect intensity remain subject to refinement.
+
+### 13.2 AI-generated UI constraints
+
+AI may generate Flutter UI code for this project under the same review and maintainability expectations described in the AI-assisted development policy.
+
+AI is an implementation accelerator, not the authority on project direction.
+
+AI may:
+- implement already-defined requirements
+- assemble pages from approved patterns
+- refactor UI code toward existing patterns
+- build simple placeholder implementations where the structure is already clear
+
+AI must not, without explicit approval:
+- invent a new visual language
+- introduce a new navigation model
+- introduce a major interaction pattern
+- make animation-heavy behavior part of the baseline experience
+- add convenience dependencies with low structural value
+- spread styling decisions across scattered ad hoc values where shared patterns should exist
+- resolve still-open design questions implicitly through implementation
+
+When direction is clear enough to implement, the default should be the smallest clean, centralized, easy-to-revise solution.
+
+### 13.3 Clarification before deciding open UI questions
+
+Clarification is required before implementation when a UI change would materially decide a still-open question such as:
+
+- section order
+- navigation model
+- layout hierarchy
+- visual identity
+- motion behavior
+- filtering or search behavior
+- disclosure or card-detail behavior
+- reusable component families
+- schema-driven presentation rules that affect multiple content types
+
+Those decisions should be surfaced explicitly rather than settled accidentally through code.
+
+### 13.4 Initial UI composition baseline
+
+Initial UI implementation should start from a small reusable UI vocabulary rather than page-specific bespoke layouts.
+
+Directional examples include:
+- app shell
+- section container
+- section heading block
+- proof or project card
+- certification or course card
+- metadata or tag row
+- detail expansion block
+- CTA block
+- resume or download block
+- contact block
+
+These are directional examples rather than final component names. Prefer reusable patterns shared across sections where the underlying structure is similar.
 
 ---
 

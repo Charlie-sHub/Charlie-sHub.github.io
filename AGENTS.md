@@ -44,7 +44,20 @@ Examples of contradiction:
 - the codebase has drifted from documented direction
 - the task would force a decision that the spec still marks as open
 
-If the spec leaves something intentionally open, choose the smallest reasonable and reversible implementation consistent with the current direction.
+If the spec leaves something intentionally open, choose the smallest reasonable and reversible implementation consistent with the current direction only when doing so does not materially decide an open UX, UI, schema, or architecture question.
+
+---
+
+## Before changing UI code
+
+For tasks affecting presentation, layout, navigation, interaction, or styling:
+
+1. Re-read the relevant UX, UI, theme, and AI-assisted sections in `SPECIFICATIONS.md`.
+2. Identify whether the task is implementing an established rule, a provisional preference, or an open decision as defined in `SPECIFICATIONS.md`.
+3. Reuse existing widgets, tokens, and patterns before creating new ones.
+4. Keep style values centralized where practical rather than solving local issues with scattered literals.
+5. Do not treat provisional preferences or open decisions as settled through implementation.
+6. Treat any new reusable pattern, interaction model, or visual treatment as a clarification point and ask first.
 
 ---
 
@@ -58,6 +71,22 @@ If the spec leaves something intentionally open, choose the smallest reasonable 
 - Prefer extending existing patterns already present in the repo over importing a new pattern casually.
 
 If a requested change would materially alter project direction, architecture, scope, or documentation policy, surface that first instead of quietly implementing it.
+
+---
+
+## Implementation vs proposal rule
+
+Before changing code, determine whether the task is:
+- implementing existing documented direction
+- proposing a new direction not yet documented
+
+Use the decision status model in `SPECIFICATIONS.md` when making that distinction.
+
+If the task is implementing existing direction, proceed with the smallest clear change consistent with the spec and current code patterns.
+
+If the task is proposing a new direction, or would materially settle an open or provisional point, surface that explicitly and ask before locking it in through code.
+
+Do not hide new project direction inside generated implementation.
 
 ---
 
@@ -79,6 +108,14 @@ Avoid:
 - sensitive details better kept outside the repo
 
 Do not drift into a stronger security identity than the documented evidence supports.
+
+### Portfolio framing guardrail
+
+For generated public-facing UI copy such as labels, summaries, and section descriptions:
+- keep development as the base
+- frame security as a real direction of growth, not a completed transformation
+- avoid inflated cybersecurity claims
+- prefer evidence-backed, restrained wording over branding-heavy language
 
 ---
 
@@ -112,6 +149,23 @@ If clarification is not strictly required, proceed with the least risky interpre
 
 ---
 
+## UI ambiguity rules
+
+For UI-related tasks, follow the decision status model in `SPECIFICATIONS.md` and ask for clarification before implementing if any of these are materially unclear:
+- page structure
+- section order
+- navigation pattern
+- disclosure pattern
+- whether a new component family is needed
+- visual hierarchy
+- motion or animation behavior
+- mobile-versus-desktop layout differences
+- whether a styling choice is local or project-wide
+
+Vague aesthetic language alone is not sufficient design direction.
+
+---
+
 ## Quality bar for changes
 
 Every change should aim to be:
@@ -123,6 +177,31 @@ Every change should aim to be:
 
 AI assistance is allowed, but do not treat generated output as correct by default.
 Committed changes should be understandable and reviewable by a human.
+
+---
+
+## Generated UI code quality rules
+
+Generated UI code should:
+- stay readable and reviewable
+- prefer small purpose-driven widgets over large monolithic build methods
+- avoid speculative abstraction
+- avoid duplicated styling logic where practical
+- preserve explicit content-to-UI flow
+- remain easy to test where behavior matters
+
+Generated UI should not:
+- add dependencies for superficial convenience
+- hardcode broad project-wide decisions into one page implementation
+- couple raw asset data directly to rendering in ways that bypass the intended validation flow
+
+---
+
+## Closing open decisions
+
+If an approved change resolves an open or provisional direction in `SPECIFICATIONS.md`, update the specification in the same change when appropriate.
+
+Do not leave a durable project decision living only in generated implementation.
 
 ---
 
