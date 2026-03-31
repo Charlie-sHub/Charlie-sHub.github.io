@@ -7,11 +7,48 @@
   "$defs": {
     "year_month": {
       "type": "string",
+      "minLength": 7,
+      "maxLength": 7,
       "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "slug_string": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "source_path_string": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "title_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\r\n]+$"
+    },
+    "line_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "long_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12000
+    },
+    "url_string": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "pattern": "^[^\r\n]+$"
     },
     "document_asset_path": {
       "type": "string",
-      "pattern": "^assets/documents/.+"
+      "maxLength": 160,
+      "pattern": "^assets/documents/[^\\r\\n]+$"
     },
     "nullable_document_asset_path": {
       "anyOf": [
@@ -25,11 +62,8 @@
       "required": ["type", "slug", "source_path"],
       "properties": {
         "type": { "const": "resume" },
-        "slug": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
-        },
-        "source_path": { "type": "string", "minLength": 1 }
+        "slug": { "$ref": "#/$defs/slug_string" },
+        "source_path": { "$ref": "#/$defs/source_path_string" }
       }
     },
     "link": {
@@ -37,8 +71,8 @@
       "additionalProperties": false,
       "required": ["label", "url"],
       "properties": {
-        "label": { "type": "string", "minLength": 1 },
-        "url": { "type": "string", "format": "uri" }
+        "label": { "$ref": "#/$defs/line_text" },
+        "url": { "$ref": "#/$defs/url_string" }
       }
     },
     "skill_group": {
@@ -46,11 +80,11 @@
       "additionalProperties": false,
       "required": ["label", "items"],
       "properties": {
-        "label": { "type": "string", "minLength": 1 },
+        "label": { "$ref": "#/$defs/line_text" },
         "items": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/line_text" }
         }
       }
     },
@@ -59,9 +93,9 @@
       "additionalProperties": false,
       "required": ["title", "location", "start_date", "end_date", "is_ongoing", "highlights"],
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "organization": { "type": "string", "minLength": 1 },
-        "location": { "type": "string", "minLength": 1 },
+        "title": { "$ref": "#/$defs/title_text" },
+        "organization": { "$ref": "#/$defs/line_text" },
+        "location": { "$ref": "#/$defs/line_text" },
         "start_date": { "$ref": "#/$defs/year_month" },
         "end_date": {
           "anyOf": [
@@ -73,7 +107,7 @@
         "highlights": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/long_text" }
         }
       }
     },
@@ -82,9 +116,9 @@
       "additionalProperties": false,
       "required": ["title", "institution", "location", "start_date", "end_date"],
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "institution": { "type": "string", "minLength": 1 },
-        "location": { "type": "string", "minLength": 1 },
+        "title": { "$ref": "#/$defs/title_text" },
+        "institution": { "$ref": "#/$defs/line_text" },
+        "location": { "$ref": "#/$defs/line_text" },
         "start_date": { "$ref": "#/$defs/year_month" },
         "end_date": { "$ref": "#/$defs/year_month" }
       }
@@ -94,8 +128,8 @@
       "additionalProperties": false,
       "required": ["language", "proficiency"],
       "properties": {
-        "language": { "type": "string", "minLength": 1 },
-        "proficiency": { "type": "string", "minLength": 1 }
+        "language": { "$ref": "#/$defs/line_text" },
+        "proficiency": { "$ref": "#/$defs/line_text" }
       }
     }
   },
@@ -115,9 +149,9 @@
         "languages"
       ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "location": { "type": "string", "minLength": 1 },
-        "summary": { "type": "string", "minLength": 1 },
+        "name": { "$ref": "#/$defs/line_text" },
+        "location": { "$ref": "#/$defs/line_text" },
+        "summary": { "$ref": "#/$defs/long_text" },
         "resumePdfPath": { "$ref": "#/$defs/nullable_document_asset_path" },
         "contact_links": {
           "type": "array",

@@ -1,0 +1,35 @@
+import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  group(
+    'ResumeLanguageItem',
+    () {
+      test(
+        'is valid with language and proficiency',
+        () {
+          final item = ResumeLanguageItem(
+            language: SingleLineText('English'),
+            proficiency: SingleLineText('C2'),
+          );
+
+          expect(item.isValid, isTrue);
+        },
+      );
+
+      test(
+        'is invalid when proficiency is invalid',
+        () {
+          final item = ResumeLanguageItem(
+            language: SingleLineText('English'),
+            proficiency: SingleLineText('   '),
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
+    },
+  );
+}

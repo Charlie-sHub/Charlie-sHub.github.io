@@ -5,17 +5,42 @@
   "additionalProperties": false,
   "required": ["meta", "content"],
   "$defs": {
+    "slug_string": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "source_path_string": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "title_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\r\n]+$"
+    },
+    "line_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "long_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12000
+    },
     "meta": {
       "type": "object",
       "additionalProperties": false,
       "required": ["type", "slug", "source_path"],
       "properties": {
         "type": { "const": "about_me" },
-        "slug": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
-        },
-        "source_path": { "type": "string", "minLength": 1 }
+        "slug": { "$ref": "#/$defs/slug_string" },
+        "source_path": { "$ref": "#/$defs/source_path_string" }
       }
     },
     "skill_group": {
@@ -23,11 +48,11 @@
       "additionalProperties": false,
       "required": ["label", "items"],
       "properties": {
-        "label": { "type": "string", "minLength": 1 },
+        "label": { "$ref": "#/$defs/line_text" },
         "items": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/line_text" }
         }
       }
     }
@@ -49,23 +74,25 @@
         "how_development_and_security_connect"
       ],
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "who_i_am_professionally": { "type": "string", "minLength": 1 },
-        "current_positioning": { "type": "string", "minLength": 1 },
-        "development_background": { "type": "string", "minLength": 1 },
-        "security_direction": { "type": "string", "minLength": 1 },
+        "title": { "$ref": "#/$defs/title_text" },
+        "who_i_am_professionally": { "$ref": "#/$defs/long_text" },
+        "current_positioning": { "$ref": "#/$defs/long_text" },
+        "development_background": { "$ref": "#/$defs/long_text" },
+        "security_direction": { "$ref": "#/$defs/long_text" },
         "strengths_and_working_style": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/long_text" }
         },
         "selected_skills_and_tools": {
           "type": "array",
           "minItems": 1,
           "items": { "$ref": "#/$defs/skill_group" }
         },
-        "how_i_build_software": { "type": "string", "minLength": 1 },
-        "how_development_and_security_connect": { "type": "string", "minLength": 1 }
+        "how_i_build_software": { "$ref": "#/$defs/long_text" },
+        "how_development_and_security_connect": {
+          "$ref": "#/$defs/long_text"
+        }
       }
     }
   }

@@ -7,15 +7,53 @@
   "$defs": {
     "year_month": {
       "type": "string",
+      "minLength": 7,
+      "maxLength": 7,
       "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "slug_string": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "source_path_string": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "title_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\r\n]+$"
+    },
+    "line_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[^\r\n]+$"
+    },
+    "long_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12000
+    },
+    "url_string": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "pattern": "^[^\r\n]+$"
     },
     "media_asset_path": {
       "type": "string",
-      "pattern": "^assets/media/.+"
+      "maxLength": 160,
+      "pattern": "^assets/media/[^\\r\\n]+$"
     },
     "document_asset_path": {
       "type": "string",
-      "pattern": "^assets/documents/.+"
+      "maxLength": 160,
+      "pattern": "^assets/documents/[^\\r\\n]+$"
     },
     "nullable_media_asset_path": {
       "anyOf": [
@@ -35,11 +73,8 @@
       "required": ["type", "slug", "source_path", "earned_date"],
       "properties": {
         "type": { "const": "certificate" },
-        "slug": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
-        },
-        "source_path": { "type": "string", "minLength": 1 },
+        "slug": { "$ref": "#/$defs/slug_string" },
+        "source_path": { "$ref": "#/$defs/source_path_string" },
         "earned_date": { "$ref": "#/$defs/year_month" }
       }
     },
@@ -48,8 +83,8 @@
       "additionalProperties": false,
       "required": ["label", "url"],
       "properties": {
-        "label": { "type": "string", "minLength": 1 },
-        "url": { "type": "string", "format": "uri" }
+        "label": { "$ref": "#/$defs/line_text" },
+        "url": { "$ref": "#/$defs/url_string" }
       }
     }
   },
@@ -66,8 +101,8 @@
         "learning_outcomes"
       ],
       "properties": {
-        "title": { "type": "string", "minLength": 1 },
-        "summary": { "type": "string", "minLength": 1 },
+        "title": { "$ref": "#/$defs/title_text" },
+        "summary": { "$ref": "#/$defs/long_text" },
         "badgeImagePath": { "$ref": "#/$defs/nullable_media_asset_path" },
         "certificatePdfPath": { "$ref": "#/$defs/nullable_document_asset_path" },
         "credential_details": {
@@ -75,32 +110,32 @@
           "additionalProperties": false,
           "required": ["issuer", "credential_type", "level"],
           "properties": {
-            "issuer": { "type": "string", "minLength": 1 },
-            "platform": { "type": "string", "minLength": 1 },
-            "credential_type": { "type": "string", "minLength": 1 },
-            "level": { "type": "string", "minLength": 1 },
-            "program_size": { "type": "string", "minLength": 1 },
-            "program_scope": { "type": "string", "minLength": 1 },
-            "focus": { "type": "string", "minLength": 1 },
-            "version": { "type": "string", "minLength": 1 },
-            "intended_audience": { "type": "string", "minLength": 1 },
-            "update_note": { "type": "string", "minLength": 1 }
+            "issuer": { "$ref": "#/$defs/line_text" },
+            "platform": { "$ref": "#/$defs/line_text" },
+            "credential_type": { "$ref": "#/$defs/line_text" },
+            "level": { "$ref": "#/$defs/line_text" },
+            "program_size": { "$ref": "#/$defs/line_text" },
+            "program_scope": { "$ref": "#/$defs/line_text" },
+            "focus": { "$ref": "#/$defs/line_text" },
+            "version": { "$ref": "#/$defs/line_text" },
+            "intended_audience": { "$ref": "#/$defs/line_text" },
+            "update_note": { "$ref": "#/$defs/line_text" }
           }
         },
         "knowledge_areas": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/long_text" }
         },
         "tools_and_frameworks": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/long_text" }
         },
         "learning_outcomes": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "$ref": "#/$defs/long_text" }
         },
         "proof": {
           "type": "array",

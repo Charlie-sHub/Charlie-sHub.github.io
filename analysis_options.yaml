@@ -32,6 +32,9 @@ linter:
     avoid_classes_with_only_static_members: true
     prefer_expression_function_bodies: true
 
+formatter:
+  trailing_commas: preserve
+
 coverage:
   ignore:
     - '**/*.config.dart'

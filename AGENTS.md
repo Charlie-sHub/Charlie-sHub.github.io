@@ -74,6 +74,18 @@ If a requested change would materially alter project direction, architecture, sc
 
 ---
 
+## Coding standards
+
+- Use descriptive identifiers. Prefer clear names such as `messageController` over shortened names such as `msgCtrl`.
+- Prefer self-explanatory code. Add comments only when the intent, constraint, or non-obvious logic would not be clear from the code itself.
+- Prefer `if (...) { ... } else { ... }` when it improves clarity. Avoid early-return chains when they make the control flow harder to follow.
+- Use `Option` and `Either` for optional or failure paths where the repository’s existing patterns call for them.
+- Centralize configuration values, constants, enums, and shared tokens. Avoid scattered magic numbers and hardcoded values.
+- Do not place secrets, tokens, or personal data in code, logs, examples, fixtures, or documentation.
+- Use trailing commas consistently where valid and formatter-friendly. Omit them only when the language syntax or tooling would reject them.
+
+---
+
 ## Implementation vs proposal rule
 
 Before changing code, determine whether the task is:

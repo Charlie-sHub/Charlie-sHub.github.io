@@ -354,11 +354,23 @@ Preferred flow:
 
 Preferred implementation direction:
 - DTOs use `freezed` and JSON serialization and handle raw asset deserialization
-- `dartz` at the validation boundary allows domain value objects to represent valid data or failures explicitly
-- entities are composed from validated value objects
-- explicit validation boundary between raw asset data and trusted app data
+- initial domain entities and shared value objects should be informed by the actual schema files under `schemas/`, starting with the smallest durable set the current content structure clearly supports
+- validation rules should stay in centralized pure validators at the DTO-to-domain boundary rather than being scattered through presentation, Cubits, or repositories
+- `dartz` at the validation boundary allows domain value objects to represent valid or invalid data explicitly
+- use value objects where validation or invariant protection adds real value, but avoid deeper domain machinery that does not clearly help static content
+- domain-core implementation may proceed in small staged passes, but shared failures, validators, value objects, and entities should stay simple and durable
+- entities should be immutable and composed from validated values
+- domain validation should primarily protect the boundary between raw asset data and trusted app data
+- string validation should prefer a small set of shared, reviewable rules; conservative max lengths may be derived from the current content with practical headroom rather than guessed tightly per field
 - malformed or invalid content should fail fast during development rather than pass silently into trusted app state
+- validation failures should remain distinct from broader loading or application failures
 - content state should represent validated content and explicit failure or degraded states rather than mask invalid asset data
+- titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
+- when absence is domain-meaningful, prefer explicit optionality such as `Option` over ambiguous nullability, but do not force it everywhere
+- when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable
+- empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trusted validated content
+- entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated at the DTO-to-domain boundary
+- `assets/content/*/index.json` files may remain part of simpler loading or discovery concerns and do not need full domain entities unless later schema complexity clearly justifies them
 - presentation should still provide robust fallback handling for missing, failed, or degraded content states, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
@@ -374,9 +386,11 @@ Layer expectations:
 
 Testing guidance:
 - exercise the DTO-to-domain validation boundary directly so invalid content is rejected predictably before entering trusted app state
+- keep tests clear about the difference between validation failures and broader loading or application failures
 - treat malformed or invalid content as a first-class test target
 - test failure paths and fallback UI behavior where the app is expected to degrade gracefully
 - cover the content-loading paths that determine whether entries under `assets/content/` are surfaced, rejected, or shown with fallback handling
+- where practical, tests under `test/` should mirror the source structure closely enough that failures, validators, value objects, and entities remain easy to locate and maintain
 - prefer tests that verify important logic and important UI behavior over exhaustive tests for every small widget
 
 ### 11.7 Theme and configuration direction
