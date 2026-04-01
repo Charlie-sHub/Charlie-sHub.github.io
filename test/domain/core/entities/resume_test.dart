@@ -4,6 +4,8 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_education_ite
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/resume_language_proficiency.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
@@ -70,12 +72,13 @@ void main() {
             languages: <ResumeLanguageItem>[
               ResumeLanguageItem(
                 language: SingleLineText('English'),
-                proficiency: SingleLineText('C2'),
+                proficiency: ResumeLanguageProficiency.c2,
               ),
             ],
           );
 
           expect(resume.isValid, isTrue);
+          expect(resume.contentEntryType, ContentEntryType.resume);
         },
       );
 
@@ -123,7 +126,7 @@ void main() {
             languages: <ResumeLanguageItem>[
               ResumeLanguageItem(
                 language: SingleLineText('English'),
-                proficiency: SingleLineText('C2'),
+                proficiency: ResumeLanguageProficiency.c2,
               ),
             ],
           );

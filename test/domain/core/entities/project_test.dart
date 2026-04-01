@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project_link_or_media.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
@@ -46,6 +47,7 @@ void main() {
           );
 
           expect(project.isValid, isTrue);
+          expect(project.contentEntryType, ContentEntryType.project);
         },
       );
 

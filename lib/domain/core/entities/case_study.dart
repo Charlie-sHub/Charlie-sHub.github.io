@@ -4,6 +4,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/case_study_indicator
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -61,6 +62,9 @@ abstract class CaseStudy with _$CaseStudy {
   /// Success when the entity is fully valid, otherwise the first failure.
   Either<ValueFailure<dynamic>, Unit> get failureOrUnit =>
       failureOption.fold(() => right(unit), left);
+
+  /// Closed content type for this top-level entry.
+  ContentEntryType get contentEntryType => ContentEntryType.caseStudy;
 
   /// Whether the entity is valid.
   bool get isValid => failureOption.isNone();

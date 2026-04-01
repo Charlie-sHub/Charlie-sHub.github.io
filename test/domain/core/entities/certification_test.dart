@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification_credential_details.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
@@ -49,6 +50,10 @@ void main() {
           );
 
           expect(certification.isValid, isTrue);
+          expect(
+            certification.contentEntryType,
+            ContentEntryType.certificate,
+          );
         },
       );
 

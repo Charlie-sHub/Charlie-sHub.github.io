@@ -469,7 +469,6 @@ The intended visual direction is minimalist, elegant, and deliberate.
 Preferred characteristics:
 - a warm overall identity rather than generic tech styling
 - warm orange tones as part of the core palette direction
-- light and dark themes that feel like two modes of the same visual identity
 - transparency and blur as intended signature elements, introduced progressively from a strong clean base
 - selective use of high-resolution landscape imagery as atmospheric texture where it supports mood and identity without adding visual noise
 

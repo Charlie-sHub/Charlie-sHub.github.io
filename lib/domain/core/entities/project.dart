@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project_link_or_media.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
@@ -65,6 +66,9 @@ abstract class Project with _$Project {
   /// Success when the entity is fully valid, otherwise the first failure.
   Either<ValueFailure<dynamic>, Unit> get failureOrUnit =>
       failureOption.fold(() => right(unit), left);
+
+  /// Closed content type for this top-level entry.
+  ContentEntryType get contentEntryType => ContentEntryType.project;
 
   /// Whether the entity is valid.
   bool get isValid => failureOption.isNone();

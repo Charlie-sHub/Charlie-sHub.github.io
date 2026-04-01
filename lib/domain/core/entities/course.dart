@@ -2,6 +2,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/course_details.dart'
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
@@ -53,6 +54,9 @@ abstract class Course with _$Course {
   /// Success when the entity is fully valid, otherwise the first failure.
   Either<ValueFailure<dynamic>, Unit> get failureOrUnit =>
       failureOption.fold(() => right(unit), left);
+
+  /// Closed content type for this top-level entry.
+  ContentEntryType get contentEntryType => ContentEntryType.course;
 
   /// Whether the entity is valid.
   bool get isValid => failureOption.isNone();

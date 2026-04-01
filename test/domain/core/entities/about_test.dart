@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -44,6 +45,7 @@ void main() {
 
           expect(about.isValid, isTrue);
           expect(about.failureOrUnit.isRight(), isTrue);
+          expect(about.contentEntryType, ContentEntryType.aboutMe);
         },
       );
 

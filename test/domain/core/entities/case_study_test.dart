@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study_attack_mapping.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -56,6 +57,7 @@ void main() {
           );
 
           expect(caseStudy.isValid, isTrue);
+          expect(caseStudy.contentEntryType, ContentEntryType.caseStudy);
         },
       );
 

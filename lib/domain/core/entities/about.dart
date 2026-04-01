@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -52,6 +53,9 @@ abstract class About with _$About {
   /// Success when the entity is fully valid, otherwise the first failure.
   Either<ValueFailure<dynamic>, Unit> get failureOrUnit =>
       failureOption.fold(() => right(unit), left);
+
+  /// Closed content type for this top-level entry.
+  ContentEntryType get contentEntryType => ContentEntryType.aboutMe;
 
   /// Whether the entity is valid.
   bool get isValid => failureOption.isNone();
