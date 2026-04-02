@@ -8,12 +8,12 @@ const _assetPathMaxLength = 160;
 
 /// Validated repository path under `assets/media/`.
 final class AssetPath extends ValueObject<String> {
-  /// Creates a validated asset path.
+  /// Creates an asset path value object with validation applied.
   factory AssetPath(String input) => AssetPath._(
-    validateStringMaxLength(input, maxLength: _assetPathMaxLength).fold(
-      left,
-      validateAssetPath,
-    ),
+    validateStringMaxLength(
+      input,
+      maxLength: _assetPathMaxLength,
+    ).flatMap(validateAssetPath),
   );
 
   const AssetPath._(this.value);

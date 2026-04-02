@@ -1,5 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link_or_media.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'project.freezed.dart';
 
-/// Project content validated for trusted app state.
+/// Project content represented as a domain entity.
 @freezed
 abstract class Project with _$Project {
   /// Creates a project entry.
@@ -35,7 +35,7 @@ abstract class Project with _$Project {
     @Default(<AssetPath>[]) List<AssetPath> galleryImagePaths,
     NonEmptyText? securityAndQuality,
     @Default(<NonEmptyText>[]) List<NonEmptyText> lessons,
-    @Default(<ProjectLinkOrMedia>[]) List<ProjectLinkOrMedia> linksAndMedia,
+    @Default(<ProjectLink>[]) List<ProjectLink> links,
   }) = _Project;
   const Project._();
 
@@ -60,7 +60,7 @@ abstract class Project with _$Project {
         ...stack.map((item) => item.failureOrNull),
         ...outcomes.map((item) => item.failureOrNull),
         ...lessons.map((item) => item.failureOrNull),
-        ...linksAndMedia.map((item) => item.failureOption.fold(() => null, id)),
+        ...links.map((item) => item.failureOption.fold(() => null, id)),
       ]);
 
   /// Success when the entity is fully valid, otherwise the first failure.

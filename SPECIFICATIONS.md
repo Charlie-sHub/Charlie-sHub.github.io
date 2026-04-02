@@ -323,6 +323,9 @@ New implementation work should be treated as durable project code rather than di
 ### 11.3 Legacy footprint
 Legacy files may remain temporarily where they still serve as entry points, bootstrapping surfaces, or migration support.
 
+This may include code or asset directories that still support the currently
+live pre-Flutter site while the Flutter replacement is being completed.
+
 Replace or remove legacy code, structure, and assets once they no longer support the new implementation. Adapt legacy material only where it has clear implementation value.
 
 ### 11.4 Architecture direction
@@ -337,39 +340,39 @@ Preferred top-level layers:
 - `data`
 
 Layer responsibilities:
-- `presentation`: Flutter UI, pages, sections, widgets, app shell and routing, visual rendering, and themes
-- `application`: lightweight state management and orchestration using `Cubit`, with one `ContentCubit` for loading public content and one `ThemeCubit` for theme mode and visual configuration
-- `domain`: validated app-facing models, `dartz`-based value objects where they genuinely add value, and content entities composed from those value objects at the validation boundary
+- `presentation`: Flutter UI, pages, sections, widgets, app shell and routing, visual rendering, and styling configuration
+- `application`: lightweight state management and orchestration using `Cubit` where it clearly helps, with `ContentCubit` as the planned first application-layer Cubit for loading public content once that layer is wired into the UI
+- `domain`: app-facing models, `dartz`-based value objects where they genuinely add value, and content entities composed from those values at the asset boundary, even when some fields still carry explicit validation failures
 - `data`: asset loading from `assets/content/`, DTOs, JSON deserialization, and repository or data access implementations where needed
 
 ### 11.5 Content and data flow direction
-Public JSON content in this repository should enter the app through a simple validated flow.
+Public JSON content in this repository should enter the app through a simple explicit flow.
 
 Preferred flow:
 - asset content
 - DTO
-- validated domain object
+- domain object with potentially invalid fields
 - content state
 - presentation
 
 Preferred implementation direction:
 - DTOs use `freezed` and JSON serialization and handle raw asset deserialization
 - initial domain entities and shared value objects should be informed by the actual schema files under `schemas/`, starting with the smallest durable set the current content structure clearly supports
-- validation rules should stay in centralized pure validators at the DTO-to-domain boundary rather than being scattered through presentation, Cubits, or repositories
+- validation rules should stay in centralized pure validators and domain values used during DTO-to-domain mapping rather than being scattered through presentation, Cubits, or repositories
 - `dartz` at the validation boundary allows domain value objects to represent valid or invalid data explicitly
 - use value objects where validation or invariant protection adds real value, but avoid deeper domain machinery that does not clearly help static content
 - domain-core implementation may proceed in small staged passes, but shared failures, validators, value objects, and entities should stay simple and durable
-- entities should be immutable and composed from validated values
-- domain validation should primarily protect the boundary between raw asset data and trusted app data
+- entities should be immutable and composed from domain values that may explicitly carry validation failures
+- domain validation should primarily surface issues at the boundary between raw asset data and app-facing domain data
 - string validation should prefer a small set of shared, reviewable rules; conservative max lengths may be derived from the current content with practical headroom rather than guessed tightly per field
-- malformed or invalid content should fail fast during development rather than pass silently into trusted app state
+- malformed or invalid content should remain explicit during development rather than be silently normalized away
 - validation failures should remain distinct from broader loading or application failures
-- content state should represent validated content and explicit failure or degraded states rather than mask invalid asset data
+- content state should represent domain content plus explicit failure or degraded states rather than mask invalid asset data
 - titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
 - when absence is domain-meaningful, prefer explicit optionality such as `Option` over ambiguous nullability, but do not force it everywhere
 - when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable
-- empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trusted validated content
-- entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated at the DTO-to-domain boundary
+- empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trustworthy production content
+- entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated in domain values and entities created during DTO-to-domain mapping
 - `assets/content/*/index.json` files may remain part of simpler loading or discovery concerns and do not need full domain entities unless later schema complexity clearly justifies them
 - presentation should still provide robust fallback handling for missing, failed, or degraded content states, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
@@ -379,13 +382,13 @@ Preferred implementation direction:
 Meaningful automated testing is part of the repository's engineering standard. Validation, content loading, state handling, and important presentation behavior should ship with automated coverage rather than be left as optional cleanup.
 
 Layer expectations:
-- `domain`: test validation rules, `dartz`-based value objects, entity construction from validated values, and edge cases around required fields, formats, ranges, and other normalization decisions
+- `domain`: test validation rules, `dartz`-based value objects, entity construction from domain values, and edge cases around required fields, formats, ranges, and other normalization decisions
 - `data`: test DTO deserialization, raw JSON parsing, content and asset loading behavior, and failure cases such as missing fields, malformed values, missing assets, or unsupported shapes
-- `application`: test `Cubit` behavior through observable state transitions, especially `ContentCubit` loading, success, degraded, and failure paths, and any `ThemeCubit` behavior that materially changes presentation
+- `application`: once implemented, test `Cubit` behavior through observable state transitions, especially `ContentCubit` loading, success, degraded, and failure paths
 - `presentation`: use widget tests for meaningful behavior such as conditional rendering, content-driven UI behavior, and fallback or degraded states; avoid trivial render-only tests
 
 Testing guidance:
-- exercise the DTO-to-domain validation boundary directly so invalid content is rejected predictably before entering trusted app state
+- exercise the DTO-to-domain validation boundary directly so invalid content is surfaced predictably through invalid domain fields before being treated as successful presentation state
 - keep tests clear about the difference between validation failures and broader loading or application failures
 - treat malformed or invalid content as a first-class test target
 - test failure paths and fallback UI behavior where the app is expected to degrade gracefully
@@ -393,16 +396,16 @@ Testing guidance:
 - where practical, tests under `test/` should mirror the source structure closely enough that failures, validators, value objects, and entities remain easy to locate and maintain
 - prefer tests that verify important logic and important UI behavior over exhaustive tests for every small widget
 
-### 11.7 Theme and configuration direction
-Theme-related files should live under `lib/presentation/theme/`.
+### 11.7 Presentation styling direction
+Styling-related files may live under `lib/presentation/theme/`.
 
-Centralize colors, typography assignments, theme tokens, light/dark values, and blur or transparency tuning there or in closely related configuration so visual refinement does not require scattered edits.
+Centralize colors, typography assignments, styling tokens, and any later visual variants there or in closely related configuration so visual refinement does not require scattered edits.
 
-UI code should avoid scattered literal styling values where practical. Prefer theme tokens, shared spacing constants, shared typography assignments, and shared container or card treatments so visual refinement stays centralized and easy to revise.
+UI code should avoid scattered literal styling values where practical. Prefer shared styling tokens, spacing constants, typography assignments, and container or card treatments so visual refinement stays centralized and easy to revise.
 
 Avoid:
 - repeated magic numbers for spacing, radius, opacity, blur, or similar visual tuning
-- one-off color values that bypass the theme or configuration layer
+- one-off color values that bypass the styling or configuration layer
 - ad hoc visual fixes that solve a local issue by creating a separate styling path
 
 Aim for practical flexibility, not an overengineered design system.

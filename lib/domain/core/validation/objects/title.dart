@@ -9,18 +9,16 @@ const _titleMaxLength = 128;
 
 /// Validated single-line title text.
 final class Title extends ValueObject<String> {
-  /// Creates a validated title.
+  /// Creates a title value object with validation applied.
   factory Title(String input) => Title._(
-    validateStringNotEmpty(input).fold(
-      left,
-      (value) => validateStringSingleLine(value).fold(
-        left,
-        (singleLineValue) => validateStringMaxLength(
-          singleLineValue,
-          maxLength: _titleMaxLength,
+    validateStringNotEmpty(input)
+        .flatMap(validateStringSingleLine)
+        .flatMap(
+          (singleLineValue) => validateStringMaxLength(
+            singleLineValue,
+            maxLength: _titleMaxLength,
+          ),
         ),
-      ),
-    ),
   );
 
   const Title._(this.value);

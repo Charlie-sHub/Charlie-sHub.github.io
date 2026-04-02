@@ -14,7 +14,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'case_study.freezed.dart';
 
-/// Security case study content validated for trusted app state.
+/// Security case study content represented as a domain entity.
 @freezed
 abstract class CaseStudy with _$CaseStudy {
   /// Creates a case study entry.

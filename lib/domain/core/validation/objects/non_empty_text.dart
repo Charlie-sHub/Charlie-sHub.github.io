@@ -8,10 +8,9 @@ const _nonEmptyTextMaxLength = 12000;
 
 /// Validated long-form text that may remain multiline.
 final class NonEmptyText extends ValueObject<String> {
-  /// Creates validated long-form text.
+  /// Creates a long-form text value object with validation applied.
   factory NonEmptyText(String input) => NonEmptyText._(
-    validateStringNotEmpty(input).fold(
-      left,
+    validateStringNotEmpty(input).flatMap(
       (value) => validateStringMaxLength(
         value,
         maxLength: _nonEmptyTextMaxLength,

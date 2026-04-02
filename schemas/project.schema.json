@@ -68,10 +68,10 @@
         "is_ongoing": { "type": "boolean" }
       }
     },
-    "media_item": {
+    "link_item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label"],
+      "required": ["label", "url"],
       "properties": {
         "label": { "$ref": "#/$defs/line_text" },
         "url": {
@@ -79,13 +79,8 @@
           "format": "uri",
           "maxLength": 2048,
           "pattern": "^[^\r\n]+$"
-        },
-        "asset_path": { "$ref": "#/$defs/media_asset_path" }
-      },
-      "anyOf": [
-        { "required": ["url"] },
-        { "required": ["asset_path"] }
-      ]
+        }
+      }
     }
   },
   "properties": {
@@ -131,10 +126,10 @@
           "minItems": 1,
           "items": { "$ref": "#/$defs/long_text" }
         },
-        "links_and_media": {
+        "links": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/media_item" }
+          "items": { "$ref": "#/$defs/link_item" }
         }
       }
     }

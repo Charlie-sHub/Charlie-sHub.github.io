@@ -5,7 +5,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_it
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
-import 'package:charlie_shub_portfolio/domain/core/misc/enums/resume_language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
@@ -72,7 +72,7 @@ void main() {
             languages: <ResumeLanguageItem>[
               ResumeLanguageItem(
                 language: SingleLineText('English'),
-                proficiency: ResumeLanguageProficiency.c2,
+                proficiency: LanguageProficiency.c2,
               ),
             ],
           );
@@ -126,7 +126,7 @@ void main() {
             languages: <ResumeLanguageItem>[
               ResumeLanguageItem(
                 language: SingleLineText('English'),
-                proficiency: ResumeLanguageProficiency.c2,
+                proficiency: LanguageProficiency.c2,
               ),
             ],
           );

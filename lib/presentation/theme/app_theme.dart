@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Builds the first-pass application theme.
+/// Builds the current application theme scaffold.
 ThemeData buildAppTheme() {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: const Color(0xFFB8672E),

@@ -52,7 +52,7 @@ If the spec leaves something intentionally open, choose the smallest reasonable 
 
 For tasks affecting presentation, layout, navigation, interaction, or styling:
 
-1. Re-read the relevant UX, UI, theme, and AI-assisted sections in `SPECIFICATIONS.md`.
+1. Re-read the relevant UX, UI, styling, and AI-assisted sections in `SPECIFICATIONS.md`.
 2. Identify whether the task is implementing an established rule, a provisional preference, or an open decision as defined in `SPECIFICATIONS.md`.
 3. Reuse existing widgets, tokens, and patterns before creating new ones.
 4. Keep style values centralized where practical rather than solving local issues with scattered literals.

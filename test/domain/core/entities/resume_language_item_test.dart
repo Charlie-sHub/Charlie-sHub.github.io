@@ -1,5 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
-import 'package:charlie_shub_portfolio/domain/core/misc/enums/resume_language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,11 +12,11 @@ void main() {
         () {
           final item = ResumeLanguageItem(
             language: SingleLineText('English'),
-            proficiency: ResumeLanguageProficiency.c2,
+            proficiency: LanguageProficiency.c2,
           );
 
           expect(item.isValid, isTrue);
-          expect(item.proficiency, ResumeLanguageProficiency.c2);
+          expect(item.proficiency, LanguageProficiency.c2);
         },
       );
 
@@ -25,7 +25,20 @@ void main() {
         () {
           final item = ResumeLanguageItem(
             language: SingleLineText('   '),
-            proficiency: ResumeLanguageProficiency.native,
+            proficiency: LanguageProficiency.native,
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
+        'is invalid when proficiency is outside the supported vocabulary',
+        () {
+          final item = ResumeLanguageItem(
+            language: SingleLineText('English'),
+            proficiency: LanguageProficiency.invalid,
           );
 
           expect(item.isValid, isFalse);

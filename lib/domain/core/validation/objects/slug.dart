@@ -8,12 +8,12 @@ const _slugMaxLength = 64;
 
 /// Validated snake_case slug used by structured content entries.
 final class Slug extends ValueObject<String> {
-  /// Creates a validated content slug.
+  /// Creates a slug value object with validation applied.
   factory Slug(String input) => Slug._(
-    validateStringMaxLength(input, maxLength: _slugMaxLength).fold(
-      left,
-      validateSlug,
-    ),
+    validateStringMaxLength(
+      input,
+      maxLength: _slugMaxLength,
+    ).flatMap(validateSlug),
   );
 
   const Slug._(this.value);

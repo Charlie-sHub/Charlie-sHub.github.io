@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets(
-    'shows the first-pass portfolio home page',
+    'shows the current portfolio home scaffold',
     (tester) async {
       await tester.pumpWidget(const PortfolioApp());
 
       expect(find.text('Charlie Shub'), findsOneWidget);
       expect(
-        find.text('Portfolio site rebuild in progress.'),
+        find.text('Portfolio implementation in progress.'),
         findsOneWidget,
       );
       expect(find.text('Current setup'), findsOneWidget);

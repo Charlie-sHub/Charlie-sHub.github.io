@@ -8,12 +8,12 @@ const _urlMaxLength = 2048;
 
 /// Validated absolute URL or URI used in public content references.
 final class UrlValue extends ValueObject<String> {
-  /// Creates a validated URL or URI.
+  /// Creates a URL value object with validation applied.
   factory UrlValue(String input) => UrlValue._(
-    validateStringMaxLength(input, maxLength: _urlMaxLength).fold(
-      left,
-      validateUrl,
-    ),
+    validateStringMaxLength(
+      input,
+      maxLength: _urlMaxLength,
+    ).flatMap(validateUrl),
   );
 
   const UrlValue._(this.value);

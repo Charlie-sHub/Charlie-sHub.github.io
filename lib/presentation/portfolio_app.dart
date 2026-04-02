@@ -9,9 +9,9 @@ class PortfolioApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const PortfolioHomePage(),
-      theme: buildAppTheme(),
-      title: 'Charlie Shub Portfolio',
-    );
+    debugShowCheckedModeBanner: false,
+    home: const PortfolioHomePage(),
+    theme: buildAppTheme(),
+    title: 'Charlie Shub Portfolio',
+  );
 }

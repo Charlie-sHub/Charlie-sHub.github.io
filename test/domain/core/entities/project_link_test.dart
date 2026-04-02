@@ -1,21 +1,18 @@
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link_or_media.dart';
-import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group(
-    'ProjectLinkOrMedia',
+    'ProjectLink',
     () {
       test(
-        'supports asset-backed references',
+        'supports external project links',
         () {
-          final item = ProjectLinkOrMedia.asset(
-            label: SingleLineText('Architecture diagram'),
-            assetPath: AssetPath(
-              'assets/media/content/projects/pami/diagram.png',
-            ),
+          final item = ProjectLink(
+            label: SingleLineText('GitHub'),
+            url: UrlValue('https://github.com/Charlie-sHub'),
           );
 
           expect(item.isValid, isTrue);
@@ -24,9 +21,9 @@ void main() {
       );
 
       test(
-        'exposes invalid external urls',
+        'exposes invalid urls',
         () {
-          final item = ProjectLinkOrMedia.external(
+          final item = ProjectLink(
             label: SingleLineText('Demo'),
             url: UrlValue('/demo'),
           );

@@ -11,7 +11,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'about.freezed.dart';
 
-/// About content validated for trusted app state.
+/// About content represented as a domain entity.
 @freezed
 abstract class About with _$About {
   /// Creates an about entry.

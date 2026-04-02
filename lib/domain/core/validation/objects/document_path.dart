@@ -8,12 +8,12 @@ const _documentPathMaxLength = 160;
 
 /// Validated repository path under `assets/documents/`.
 final class DocumentPath extends ValueObject<String> {
-  /// Creates a validated document path.
+  /// Creates a document path value object with validation applied.
   factory DocumentPath(String input) => DocumentPath._(
-    validateStringMaxLength(input, maxLength: _documentPathMaxLength).fold(
-      left,
-      validateDocumentPath,
-    ),
+    validateStringMaxLength(
+      input,
+      maxLength: _documentPathMaxLength,
+    ).flatMap(validateDocumentPath),
   );
 
   const DocumentPath._(this.value);

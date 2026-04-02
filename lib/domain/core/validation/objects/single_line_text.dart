@@ -9,18 +9,16 @@ const _singleLineTextMaxLength = 160;
 
 /// Validated single-line text for labels and other line-oriented fields.
 final class SingleLineText extends ValueObject<String> {
-  /// Creates validated single-line text.
+  /// Creates a single-line text value object with validation applied.
   factory SingleLineText(String input) => SingleLineText._(
-    validateStringNotEmpty(input).fold(
-      left,
-      (value) => validateStringSingleLine(value).fold(
-        left,
-        (singleLineValue) => validateStringMaxLength(
-          singleLineValue,
-          maxLength: _singleLineTextMaxLength,
+    validateStringNotEmpty(input)
+        .flatMap(validateStringSingleLine)
+        .flatMap(
+          (singleLineValue) => validateStringMaxLength(
+            singleLineValue,
+            maxLength: _singleLineTextMaxLength,
+          ),
         ),
-      ),
-    ),
   );
 
   const SingleLineText._(this.value);

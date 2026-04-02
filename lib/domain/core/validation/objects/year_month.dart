@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 
 /// Validated `YYYY-MM` date value.
 final class YearMonth extends ValueObject<String> {
-  /// Creates a validated `YYYY-MM` value.
+  /// Creates a `YYYY-MM` value object with validation applied.
   factory YearMonth(String input) => YearMonth._(validateYearMonth(input));
 
   const YearMonth._(this.value);

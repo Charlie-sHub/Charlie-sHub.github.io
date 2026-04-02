@@ -46,6 +46,10 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
     required T failedValue,
   }) = InvalidYearMonth<T>;
 
+  const factory ValueFailure.invalidResumeLanguageProficiency({
+    required T failedValue,
+  }) = InvalidResumeLanguageProficiency<T>;
+
   @override
   String get message => switch (this) {
     EmptyString() => 'String must not be empty.',
@@ -61,5 +65,7 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
     InvalidAssetPath() => 'Asset path must start with assets/media/.',
     InvalidDocumentPath() => 'Document path must start with assets/documents/.',
     InvalidYearMonth() => 'Date must use the YYYY-MM format.',
+    InvalidResumeLanguageProficiency() =>
+      'Resume language proficiency must match a supported value.',
   };
 }

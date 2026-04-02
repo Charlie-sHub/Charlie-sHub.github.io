@@ -15,7 +15,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'resume.freezed.dart';
 
-/// Resume content validated for trusted app state.
+/// Resume content represented as a domain entity.
 @freezed
 abstract class Resume with _$Resume {
   /// Creates a resume entry.

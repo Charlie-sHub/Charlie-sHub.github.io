@@ -93,6 +93,20 @@ void main() {
           );
         },
       );
+
+      test(
+        'describes invalid resume language proficiency clearly',
+        () {
+          const failure = ValueFailure<String>.invalidResumeLanguageProficiency(
+            failedValue: 'invalid',
+          );
+
+          expect(
+            failure.message,
+            'Resume language proficiency must match a supported value.',
+          );
+        },
+      );
     },
   );
 }

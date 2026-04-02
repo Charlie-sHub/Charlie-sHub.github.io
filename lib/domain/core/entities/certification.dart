@@ -15,7 +15,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'certification.freezed.dart';
 
-/// Certification content validated for trusted app state.
+/// Certification content represented as a domain entity.
 @freezed
 abstract class Certification with _$Certification {
   /// Creates a certification entry.

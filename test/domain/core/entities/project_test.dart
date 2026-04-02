@@ -1,5 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link_or_media.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
@@ -38,8 +38,8 @@ void main() {
             outcomes: <NonEmptyText>[
               NonEmptyText('Engineering quality is the portfolio proof'),
             ],
-            linksAndMedia: <ProjectLinkOrMedia>[
-              ProjectLinkOrMedia.external(
+            links: <ProjectLink>[
+              ProjectLink(
                 label: SingleLineText('Demo'),
                 url: UrlValue('https://example.com/demo'),
               ),

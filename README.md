@@ -36,6 +36,8 @@ This repository is expected to evolve, but the direction is to keep the codebase
 
 It is also more engineered than a simple static portfolio strictly needs to be. That is intentional: part of the project is to show architecture, maintainability, validation, engineering habits, and the way I normally structure software.
 
+Some legacy site code and assets also remain temporarily in the repository while the Flutter replacement is still being completed.
+
 ---
 
 ## What the Website Should Show
@@ -106,7 +108,7 @@ Core stack and implementation direction:
 
 - **Flutter Web**
 - **Dart**
-- **Cubit** for lightweight application orchestration
+- **Cubit** planned for lightweight content-loading orchestration
 - **JSON-based content assets**
 - **`dartz` value-object style validation where it adds real value**
 - **careful dependency selection**
@@ -147,18 +149,18 @@ assets/
 
 High-level layer roles:
 
-- `presentation` → UI, pages, sections, widgets, themes, app shell
-- `application` → lightweight state orchestration
-- `domain` → validated models and entities
+- `presentation` → UI, pages, sections, widgets, styling, app shell
+- `application` → lightweight content-state orchestration
+- `domain` → app-facing models and entities whose fields may still carry explicit validation failures
 - `data` → asset loading, DTOs, JSON deserialization, repository logic
 
 Preferred content flow:
 
 ```text
-asset content -> DTO -> validated domain object -> state -> presentation
+asset content -> DTO -> domain entity with potentially invalid fields -> state -> presentation
 ```
 
-This keeps raw public content separate from trusted app state. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
+This keeps raw public content separate from app-facing domain state. Domain entities may still carry explicit field failures until the loading or application layer decides how to surface them. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
 
 ---
 

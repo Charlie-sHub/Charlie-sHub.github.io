@@ -1,6 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
-import 'package:charlie_shub_portfolio/domain/core/misc/enums/resume_language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,14 +13,21 @@ abstract class ResumeLanguageItem with _$ResumeLanguageItem {
   /// Creates a language item.
   const factory ResumeLanguageItem({
     required SingleLineText language,
-    required ResumeLanguageProficiency proficiency,
+    required LanguageProficiency proficiency,
   }) = _ResumeLanguageItem;
   const ResumeLanguageItem._();
+
+  ValueFailure<String>? get _proficiencyFailure => proficiency.isValid
+      ? null
+      : ValueFailure<String>.invalidResumeLanguageProficiency(
+          failedValue: proficiency.jsonValue,
+        );
 
   /// First validation failure across the entity and nested values, if any.
   Option<ValueFailure<dynamic>> get failureOption =>
       firstFailureOrNone(<ValueFailure<dynamic>?>[
         language.failureOrNull,
+        _proficiencyFailure,
       ]);
 
   /// Success when the entity is fully valid, otherwise the first failure.

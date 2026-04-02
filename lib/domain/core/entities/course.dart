@@ -14,7 +14,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'course.freezed.dart';
 
-/// Course content validated for trusted app state.
+/// Course content represented as a domain entity.
 @freezed
 abstract class Course with _$Course {
   /// Creates a course entry.
