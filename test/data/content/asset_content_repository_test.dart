@@ -6,6 +6,13 @@ import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+@GenerateNiceMocks([
+  MockSpec<AssetBundle>(as: #MockAssetBundle),
+])
+import 'asset_content_repository_test.mocks.dart';
 
 void main() {
   group(
@@ -15,7 +22,7 @@ void main() {
         'loads single-entry sections from their indices',
         () async {
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(_loadAllContentAssets()),
+            assetBundle: _createAssetBundle(_loadAllContentAssets()),
           );
 
           final aboutResult = await repository.loadAbout();
@@ -34,7 +41,7 @@ void main() {
         'loads list sections in the order defined by index.json',
         () async {
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(_loadAllContentAssets()),
+            assetBundle: _createAssetBundle(_loadAllContentAssets()),
           );
 
           final projectsResult = await repository.loadProjects();
@@ -87,7 +94,7 @@ void main() {
           final assets = _loadAllContentAssets()
             ..remove('assets/content/projects/index.json');
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadProjects();
@@ -120,7 +127,7 @@ void main() {
           assets['assets/content/projects/index.json'] = jsonEncode(index);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadProjects();
@@ -142,7 +149,7 @@ void main() {
           final assets = _loadAllContentAssets()
             ..['assets/content/about/about_me.json'] = '{invalid json';
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadAbout();
@@ -171,7 +178,7 @@ void main() {
               },
             );
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadCourses();
@@ -199,7 +206,7 @@ void main() {
           assets['assets/content/about/index.json'] = jsonEncode(index);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadAbout();
@@ -234,7 +241,7 @@ void main() {
           assets['assets/content/about/index.json'] = jsonEncode(index);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadAbout();
@@ -262,7 +269,7 @@ void main() {
           assets['assets/content/resume/index.json'] = jsonEncode(index);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadResume();
@@ -297,7 +304,7 @@ void main() {
           assets['assets/content/resume/index.json'] = jsonEncode(index);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadResume();
@@ -325,7 +332,7 @@ void main() {
           assets['assets/content/projects/pami.json'] = jsonEncode(project);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadProjects();
@@ -359,7 +366,7 @@ void main() {
           assets['assets/content/projects/pami.json'] = jsonEncode(project);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadProjects();
@@ -394,7 +401,7 @@ void main() {
           assets['assets/content/about/about_me.json'] = jsonEncode(aboutJson);
 
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final result = await repository.loadAbout();
@@ -411,7 +418,7 @@ void main() {
           final assets = _loadAllContentAssets()
             ..remove('assets/content/projects/index.json');
           final repository = AssetContentRepository(
-            assetBundle: FakeStringAssetBundle(assets),
+            assetBundle: _createAssetBundle(assets),
           );
 
           final projectsResult = await repository.loadProjects();
@@ -459,29 +466,21 @@ Map<String, dynamic> _decodeJsonObject(String path) =>
         )
         as Map<String, dynamic>;
 
-final class FakeStringAssetBundle extends CachingAssetBundle {
-  FakeStringAssetBundle(this._assets);
+MockAssetBundle _createAssetBundle(Map<String, String> assets) {
+  final assetBundle = MockAssetBundle();
 
-  final Map<String, String> _assets;
+  when(assetBundle.loadString(any, cache: anyNamed('cache'))).thenAnswer((
+    invocation,
+  ) async {
+    final assetPath = invocation.positionalArguments.first as String;
+    final value = assets[assetPath];
 
-  @override
-  Future<ByteData> load(String key) async {
-    final value = _assets[key];
-    if (value != null) {
-      final bytes = Uint8List.fromList(utf8.encode(value));
-      return ByteData.view(bytes.buffer);
-    } else {
-      throw Exception('Unable to load asset: $key');
-    }
-  }
-
-  @override
-  Future<String> loadString(String key, {bool cache = true}) async {
-    final value = _assets[key];
     if (value != null) {
       return value;
     } else {
-      throw Exception('Unable to load asset: $key');
+      throw Exception('Unable to load asset: $assetPath');
     }
-  }
+  });
+
+  return assetBundle;
 }

@@ -341,7 +341,7 @@ Preferred top-level layers:
 
 Layer responsibilities:
 - `presentation`: Flutter UI, pages, sections, widgets, app shell and routing, visual rendering, and styling configuration
-- `application`: lightweight state management and orchestration using `Cubit` where it clearly helps, with `ContentCubit` as the planned first application-layer Cubit for loading public content once that layer is wired into the UI
+- `application`: lightweight state management and orchestration using `Cubit` where it clearly helps, with `ContentCubit` as the first application-layer Cubit for loading public content
 - `domain`: app-facing models, `dartz`-based value objects where they genuinely add value, and content entities composed from those values at the asset boundary, even when some fields still carry explicit validation failures
 - `data`: asset loading from `assets/content/`, DTOs, JSON deserialization, and repository or data access implementations where needed
 
@@ -367,14 +367,15 @@ Preferred implementation direction:
 - string validation should prefer a small set of shared, reviewable rules; conservative max lengths may be derived from the current content with practical headroom rather than guessed tightly per field
 - malformed or invalid content should remain explicit during development rather than be silently normalized away
 - validation failures should remain distinct from broader loading or application failures
-- content state should represent domain content plus explicit failure or degraded states rather than mask invalid asset data
+- content state should represent domain content plus explicit per-section results, an overall orchestration status, and an optional orchestration failure when loading is interrupted rather than mask invalid asset data
+- application state should not introduce a separate degraded status; local section failures should remain inside per-section `Either` results while top-level `loaded` still means orchestration completed
 - titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
 - when absence is domain-meaningful, prefer explicit optionality such as `Option` over ambiguous nullability, but do not force it everywhere
 - when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable
 - empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trustworthy production content
 - entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated in domain values and entities created during DTO-to-domain mapping
 - `assets/content/*/index.json` files may remain part of simpler loading or discovery concerns and do not need full domain entities unless later schema complexity clearly justifies them
-- presentation should still provide robust fallback handling for missing, failed, or degraded content states, but fallback rendering should not replace proper validation
+- presentation should still provide robust fallback handling for missing or failed content states, including local section failures, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
 
@@ -384,14 +385,14 @@ Meaningful automated testing is part of the repository's engineering standard. V
 Layer expectations:
 - `domain`: test validation rules, `dartz`-based value objects, entity construction from domain values, and edge cases around required fields, formats, ranges, and other normalization decisions
 - `data`: test DTO deserialization, raw JSON parsing, content and asset loading behavior, and failure cases such as missing fields, malformed values, missing assets, or unsupported shapes
-- `application`: once implemented, test `Cubit` behavior through observable state transitions, especially `ContentCubit` loading, success, degraded, and failure paths
-- `presentation`: use widget tests for meaningful behavior such as conditional rendering, content-driven UI behavior, and fallback or degraded states; avoid trivial render-only tests
+- `application`: test `Cubit` behavior through observable state transitions, especially `ContentCubit` loading, partial section completion, orchestration success, and orchestration failure paths
+- `presentation`: use widget tests for meaningful behavior such as conditional rendering, content-driven UI behavior, and fallback states for missing or failed sections; avoid trivial render-only tests
 
 Testing guidance:
 - exercise the DTO-to-domain validation boundary directly so invalid content is surfaced predictably through invalid domain fields before being treated as successful presentation state
 - keep tests clear about the difference between validation failures and broader loading or application failures
 - treat malformed or invalid content as a first-class test target
-- test failure paths and fallback UI behavior where the app is expected to degrade gracefully
+- test failure paths and fallback UI behavior where the app is expected to handle local section failures gracefully
 - cover the content-loading paths that determine whether entries under `assets/content/` are surfaced, rejected, or shown with fallback handling
 - where practical, tests under `test/` should mirror the source structure closely enough that failures, validators, value objects, and entities remain easy to locate and maintain
 - prefer tests that verify important logic and important UI behavior over exhaustive tests for every small widget

@@ -108,7 +108,7 @@ Core stack and implementation direction:
 
 - **Flutter Web**
 - **Dart**
-- **Cubit** planned for lightweight content-loading orchestration
+- **Cubit** for lightweight content-loading orchestration
 - **JSON-based content assets**
 - **`dartz` value-object style validation where it adds real value**
 - **careful dependency selection**
