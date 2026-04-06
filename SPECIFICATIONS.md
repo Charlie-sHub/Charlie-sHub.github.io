@@ -455,6 +455,38 @@ Avoid:
 - dependencies that complicate maintenance without clear benefit
 - services that make the site feel dependent on external uptime for core value
 
+### 11.9 Optional CodersRank widgets
+
+CodersRank widgets may be used as optional supporting proof signals in the Flutter website, but they are not part of the site's core content model.
+
+Current approved scope:
+- CodersRank summary
+- CodersRank activity
+- CodersRank skills
+
+These widgets are intentionally low-priority and should only be considered after the main first-party website implementation is complete.
+
+Rules:
+- first-party structured content under `assets/content/` remains authoritative for portfolio content
+- CodersRank must not be required for the site's core value, first impression, navigation, or understanding of the author's work
+- CodersRank widgets must not replace first-party sections such as projects, experience, education, certifications, case studies, or about content
+- any CodersRank integration must degrade gracefully if the provider, script, or widget fails
+- omission is preferred over a broken or unstable embed
+- implementation should remain isolated and easy to remove without affecting surrounding page structure
+- any Flutter integration should be treated as web-only presentation behavior rather than part of the structured content-loading architecture
+- styling and layout around the widgets should stay consistent with the site's own design system rather than allowing the embed to dictate page structure
+- if the widgets prove visually weak, operationally brittle, or redundant, they may be removed without replacement
+
+Preferred placement direction:
+- supporting proof section
+- secondary home-page area
+- lower-priority section surfaced after first-party content
+
+Avoid:
+- placing CodersRank widgets above the main project and portfolio proof
+- treating CodersRank as a source of truth for portfolio content
+- widening the approved widget scope without updating this specification
+
 ---
 
 ## 12. UX direction
