@@ -6,11 +6,25 @@ void main() {
     'LanguageProficiency',
     () {
       test(
-        'includes the supported CEFR values plus an invalid fallback',
+        'exposes the supported serialized values separately '
+        'from the invalid sentinel',
         () {
           expect(
+            LanguageProficiency.supportedJsonValues,
+            <String>['Native', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+          );
+          expect(
             LanguageProficiency.values.map((value) => value.jsonValue),
-            <String>['invalid', 'Native', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+            <String>[
+              'invalid',
+              'Native',
+              'A1',
+              'A2',
+              'B1',
+              'B2',
+              'C1',
+              'C2',
+            ],
           );
         },
       );

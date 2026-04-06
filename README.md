@@ -162,6 +162,8 @@ asset content -> DTO -> domain entity with potentially invalid fields -> state -
 
 This keeps raw public content separate from app-facing domain state. Domain entities may still carry explicit field failures until the loading or application layer decides how to surface them. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
 
+Schemas under `schemas/` act as design-time contracts for the structured JSON content. Runtime loading still relies on DTO parsing plus domain validation rather than generic runtime schema enforcement, and each `assets/content/*/index.json` file remains a lightweight section manifest rather than a second source of rich entry metadata.
+
 ---
 
 ## Repository Structure

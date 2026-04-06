@@ -129,8 +129,12 @@
       "required": ["language", "proficiency"],
       "properties": {
         "language": { "$ref": "#/$defs/line_text" },
-        "proficiency": { "$ref": "#/$defs/line_text" }
+        "proficiency": { "$ref": "#/$defs/language_proficiency_value" }
       }
+    },
+    "language_proficiency_value": {
+      "type": "string",
+      "enum": ["Native", "A1", "A2", "B1", "B2", "C1", "C2"]
     }
   },
   "properties": {

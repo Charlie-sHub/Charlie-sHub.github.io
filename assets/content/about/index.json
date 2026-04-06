@@ -1,10 +1,7 @@
 {
   "items": [
     {
-      "slug": "about_me",
-      "title": "About Me",
-      "file": "about_me.json",
-      "source_path": "sources_of_truth/about_me.md"
+      "file": "about_me.json"
     }
   ]
 }

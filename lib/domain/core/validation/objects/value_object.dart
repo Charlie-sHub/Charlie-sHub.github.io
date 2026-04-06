@@ -1,6 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart' show immutable;
+import 'package:meta/meta.dart';
 
 /// Base type for domain primitives that carry validation results.
 @immutable

@@ -45,6 +45,29 @@ void main() {
       );
 
       test(
+        'accepts every schema-aligned proficiency value at the DTO boundary',
+        () {
+          for (final supportedValue
+              in LanguageProficiency.supportedJsonValues) {
+            final json = loadJsonFixture('assets/content/resume/resume.json');
+            final content = json['content'] as Map<String, dynamic>;
+            final languages = content['languages'] as List<dynamic>;
+            final firstLanguage = languages.first as Map<String, dynamic>;
+            firstLanguage['proficiency'] = supportedValue;
+
+            final dto = ResumeDto.fromJson(json);
+            final resume = dto.toDomain();
+
+            expect(resume.isValid, isTrue);
+            expect(
+              resume.languages.first.proficiency.jsonValue,
+              supportedValue,
+            );
+          }
+        },
+      );
+
+      test(
         'maps unsupported proficiency strings into an invalid domain object',
         () {
           final json = loadJsonFixture('assets/content/resume/resume.json');

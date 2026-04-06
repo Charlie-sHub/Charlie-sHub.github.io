@@ -1,22 +1,10 @@
 {
   "items": [
     {
-      "slug": "pami",
-      "title": "PAMi",
-      "file": "pami.json",
-      "source_path": "projects/pami/project_notes.md",
-      "start_date": "2024-12",
-      "end_date": null,
-      "is_ongoing": true
+      "file": "pami.json"
     },
     {
-      "slug": "world_on",
-      "title": "World On",
-      "file": "world_on.json",
-      "source_path": "projects/world_on/project_notes.md",
-      "start_date": "2020-06",
-      "end_date": "2023-03",
-      "is_ongoing": false
+      "file": "world_on.json"
     }
   ]
 }

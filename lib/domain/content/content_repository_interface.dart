@@ -10,8 +10,16 @@ import 'package:dartz/dartz.dart';
 /// Loads website content one section at a time.
 ///
 /// The application layer is responsible for calling these methods separately
-/// and composing the resulting app state. This interface exposes domain
-/// entities that may still carry invalid fields or an [AppFailure].
+/// and composing the resulting app state.
+///
+/// A successful `Right` means the asset was found, decoded, deserialized, and
+/// mapped into domain data. The returned entity may still carry validation
+/// failures on individual fields or nested items so presentation can later
+/// decide how to degrade locally.
+///
+/// A `Left` is reserved for broader load failures such as missing assets,
+/// malformed JSON, or DTO-deserialization problems represented by
+/// [AppFailure].
 abstract class ContentRepositoryInterface {
   /// Loads the single about entry for the website.
   Future<Either<AppFailure, About>> loadAbout();

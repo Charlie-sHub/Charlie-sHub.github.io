@@ -8,7 +8,6 @@ import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/course_details.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_education_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_item.dart';
@@ -97,8 +96,8 @@ Project buildProject() => Project(
     NonEmptyText('Delivered a maintainable baseline.'),
   ],
   thumbnailPath: AssetPath('assets/media/content/projects/pami/thumbnail.png'),
-  links: <ProjectLink>[
-    ProjectLink(
+  links: <LinkReference>[
+    LinkReference(
       label: SingleLineText('Repository'),
       url: UrlValue('https://example.com/project'),
     ),

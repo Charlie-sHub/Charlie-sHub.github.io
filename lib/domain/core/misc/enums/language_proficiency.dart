@@ -33,6 +33,12 @@ enum LanguageProficiency {
   /// Whether this proficiency is part of the supported public vocabulary.
   bool get isValid => this != LanguageProficiency.invalid;
 
+  /// Supported serialized values for validated resume content.
+  static List<String> get supportedJsonValues => values
+      .where((proficiency) => proficiency.isValid)
+      .map((proficiency) => proficiency.jsonValue)
+      .toList(growable: false);
+
   /// Parses a resume language proficiency value from raw content.
   static LanguageProficiency fromString(String value) {
     for (final proficiency in values) {

@@ -3,14 +3,13 @@
 // ignore_for_file: sort_unnamed_constructors_first
 // ignore_for_file: always_put_required_named_parameters_first
 
+import 'package:charlie_shub_portfolio/data/core/dtos/link_reference_dto.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
-import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/year_month.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -65,7 +64,7 @@ abstract class ProjectDto with _$ProjectDto {
     lessons: (content.lessons ?? const <String>[])
         .map(NonEmptyText.new)
         .toList(growable: false),
-    links: (content.links ?? const <ProjectLinkDto>[])
+    links: (content.links ?? const <LinkReferenceDto>[])
         .map((item) => item.toDomain())
         .toList(growable: false),
   );
@@ -119,36 +118,10 @@ abstract class ProjectContentJson with _$ProjectContentJson {
     String? securityAndQuality,
     required List<String> outcomes,
     List<String>? lessons,
-    List<ProjectLinkDto>? links,
+    List<LinkReferenceDto>? links,
   }) = _ProjectContentJson;
 
   /// Creates project content fields from raw JSON.
   factory ProjectContentJson.fromJson(Map<String, dynamic> json) =>
       _$ProjectContentJsonFromJson(json);
-}
-
-/// DTO for external project links stored in content JSON.
-@freezed
-abstract class ProjectLinkDto with _$ProjectLinkDto {
-  const ProjectLinkDto._();
-
-  @JsonSerializable(
-    checked: true,
-    disallowUnrecognizedKeys: true,
-    fieldRename: FieldRename.snake,
-  )
-  const factory ProjectLinkDto({
-    required String label,
-    required String url,
-  }) = _ProjectLinkDto;
-
-  /// Creates a project link DTO from raw JSON.
-  factory ProjectLinkDto.fromJson(Map<String, dynamic> json) =>
-      _$ProjectLinkDtoFromJson(json);
-
-  /// Maps this DTO into a domain project link.
-  ProjectLink toDomain() => ProjectLink(
-    label: SingleLineText(label),
-    url: UrlValue(url),
-  );
 }

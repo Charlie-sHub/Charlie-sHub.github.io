@@ -89,6 +89,38 @@ void main() {
       );
 
       test(
+        'uses manifest order when it is provided',
+        () async {
+          final assets = _loadAllContentAssets()
+            ..['assets/content/projects/index.json'] = jsonEncode(
+              <String, Object?>{
+                'items': <Map<String, Object?>>[
+                  <String, Object?>{
+                    'file': 'world_on.json',
+                    'order': 2,
+                  },
+                  <String, Object?>{
+                    'file': 'pami.json',
+                    'order': 1,
+                  },
+                ],
+              },
+            );
+          final repository = AssetContentRepository(
+            assetBundle: _createAssetBundle(assets),
+          );
+
+          final projectsResult = await repository.loadProjects();
+          final projects = _expectRight(projectsResult);
+
+          expect(
+            projects.map((item) => item.slug.getOrCrash()).toList(),
+            <String>['pami', 'world_on'],
+          );
+        },
+      );
+
+      test(
         'maps a missing section index to assetNotFound',
         () async {
           final assets = _loadAllContentAssets()
@@ -198,6 +230,73 @@ void main() {
       );
 
       test(
+        'maps unsupported rich manifest fields to contentLoadError',
+        () async {
+          final assets = _loadAllContentAssets()
+            ..['assets/content/about/index.json'] = jsonEncode(
+              <String, Object?>{
+                'items': <Map<String, Object?>>[
+                  <String, Object?>{
+                    'file': 'about_me.json',
+                    'title': 'About Me',
+                  },
+                ],
+              },
+            );
+          final repository = AssetContentRepository(
+            assetBundle: _createAssetBundle(assets),
+          );
+
+          final result = await repository.loadAbout();
+
+          expect(result.isLeft(), isTrue);
+          result.fold((failure) {
+            expect(
+              failure,
+              isA<ContentLoadError>().having(
+                (value) => value.path,
+                'path',
+                'assets/content/about/index.json',
+              ),
+            );
+          }, (_) => fail('Expected a content load failure.'));
+        },
+      );
+
+      test(
+        'maps missing manifest file fields to contentLoadError',
+        () async {
+          final assets = _loadAllContentAssets()
+            ..['assets/content/about/index.json'] = jsonEncode(
+              <String, Object?>{
+                'items': <Map<String, Object?>>[
+                  <String, Object?>{
+                    'order': 1,
+                  },
+                ],
+              },
+            );
+          final repository = AssetContentRepository(
+            assetBundle: _createAssetBundle(assets),
+          );
+
+          final result = await repository.loadAbout();
+
+          expect(result.isLeft(), isTrue);
+          result.fold((failure) {
+            expect(
+              failure,
+              isA<ContentLoadError>().having(
+                (value) => value.path,
+                'path',
+                'assets/content/about/index.json',
+              ),
+            );
+          }, (_) => fail('Expected a content load failure.'));
+        },
+      );
+
+      test(
         'fails when the about index resolves to zero files',
         () async {
           final assets = _loadAllContentAssets();
@@ -232,10 +331,8 @@ void main() {
           final index = _decodeJsonObject('assets/content/about/index.json');
           (index['items'] as List<Object?>).add(
             <String, Object?>{
-              'slug': 'about_me_copy',
-              'title': 'About Me Copy',
               'file': 'about_me.json',
-              'source_path': 'sources_of_truth/about_me.md',
+              'order': 1,
             },
           );
           assets['assets/content/about/index.json'] = jsonEncode(index);
@@ -295,10 +392,8 @@ void main() {
           final index = _decodeJsonObject('assets/content/resume/index.json');
           (index['items'] as List<Object?>).add(
             <String, Object?>{
-              'slug': 'resume_copy',
-              'title': 'Resume Copy',
               'file': 'resume.json',
-              'source_path': 'sources_of_truth/master_resume.md',
+              'order': 1,
             },
           );
           assets['assets/content/resume/index.json'] = jsonEncode(index);

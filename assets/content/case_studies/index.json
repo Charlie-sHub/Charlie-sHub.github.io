@@ -1,39 +1,19 @@
 {
   "items": [
     {
-      "slug": "cutting_edge",
-      "title": "Cutting Edge [C0029]",
-      "file": "cutting_edge.json",
-      "source_path": "security/case_studies/cutting_edge_case_study.md",
-      "incident_code": "C0029"
+      "file": "cutting_edge.json"
     },
     {
-      "slug": "data_exfiltration_via_agent_tools",
-      "title": "Data Exfiltration via Agent Tools in Copilot Studio [AML.CS0037]",
-      "file": "data_exfiltration_via_agent_tools.json",
-      "source_path": "security/case_studies/data_exfiltration_via_agent_tools_case_study.md",
-      "incident_code": "AML.CS0037"
+      "file": "data_exfiltration_via_agent_tools.json"
     },
     {
-      "slug": "frankenstein",
-      "title": "Frankenstein [C0001]",
-      "file": "frankenstein.json",
-      "source_path": "security/case_studies/frankenstein_case_study.md",
-      "incident_code": "C0001"
+      "file": "frankenstein.json"
     },
     {
-      "slug": "notpetya",
-      "title": "NotPetya [S0368]",
-      "file": "notpetya.json",
-      "source_path": "security/case_studies/notpetya_case_study.md",
-      "incident_code": "S0368"
+      "file": "notpetya.json"
     },
     {
-      "slug": "nullifai",
-      "title": "nullifAI [AML.CS0031]",
-      "file": "nullifai.json",
-      "source_path": "security/case_studies/nullifai_case_study.md",
-      "incident_code": "AML.CS0031"
+      "file": "nullifai.json"
     }
   ]
 }

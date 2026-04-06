@@ -1,5 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/project_link.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
@@ -35,7 +35,7 @@ abstract class Project with _$Project {
     @Default(<AssetPath>[]) List<AssetPath> galleryImagePaths,
     NonEmptyText? securityAndQuality,
     @Default(<NonEmptyText>[]) List<NonEmptyText> lessons,
-    @Default(<ProjectLink>[]) List<ProjectLink> links,
+    @Default(<LinkReference>[]) List<LinkReference> links,
   }) = _Project;
   const Project._();
 

@@ -127,7 +127,11 @@ Preferred direction:
 - Flutter should load content and supporting assets from the repository in a Flutter-friendly way
 - new JSON content files should be addable without manual presentation-layer changes for each entry
 - content discovery should be automatic where practical
-- ordering and curation should be driven primarily by explicit metadata in the content itself, especially priority
+- ordering and curation should stay explicit and reviewable, while keeping each
+  content entry JSON authoritative for rich entry metadata
+- `assets/content/*/index.json` files should remain lightweight section
+  manifests used for discovery and small curation hints such as `file` and
+  optional `order`, not a parallel rich metadata layer
 - the system should support surfacing the most important items first without presentation-layer rewiring
 - supporting images and documents do not need to participate in the same structured parsing and validation flow as JSON content files
 - project image fields may remain optional so unfinished projects, including PAMi, do not require fake placeholders
@@ -152,7 +156,10 @@ Slug and asset-directory naming conventions:
 - examples of preferred slug or asset-directory naming include `world_on`, `security_plus`, and `google_cybersecurity`
 - do not use `kebab-case` for content slugs or slug-derived asset directory names
 
-Exact JSON schemas, final image field names, and final document field names remain intentionally open. They should be formalized later during normalization of source material and implementation, without overdesigning the final schemas too early.
+Exact JSON schemas, final image field names, and final document field names may
+still evolve. The current schema files under `schemas/` should nonetheless be
+treated as design-time contracts for the structured content shapes already in
+use, rather than as passive decoration.
 
 Schema evolution should preserve extensibility. New content types or schema refinements should not force broad presentation-layer rewrites where that can reasonably be avoided.
 
@@ -358,6 +365,10 @@ Preferred flow:
 Preferred implementation direction:
 - DTOs use `freezed` and JSON serialization and handle raw asset deserialization
 - initial domain entities and shared value objects should be informed by the actual schema files under `schemas/`, starting with the smallest durable set the current content structure clearly supports
+- schema files under `schemas/` should act as design-time contracts that stay
+  aligned with DTO expectations and domain vocabulary, even though runtime
+  loading still relies on DTO parsing and domain validation rather than generic
+  runtime schema validation
 - validation rules should stay in centralized pure validators and domain values used during DTO-to-domain mapping rather than being scattered through presentation, Cubits, or repositories
 - `dartz` at the validation boundary allows domain value objects to represent valid or invalid data explicitly
 - use value objects where validation or invariant protection adds real value, but avoid deeper domain machinery that does not clearly help static content
@@ -367,6 +378,13 @@ Preferred implementation direction:
 - string validation should prefer a small set of shared, reviewable rules; conservative max lengths may be derived from the current content with practical headroom rather than guessed tightly per field
 - malformed or invalid content should remain explicit during development rather than be silently normalized away
 - validation failures should remain distinct from broader loading or application failures
+- repository loads should still succeed when a DTO maps into a domain entity
+  that contains invalid fields, as long as the asset was found, decoded, and
+  deserialized successfully
+- invalid required display fields should remain field- or item-level validation
+  failures rather than automatically becoming global application failures
+- invalid optional fields should degrade locally and remain available for later
+  presentation fallback decisions rather than breaking the entire site load
 - content state should represent domain content plus explicit per-section results, an overall orchestration status, and an optional orchestration failure when loading is interrupted rather than mask invalid asset data
 - application state should not introduce a separate degraded status; local section failures should remain inside per-section `Either` results while top-level `loaded` still means orchestration completed
 - titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
@@ -374,7 +392,9 @@ Preferred implementation direction:
 - when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable
 - empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trustworthy production content
 - entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated in domain values and entities created during DTO-to-domain mapping
-- `assets/content/*/index.json` files may remain part of simpler loading or discovery concerns and do not need full domain entities unless later schema complexity clearly justifies them
+- `assets/content/*/index.json` files should be handled through a lightweight
+  manifest DTO or equivalent parsing boundary in `data`, and do not need full
+  domain entities unless later schema complexity clearly justifies them
 - presentation should still provide robust fallback handling for missing or failed content states, including local section failures, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
