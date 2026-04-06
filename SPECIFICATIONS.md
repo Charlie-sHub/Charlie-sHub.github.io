@@ -387,6 +387,9 @@ Preferred implementation direction:
   presentation fallback decisions rather than breaking the entire site load
 - content state should represent domain content plus explicit per-section results, an overall orchestration status, and an optional orchestration failure when loading is interrupted rather than mask invalid asset data
 - application state should not introduce a separate degraded status; local section failures should remain inside per-section `Either` results while top-level `loaded` still means orchestration completed
+- for multi-entry sections, section-level failures should be reserved for broader
+  problems such as manifest loading or manifest parsing, while individual entry
+  file failures may remain item-local inside a successful section result
 - titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
 - when absence is domain-meaningful, prefer explicit optionality such as `Option` over ambiguous nullability, but do not force it everywhere
 - when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable

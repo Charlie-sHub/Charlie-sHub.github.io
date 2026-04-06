@@ -8,6 +8,7 @@ import 'package:charlie_shub_portfolio/data/core/dtos/project_dto.dart';
 import 'package:charlie_shub_portfolio/data/core/dtos/resume_dto.dart';
 import 'package:charlie_shub_portfolio/data/core/dtos/section_manifest_dto.dart';
 import 'package:charlie_shub_portfolio/data/core/error/content_loading_exceptions.dart';
+import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_repository_interface.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
@@ -42,7 +43,7 @@ final class AssetContentRepository implements ContentRepositoryInterface {
   );
 
   @override
-  Future<Either<AppFailure, List<Project>>> loadProjects() => _runLoad(
+  Future<MultiEntrySectionLoad<Project>> loadProjects() => _runLoad(
     () => _loadSectionEntries<ProjectDto, Project>(
       sectionDirectory: 'projects',
       expectedType: ContentEntryType.project,
@@ -52,7 +53,7 @@ final class AssetContentRepository implements ContentRepositoryInterface {
   );
 
   @override
-  Future<Either<AppFailure, List<CaseStudy>>> loadCaseStudies() => _runLoad(
+  Future<MultiEntrySectionLoad<CaseStudy>> loadCaseStudies() => _runLoad(
     () => _loadSectionEntries<CaseStudyDto, CaseStudy>(
       sectionDirectory: 'case_studies',
       expectedType: ContentEntryType.caseStudy,
@@ -62,18 +63,17 @@ final class AssetContentRepository implements ContentRepositoryInterface {
   );
 
   @override
-  Future<Either<AppFailure, List<Certification>>> loadCertifications() =>
-      _runLoad(
-        () => _loadSectionEntries<CertificationDto, Certification>(
-          sectionDirectory: 'certifications',
-          expectedType: ContentEntryType.certificate,
-          parseDto: CertificationDto.fromJson,
-          mapToDomain: (dto) => dto.toDomain(),
-        ),
-      );
+  Future<MultiEntrySectionLoad<Certification>> loadCertifications() => _runLoad(
+    () => _loadSectionEntries<CertificationDto, Certification>(
+      sectionDirectory: 'certifications',
+      expectedType: ContentEntryType.certificate,
+      parseDto: CertificationDto.fromJson,
+      mapToDomain: (dto) => dto.toDomain(),
+    ),
+  );
 
   @override
-  Future<Either<AppFailure, List<Course>>> loadCourses() => _runLoad(
+  Future<MultiEntrySectionLoad<Course>> loadCourses() => _runLoad(
     () => _loadSectionEntries<CourseDto, Course>(
       sectionDirectory: 'courses',
       expectedType: ContentEntryType.course,
@@ -148,24 +148,26 @@ final class AssetContentRepository implements ContentRepositoryInterface {
 
   /// Loads every content file referenced by a section index, preserving the
   /// order declared by the lightweight section manifest.
-  Future<List<T>> _loadSectionEntries<TDto, T>({
+  Future<List<SectionItemLoad<T>>> _loadSectionEntries<TDto, T>({
     required String sectionDirectory,
     required ContentEntryType expectedType,
     required TDto Function(Map<String, dynamic> json) parseDto,
     required T Function(TDto dto) mapToDomain,
   }) async {
     final manifestItems = await _loadSectionManifestItems(sectionDirectory);
-    final items = <T>[];
+    final items = <SectionItemLoad<T>>[];
 
     for (final manifestItem in manifestItems) {
-      final item = await _loadSectionEntry<TDto, T>(
-        sectionDirectory: sectionDirectory,
-        fileName: manifestItem.file,
-        expectedType: expectedType,
-        parseDto: parseDto,
-        mapToDomain: mapToDomain,
+      final itemResult = await _runLoad<T>(
+        () => _loadSectionEntry<TDto, T>(
+          sectionDirectory: sectionDirectory,
+          fileName: manifestItem.file,
+          expectedType: expectedType,
+          parseDto: parseDto,
+          mapToDomain: mapToDomain,
+        ),
       );
-      items.add(item);
+      items.add(itemResult);
     }
 
     return items;

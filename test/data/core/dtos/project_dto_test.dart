@@ -28,14 +28,16 @@ void main() {
       );
 
       test(
-        'maps a project with optional media absent into empty or null '
-        'domain fields',
+        'accepts an explicit null end_date for an ongoing project and maps '
+        'optional media into empty or null domain fields',
         () {
           final json = loadJsonFixture('assets/content/projects/pami.json');
 
           final dto = ProjectDto.fromJson(json);
           final project = dto.toDomain();
 
+          expect(project.isValid, isTrue);
+          expect(project.endDate, isNull);
           expect(project.thumbnailPath, isNull);
           expect(project.heroImagePath, isNull);
           expect(project.galleryImagePaths, isEmpty);
@@ -75,6 +77,20 @@ void main() {
       );
 
       test(
+        'throws during JSON parsing when project meta omits the required '
+        'end_date key',
+        () {
+          final json = loadJsonFixture('assets/content/projects/pami.json');
+          (json['meta'] as Map<String, dynamic>).remove('end_date');
+
+          expect(
+            () => ProjectDto.fromJson(json),
+            throwsA(isA<CheckedFromJsonException>()),
+          );
+        },
+      );
+
+      test(
         'throws during JSON parsing when stack has the wrong type',
         () {
           final json = loadJsonFixture('assets/content/projects/pami.json');
@@ -85,6 +101,22 @@ void main() {
             () => ProjectDto.fromJson(json),
             throwsA(isA<CheckedFromJsonException>()),
           );
+        },
+      );
+
+      test(
+        'maps inverted project dates into an invalid domain object',
+        () {
+          final json = loadJsonFixture('assets/content/projects/pami.json');
+          final meta = json['meta'] as Map<String, dynamic>;
+          meta['is_ongoing'] = false;
+          meta['end_date'] = '2024-11';
+
+          final dto = ProjectDto.fromJson(json);
+          final project = dto.toDomain();
+
+          expect(project.isValid, isFalse);
+          expect(project.failureOption.isSome(), isTrue);
         },
       );
 

@@ -43,7 +43,7 @@
       "type": "string",
       "format": "uri",
       "maxLength": 2048,
-      "pattern": "^[^\r\n]+$"
+      "pattern": "^[Hh][Tt][Tt][Pp][Ss]://[^\\r\\n]+$"
     },
     "document_asset_path": {
       "type": "string",

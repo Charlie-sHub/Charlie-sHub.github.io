@@ -46,6 +46,18 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
     required T failedValue,
   }) = InvalidYearMonth<T>;
 
+  const factory ValueFailure.endDatePrecedesStartDate({
+    required T failedValue,
+  }) = EndDatePrecedesStartDate<T>;
+
+  const factory ValueFailure.ongoingTimelineHasEndDate({
+    required T failedValue,
+  }) = OngoingTimelineHasEndDate<T>;
+
+  const factory ValueFailure.completedTimelineMissingEndDate({
+    required T failedValue,
+  }) = CompletedTimelineMissingEndDate<T>;
+
   const factory ValueFailure.invalidResumeLanguageProficiency({
     required T failedValue,
   }) = InvalidResumeLanguageProficiency<T>;
@@ -61,10 +73,16 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
           'item${minLength == 1 ? '' : 's'}.',
     InvalidSlug() =>
       'Slug must use snake_case with lowercase letters and numbers only.',
-    InvalidUrl() => 'URL must be a valid absolute URL.',
+    InvalidUrl() => 'URL must be a valid absolute https URL.',
     InvalidAssetPath() => 'Asset path must start with assets/media/.',
     InvalidDocumentPath() => 'Document path must start with assets/documents/.',
     InvalidYearMonth() => 'Date must use the YYYY-MM format.',
+    EndDatePrecedesStartDate() =>
+      'End date must not be earlier than start date.',
+    OngoingTimelineHasEndDate() =>
+      'Ongoing entries must not define an end date.',
+    CompletedTimelineMissingEndDate() =>
+      'Completed entries must define an end date.',
     InvalidResumeLanguageProficiency() =>
       'Resume language proficiency must match a supported value.',
   };

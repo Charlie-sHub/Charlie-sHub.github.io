@@ -78,6 +78,74 @@ void main() {
           expect(project.failureOption.isSome(), isTrue);
         },
       );
+
+      test(
+        'is invalid when an ongoing project defines an end date',
+        () {
+          final project = Project(
+            slug: Slug('pami'),
+            sourcePath: SingleLineText('projects/pami/project_notes.md'),
+            startDate: YearMonth('2024-12'),
+            endDate: YearMonth('2025-01'),
+            isOngoing: true,
+            title: Title('PAMi'),
+            summary: NonEmptyText('Location-aware exchange platform'),
+            roleAndScope: NonEmptyText('Engineering proof project'),
+            productContext: NonEmptyText('Nearby exchange platform'),
+            stack: <SingleLineText>[SingleLineText('Flutter and Dart')],
+            implementation: NonEmptyText('Layered architecture'),
+            outcomes: <NonEmptyText>[NonEmptyText('Good architecture proof')],
+          );
+
+          expect(project.isValid, isFalse);
+          expect(project.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
+        'is invalid when a completed project is missing an end date',
+        () {
+          final project = Project(
+            slug: Slug('pami'),
+            sourcePath: SingleLineText('projects/pami/project_notes.md'),
+            startDate: YearMonth('2024-12'),
+            isOngoing: false,
+            title: Title('PAMi'),
+            summary: NonEmptyText('Location-aware exchange platform'),
+            roleAndScope: NonEmptyText('Engineering proof project'),
+            productContext: NonEmptyText('Nearby exchange platform'),
+            stack: <SingleLineText>[SingleLineText('Flutter and Dart')],
+            implementation: NonEmptyText('Layered architecture'),
+            outcomes: <NonEmptyText>[NonEmptyText('Good architecture proof')],
+          );
+
+          expect(project.isValid, isFalse);
+          expect(project.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
+        'is invalid when the project end date is earlier than the start date',
+        () {
+          final project = Project(
+            slug: Slug('pami'),
+            sourcePath: SingleLineText('projects/pami/project_notes.md'),
+            startDate: YearMonth('2024-12'),
+            endDate: YearMonth('2024-11'),
+            isOngoing: false,
+            title: Title('PAMi'),
+            summary: NonEmptyText('Location-aware exchange platform'),
+            roleAndScope: NonEmptyText('Engineering proof project'),
+            productContext: NonEmptyText('Nearby exchange platform'),
+            stack: <SingleLineText>[SingleLineText('Flutter and Dart')],
+            implementation: NonEmptyText('Layered architecture'),
+            outcomes: <NonEmptyText>[NonEmptyText('Good architecture proof')],
+          );
+
+          expect(project.isValid, isFalse);
+          expect(project.failureOption.isSome(), isTrue);
+        },
+      );
     },
   );
 }

@@ -44,6 +44,62 @@ void main() {
           expect(item.failureOption.isSome(), isTrue);
         },
       );
+
+      test(
+        'is invalid when an ongoing role defines an end date',
+        () {
+          final item = ResumeExperienceItem(
+            title: Title('Software Developer'),
+            location: SingleLineText('Halifax, Canada'),
+            startDate: YearMonth('2021-06'),
+            endDate: YearMonth('2024-10'),
+            isOngoing: true,
+            highlights: <NonEmptyText>[
+              NonEmptyText('Built Flutter applications'),
+            ],
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
+        'is invalid when a completed role is missing an end date',
+        () {
+          final item = ResumeExperienceItem(
+            title: Title('Software Developer'),
+            location: SingleLineText('Halifax, Canada'),
+            startDate: YearMonth('2021-06'),
+            isOngoing: false,
+            highlights: <NonEmptyText>[
+              NonEmptyText('Built Flutter applications'),
+            ],
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
+        'is invalid when the role end date is earlier than the start date',
+        () {
+          final item = ResumeExperienceItem(
+            title: Title('Software Developer'),
+            location: SingleLineText('Halifax, Canada'),
+            startDate: YearMonth('2021-06'),
+            endDate: YearMonth('2021-05'),
+            isOngoing: false,
+            highlights: <NonEmptyText>[
+              NonEmptyText('Built Flutter applications'),
+            ],
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
     },
   );
 }

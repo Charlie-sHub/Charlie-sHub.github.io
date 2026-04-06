@@ -107,6 +107,37 @@ void main() {
           );
         },
       );
+
+      test(
+        'describes timeline validation failures clearly',
+        () {
+          const endDateBeforeStartDate =
+              ValueFailure<String>.endDatePrecedesStartDate(
+                failedValue: '2025-03->2025-02',
+              );
+          const ongoingTimelineHasEndDate =
+              ValueFailure<String>.ongoingTimelineHasEndDate(
+                failedValue: '2025-01->2025-02',
+              );
+          const completedTimelineMissingEndDate =
+              ValueFailure<String>.completedTimelineMissingEndDate(
+                failedValue: '2025-01',
+              );
+
+          expect(
+            endDateBeforeStartDate.message,
+            'End date must not be earlier than start date.',
+          );
+          expect(
+            ongoingTimelineHasEndDate.message,
+            'Ongoing entries must not define an end date.',
+          );
+          expect(
+            completedTimelineMissingEndDate.message,
+            'Completed entries must define an end date.',
+          );
+        },
+      );
     },
   );
 }

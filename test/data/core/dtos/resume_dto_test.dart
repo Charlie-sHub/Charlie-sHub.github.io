@@ -45,6 +45,66 @@ void main() {
       );
 
       test(
+        'accepts an explicit null end_date for an ongoing experience item',
+        () {
+          final json = loadJsonFixture('assets/content/resume/resume.json');
+          final content = json['content'] as Map<String, dynamic>;
+          final experienceItems =
+              content['professional_experience'] as List<dynamic>;
+          final firstExperienceItem =
+              experienceItems.first as Map<String, dynamic>;
+
+          firstExperienceItem['is_ongoing'] = true;
+          firstExperienceItem['end_date'] = null;
+
+          final dto = ResumeDto.fromJson(json);
+          final resume = dto.toDomain();
+
+          expect(resume.isValid, isTrue);
+          expect(resume.professionalExperience.first.endDate, isNull);
+        },
+      );
+
+      test(
+        'throws during JSON parsing when an experience item omits the '
+        'required end_date key',
+        () {
+          final json = loadJsonFixture('assets/content/resume/resume.json');
+          final content = json['content'] as Map<String, dynamic>;
+          final experienceItems =
+              content['professional_experience'] as List<dynamic>;
+          (experienceItems.first as Map<String, dynamic>).remove('end_date');
+
+          expect(
+            () => ResumeDto.fromJson(json),
+            throwsA(isA<CheckedFromJsonException>()),
+          );
+        },
+      );
+
+      test(
+        'maps an explicit null end_date for a completed experience item into '
+        'an invalid domain object',
+        () {
+          final json = loadJsonFixture('assets/content/resume/resume.json');
+          final content = json['content'] as Map<String, dynamic>;
+          final experienceItems =
+              content['professional_experience'] as List<dynamic>;
+          final firstExperienceItem =
+              experienceItems.first as Map<String, dynamic>;
+
+          firstExperienceItem['is_ongoing'] = false;
+          firstExperienceItem['end_date'] = null;
+
+          final dto = ResumeDto.fromJson(json);
+          final resume = dto.toDomain();
+
+          expect(resume.isValid, isFalse);
+          expect(resume.failureOption.isSome(), isTrue);
+        },
+      );
+
+      test(
         'accepts every schema-aligned proficiency value at the DTO boundary',
         () {
           for (final supportedValue

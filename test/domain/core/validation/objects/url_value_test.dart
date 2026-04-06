@@ -19,11 +19,34 @@ void main() {
       );
 
       test(
-        'keeps broader absolute uri support intact',
+        'rejects non-https absolute URI schemes',
         () {
           final url = UrlValue('mailto:hello@example.com');
 
-          expect(url.value, right('mailto:hello@example.com'));
+          expect(
+            url.value,
+            left(
+              const ValueFailure<String>.invalidUrl(
+                failedValue: 'mailto:hello@example.com',
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'rejects http urls when public content should use https',
+        () {
+          final url = UrlValue('http://example.com');
+
+          expect(
+            url.value,
+            left(
+              const ValueFailure<String>.invalidUrl(
+                failedValue: 'http://example.com',
+              ),
+            ),
+          );
         },
       );
 

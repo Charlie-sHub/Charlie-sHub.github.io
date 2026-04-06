@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
@@ -17,6 +18,10 @@ import 'package:dartz/dartz.dart';
 /// failures on individual fields or nested items so presentation can later
 /// decide how to degrade locally.
 ///
+/// For multi-entry sections, an outer `Right` means the section manifest loaded
+/// successfully. Individual entries inside that `Right` may still be `Left`
+/// item-level load failures.
+///
 /// A `Left` is reserved for broader load failures such as missing assets,
 /// malformed JSON, or DTO-deserialization problems represented by
 /// [AppFailure].
@@ -25,16 +30,16 @@ abstract class ContentRepositoryInterface {
   Future<Either<AppFailure, About>> loadAbout();
 
   /// Loads the project entries for the website.
-  Future<Either<AppFailure, List<Project>>> loadProjects();
+  Future<MultiEntrySectionLoad<Project>> loadProjects();
 
   /// Loads the security case study entries for the website.
-  Future<Either<AppFailure, List<CaseStudy>>> loadCaseStudies();
+  Future<MultiEntrySectionLoad<CaseStudy>> loadCaseStudies();
 
   /// Loads the certification entries for the website.
-  Future<Either<AppFailure, List<Certification>>> loadCertifications();
+  Future<MultiEntrySectionLoad<Certification>> loadCertifications();
 
   /// Loads the course entries for the website.
-  Future<Either<AppFailure, List<Course>>> loadCourses();
+  Future<MultiEntrySectionLoad<Course>> loadCourses();
 
   /// Loads the single resume entry for the website.
   Future<Either<AppFailure, Resume>> loadResume();

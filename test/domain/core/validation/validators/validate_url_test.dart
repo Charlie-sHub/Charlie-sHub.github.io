@@ -20,11 +20,29 @@ void main() {
       );
 
       test(
-        'keeps URL validation broad enough for non-http absolute URIs',
+        'rejects non-https absolute URI schemes',
         () {
           expect(
             validateUrl('mailto:hello@example.com'),
-            right('mailto:hello@example.com'),
+            left(
+              const ValueFailure<String>.invalidUrl(
+                failedValue: 'mailto:hello@example.com',
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'rejects http URLs when https is available in public content',
+        () {
+          expect(
+            validateUrl('http://example.com'),
+            left(
+              const ValueFailure<String>.invalidUrl(
+                failedValue: 'http://example.com',
+              ),
+            ),
           );
         },
       );

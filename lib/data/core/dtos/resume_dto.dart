@@ -157,7 +157,7 @@ abstract class ResumeExperienceItemDto with _$ResumeExperienceItemDto {
     String? organization,
     required String location,
     required String startDate,
-    String? endDate,
+    @JsonKey(required: true) String? endDate,
     required bool isOngoing,
     required List<String> highlights,
   }) = _ResumeExperienceItemDto;

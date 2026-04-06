@@ -46,6 +46,11 @@ abstract class Project with _$Project {
         sourcePath.failureOrNull,
         startDate.failureOrNull,
         endDate?.failureOrNull,
+        ongoingTimelineFailureOrNull(
+          startDate: startDate,
+          endDate: endDate,
+          isOngoing: isOngoing,
+        ),
         title.failureOrNull,
         summary.failureOrNull,
         thumbnailPath?.failureOrNull,

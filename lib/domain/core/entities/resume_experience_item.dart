@@ -32,6 +32,11 @@ abstract class ResumeExperienceItem with _$ResumeExperienceItem {
         location.failureOrNull,
         startDate.failureOrNull,
         endDate?.failureOrNull,
+        ongoingTimelineFailureOrNull(
+          startDate: startDate,
+          endDate: endDate,
+          isOngoing: isOngoing,
+        ),
         collectionFailureOrNull(highlights, minLength: 1),
         ...highlights.map((item) => item.failureOrNull),
       ]);

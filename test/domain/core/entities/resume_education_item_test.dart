@@ -40,6 +40,24 @@ void main() {
           expect(item.failureOption.isSome(), isTrue);
         },
       );
+
+      test(
+        'is invalid when the education end date is earlier than the start date',
+        () {
+          final item = ResumeEducationItem(
+            title: Title(
+              'Higher Technician in Multiplatform Application Development',
+            ),
+            institution: SingleLineText('CIFP Tartanga'),
+            location: SingleLineText('Erandio, Spain'),
+            startDate: YearMonth('2020-05'),
+            endDate: YearMonth('2018-09'),
+          );
+
+          expect(item.isValid, isFalse);
+          expect(item.failureOption.isSome(), isTrue);
+        },
+      );
     },
   );
 }

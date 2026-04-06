@@ -85,7 +85,7 @@ abstract class ProjectMetaJson with _$ProjectMetaJson {
     required String slug,
     required String sourcePath,
     required String startDate,
-    String? endDate,
+    @JsonKey(required: true) String? endDate,
     required bool isOngoing,
   }) = _ProjectMetaJson;
 

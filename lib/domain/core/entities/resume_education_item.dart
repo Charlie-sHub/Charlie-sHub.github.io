@@ -29,6 +29,10 @@ abstract class ResumeEducationItem with _$ResumeEducationItem {
         location.failureOrNull,
         startDate.failureOrNull,
         endDate.failureOrNull,
+        dateRangeFailureOrNull(
+          startDate: startDate,
+          endDate: endDate,
+        ),
       ]);
 
   /// Success when the entity is fully valid, otherwise the first failure.

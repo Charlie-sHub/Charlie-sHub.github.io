@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:charlie_shub_portfolio/data/content/asset_content_repository.dart';
+import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
@@ -48,10 +50,12 @@ void main() {
           final caseStudiesResult = await repository.loadCaseStudies();
           final certificationsResult = await repository.loadCertifications();
           final coursesResult = await repository.loadCourses();
-          final projects = _expectRight(projectsResult);
-          final caseStudies = _expectRight(caseStudiesResult);
-          final certifications = _expectRight(certificationsResult);
-          final courses = _expectRight(coursesResult);
+          final projects = _expectSuccessfulSectionItems(projectsResult);
+          final caseStudies = _expectSuccessfulSectionItems(caseStudiesResult);
+          final certifications = _expectSuccessfulSectionItems(
+            certificationsResult,
+          );
+          final courses = _expectSuccessfulSectionItems(coursesResult);
 
           expect(projectsResult.isRight(), isTrue);
           expect(caseStudiesResult.isRight(), isTrue);
@@ -111,7 +115,7 @@ void main() {
           );
 
           final projectsResult = await repository.loadProjects();
-          final projects = _expectRight(projectsResult);
+          final projects = _expectSuccessfulSectionItems(projectsResult);
 
           expect(
             projects.map((item) => item.slug.getOrCrash()).toList(),
@@ -133,7 +137,7 @@ void main() {
 
           expect(
             result,
-            left<AppFailure, List<dynamic>>(
+            left<AppFailure, List<SectionItemLoad<Project>>>(
               const AppFailure.assetNotFound(
                 path: 'assets/content/projects/index.json',
               ),
@@ -143,7 +147,7 @@ void main() {
       );
 
       test(
-        'maps a missing referenced entry file to assetNotFound',
+        'keeps valid sibling items when a referenced project file is missing',
         () async {
           final assets = _loadAllContentAssets();
           final index = _decodeJsonObject('assets/content/projects/index.json');
@@ -163,15 +167,18 @@ void main() {
           );
 
           final result = await repository.loadProjects();
+          final itemResults = _expectRight(result);
+          final validSibling = _expectRightItem(itemResults.last);
 
           expect(
-            result,
-            left<AppFailure, List<dynamic>>(
+            itemResults.first,
+            left<AppFailure, Project>(
               const AppFailure.assetNotFound(
                 path: 'assets/content/projects/missing_project.json',
               ),
             ),
           );
+          expect(validSibling.slug.getOrCrash(), 'world_on');
         },
       );
 
@@ -419,7 +426,8 @@ void main() {
       );
 
       test(
-        'maps wrong DTO shapes to contentLoadError',
+        'keeps valid sibling items when one project file has the wrong DTO '
+        'shape',
         () async {
           final assets = _loadAllContentAssets();
           final project = _decodeJsonObject('assets/content/projects/pami.json')
@@ -431,9 +439,11 @@ void main() {
           );
 
           final result = await repository.loadProjects();
+          final itemResults = _expectRight(result);
+          final validSibling = _expectRightItem(itemResults.last);
 
-          expect(result.isLeft(), isTrue);
-          result.fold((failure) {
+          expect(itemResults.first.isLeft(), isTrue);
+          itemResults.first.fold((failure) {
             expect(
               failure,
               isA<ContentLoadError>().having(
@@ -442,12 +452,14 @@ void main() {
                 'assets/content/projects/pami.json',
               ),
             );
-          }, (_) => fail('Expected a content load failure.'));
+          }, (_) => fail('Expected an item-level content load failure.'));
+          expect(validSibling.slug.getOrCrash(), 'world_on');
         },
       );
 
       test(
-        'maps wrong meta.type values to contentLoadError',
+        'keeps valid sibling items when one project file has the wrong '
+        'meta.type',
         () async {
           final assets = _loadAllContentAssets();
           final project = _decodeJsonObject(
@@ -465,9 +477,11 @@ void main() {
           );
 
           final result = await repository.loadProjects();
+          final itemResults = _expectRight(result);
+          final validSibling = _expectRightItem(itemResults.last);
 
-          expect(result.isLeft(), isTrue);
-          result.fold((failure) {
+          expect(itemResults.first.isLeft(), isTrue);
+          itemResults.first.fold((failure) {
             expect(
               failure,
               isA<ContentLoadError>().having(
@@ -476,7 +490,49 @@ void main() {
                 'assets/content/projects/pami.json',
               ),
             );
-          }, (_) => fail('Expected a content load failure.'));
+          }, (_) => fail('Expected an item-level content load failure.'));
+          expect(validSibling.slug.getOrCrash(), 'world_on');
+        },
+      );
+
+      test(
+        'keeps multi-entry section loads successful when an optional link is '
+        'invalid inside one project',
+        () async {
+          final assets = _loadAllContentAssets();
+          final project = _decodeJsonObject(
+            'assets/content/projects/pami.json',
+          );
+          final content = Map<String, dynamic>.from(
+            project['content'] as Map<Object?, Object?>,
+          );
+          final rawLinks = List<Object?>.from(
+            content['links'] as List<Object?>,
+          );
+          final rawFirstLink = rawLinks.first;
+
+          if (rawFirstLink is! Map<Object?, Object?>) {
+            fail('Expected the first project link to be a JSON object.');
+          }
+          final firstLink = Map<String, dynamic>.from(rawFirstLink);
+
+          firstLink['url'] = '/relative-url';
+          rawLinks[0] = firstLink;
+          content['links'] = rawLinks;
+          project['content'] = content;
+          assets['assets/content/projects/pami.json'] = jsonEncode(project);
+          final repository = AssetContentRepository(
+            assetBundle: _createAssetBundle(assets),
+          );
+
+          final result = await repository.loadProjects();
+          final itemResults = _expectRight(result);
+          final invalidProject = _expectRightItem(itemResults.first);
+          final validSibling = _expectRightItem(itemResults.last);
+
+          expect(result.isRight(), isTrue);
+          expect(invalidProject.isValid, isFalse);
+          expect(validSibling.isValid, isTrue);
         },
       );
 
@@ -538,6 +594,14 @@ void main() {
 }
 
 T _expectRight<T>(Either<AppFailure, T> result) => result.fold(
+  (failure) => throw StateError('$failure'),
+  (value) => value,
+);
+
+List<T> _expectSuccessfulSectionItems<T>(MultiEntrySectionLoad<T> result) =>
+    _expectRight(result).map(_expectRightItem).toList(growable: false);
+
+T _expectRightItem<T>(SectionItemLoad<T> result) => result.fold(
   (failure) => throw StateError('$failure'),
   (value) => value,
 );

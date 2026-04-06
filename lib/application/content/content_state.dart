@@ -1,4 +1,5 @@
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
+import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
@@ -17,6 +18,9 @@ part 'content_state.freezed.dart';
 /// `Left(AppFailure)` represents a broader loading failure for that section,
 /// while `Right(entity)` represents successfully loaded domain data that may
 /// still contain invalid fields for later local fallback handling.
+///
+/// For multi-entry sections, a successful outer `Right` may still contain
+/// item-local `Left(AppFailure)` values alongside successfully loaded items.
 @freezed
 abstract class ContentState with _$ContentState {
   /// Creates the content application state.
@@ -24,11 +28,10 @@ abstract class ContentState with _$ContentState {
     required ContentStatus status,
     required Option<AppFailure> failureOption,
     required Option<Either<AppFailure, About>> aboutOption,
-    required Option<Either<AppFailure, List<Project>>> projectsOption,
-    required Option<Either<AppFailure, List<CaseStudy>>> caseStudiesOption,
-    required Option<Either<AppFailure, List<Certification>>>
-    certificationsOption,
-    required Option<Either<AppFailure, List<Course>>> coursesOption,
+    required Option<MultiEntrySectionLoad<Project>> projectsOption,
+    required Option<MultiEntrySectionLoad<CaseStudy>> caseStudiesOption,
+    required Option<MultiEntrySectionLoad<Certification>> certificationsOption,
+    required Option<MultiEntrySectionLoad<Course>> coursesOption,
     required Option<Either<AppFailure, Resume>> resumeOption,
   }) = _ContentState;
 
