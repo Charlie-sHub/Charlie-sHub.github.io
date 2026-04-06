@@ -58,6 +58,7 @@ For tasks affecting presentation, layout, navigation, interaction, or styling:
 4. Keep style values centralized where practical rather than solving local issues with scattered literals.
 5. Do not treat provisional preferences or open decisions as settled through implementation.
 6. Treat any new reusable pattern, interaction model, or visual treatment as a clarification point and ask first.
+7. Legacy static-site files may remain at the repo root for migration or reference, but new website UI work should treat Flutter files under `lib/presentation/` and `web/` as the primary implementation path unless the task explicitly targets legacy artifacts.
 
 ---
 

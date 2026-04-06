@@ -44,10 +44,12 @@ Some legacy site code and assets also remain temporarily in the repository while
 
 The site is intended to surface the strongest proof quickly, while still allowing deeper exploration.
 
-Core content areas currently represented in `assets/content/` include:
+Core structured content areas currently represented under `assets/content/` are `about/`, `projects/`, `case_studies/`, `certifications/`, `courses/`, and `resume/`.
 
-- **Home**  
-  A clear introduction, areas of focus, and direct paths to projects, certifications, and contact details.
+These areas currently map to:
+
+- **About / Working Style**  
+  A concise explanation of how I approach architecture, maintainability, documentation, and the overlap between development and security.
 
 - **Projects**  
   Not just what was built, but why it mattered, how it was structured, what trade-offs were involved, and what was learned.
@@ -61,11 +63,10 @@ Core content areas currently represented in `assets/content/` include:
 - **Courses / Technical Learning**  
   Structured learning material that supports the portfolio's technical direction without being treated as a project or case study.
 
-- **About / Working Style**  
-  A concise explanation of how I approach architecture, maintainability, documentation, and the overlap between development and security.
-
 - **Resume**  
   Structured resume metadata under `assets/content/resume/`, with the downloadable CV PDF handled separately under `assets/documents/resume/`.
+
+The home page is currently a presentation-layer entry point composed from these sources rather than a dedicated `assets/content/home/` directory.
 
 ---
 
@@ -160,7 +161,7 @@ Preferred content flow:
 asset content -> DTO -> domain entity with potentially invalid fields -> state -> presentation
 ```
 
-This keeps raw public content separate from app-facing domain state. Domain entities may still carry explicit field failures until the loading or application layer decides how to surface them. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
+This keeps raw public content separate from app-facing domain state. Domain entities may still carry explicit field failures until presentation decides how to handle them locally. The data and application layers preserve that distinction rather than converting it into a global load failure. JSON remains the source of structured content, while images and PDFs are supporting assets referenced from JSON where appropriate.
 
 Schemas under `schemas/` act as design-time contracts for the structured JSON content. Runtime loading still relies on DTO parsing plus domain validation rather than generic runtime schema enforcement, and each `assets/content/*/index.json` file remains a lightweight section manifest rather than a second source of rich entry metadata.
 

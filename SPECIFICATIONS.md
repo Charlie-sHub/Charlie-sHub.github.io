@@ -217,6 +217,8 @@ The home section should communicate:
 - major technologies and strengths
 - clear paths toward projects, certifications, and contact/resume access
 
+At the current architecture stage, home should remain a presentation-layer composition of existing structured content sources rather than a dedicated `assets/content/home/` directory, unless a later specification update clearly justifies introducing one.
+
 ### 8.2 Projects
 Projects should not only show outcomes. They should explain:
 - what was built
@@ -369,6 +371,9 @@ Preferred implementation direction:
   aligned with DTO expectations and domain vocabulary, even though runtime
   loading still relies on DTO parsing and domain validation rather than generic
   runtime schema validation
+- public external links in structured content should be restricted to absolute
+  `https` URLs; other schemes, including `http`, are invalid unless this
+  specification is deliberately updated
 - validation rules should stay in centralized pure validators and domain values used during DTO-to-domain mapping rather than being scattered through presentation, Cubits, or repositories
 - `dartz` at the validation boundary allows domain value objects to represent valid or invalid data explicitly
 - use value objects where validation or invariant protection adds real value, but avoid deeper domain machinery that does not clearly help static content
@@ -392,12 +397,20 @@ Preferred implementation direction:
   file failures may remain item-local inside a successful section result
 - titles, labels, names, codes, URLs, and repository paths should remain single-line, while longer descriptive text may remain multiline where that improves clarity
 - when absence is domain-meaningful, prefer explicit optionality such as `Option` over ambiguous nullability, but do not force it everywhere
+- when a schema requires a nullable key, JSON authors should still provide the
+  key explicitly, and DTO parsing should reject omission so explicit `null`
+  remains distinct from missing data; this applies to required-but-nullable
+  fields such as `end_date`
 - when optional list fields do not gain clear meaning from distinguishing absent versus empty, collapsing them to empty collections in domain entities is acceptable
 - empty or default constructors may still exist for controlled UI or loading states, but invalid placeholder values must not be treated as trustworthy production content
 - entity-level validity aggregation may be used where it improves clarity, but exhaustive checks should remain concentrated in domain values and entities created during DTO-to-domain mapping
 - `assets/content/*/index.json` files should be handled through a lightweight
   manifest DTO or equivalent parsing boundary in `data`, and do not need full
   domain entities unless later schema complexity clearly justifies them
+- the initial full-site content load should be single-flight; while one
+  `loadAllContent` request is already in progress, additional calls should
+  reuse the in-flight work rather than start a second overlapping
+  orchestration, while a later call after completion may start a fresh load
 - presentation should still provide robust fallback handling for missing or failed content states, including local section failures, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
@@ -656,6 +669,10 @@ The following areas are expected to change as the project evolves:
 - detailed UI specification
 - section ordering
 - exact content schema and normalization rules
+- exact presentation rules for invalid optional fields, including when a field
+  should be omitted silently, when it should render with a local failure
+  widget, and how item-local `Left(AppFailure)` values inside otherwise
+  successful sections should be shown
 - how deep individual project breakdowns should go
 - whether a cleaner path-style routing model becomes worthwhile later
 - whether search and filtering become worthwhile later
