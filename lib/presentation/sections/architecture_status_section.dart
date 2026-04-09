@@ -1,7 +1,8 @@
+import 'package:charlie_shub_portfolio/presentation/widgets/core/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/section_panel.dart';
 import 'package:flutter/material.dart';
 
-/// Summary of the current project setup.
+/// Summary of the current presentation and content-loading setup.
 class ArchitectureStatusSection extends StatelessWidget {
   /// Creates the architecture summary section.
   const ArchitectureStatusSection({super.key});
@@ -10,19 +11,21 @@ class ArchitectureStatusSection extends StatelessWidget {
   Widget build(BuildContext context) => const SectionPanel(
     title: 'Current setup',
     children: [
-      Text(
-        'Flutter Web now runs from a small presentation scaffold.',
+      BodyText(
+        text: 'Flutter Web now renders the full portfolio content set.',
       ),
       SizedBox(height: 8),
-      Text(
-        'Schema-backed content, DTOs, and domain models with explicit '
-        'validation state are in '
-        'place for the structured content sections.',
+      BodyText(
+        text:
+            'Schema-backed content, DTOs, and validated domain models drive '
+            'the rendered sections through ContentCubit state.',
       ),
       SizedBox(height: 8),
-      Text(
-        'Asset loading and Cubit-based application state are still to be '
-        'wired into the UI.',
+      BodyText(
+        text:
+            'Reusable presentation widgets still keep invalid fields, '
+            'collection failures, and section-level loading failures visible '
+            'instead of hiding them.',
       ),
     ],
   );

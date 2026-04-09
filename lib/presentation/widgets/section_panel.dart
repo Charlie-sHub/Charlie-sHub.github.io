@@ -1,6 +1,8 @@
+import 'package:charlie_shub_portfolio/presentation/widgets/core/section_container.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/core/text_widgets.dart';
 import 'package:flutter/material.dart';
 
-/// Shared surface for simple page sections.
+/// Shared surface for simple non-content-driven page sections.
 class SectionPanel extends StatelessWidget {
   /// Creates a section panel.
   const SectionPanel({
@@ -16,27 +18,10 @@ class SectionPanel extends StatelessWidget {
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(24),
-        color: colorScheme.surface,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: textTheme.headlineSmall),
-            const SizedBox(height: 12),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SectionContainer(
+    heading: SectionHeadingText(
+      text: title,
+    ),
+    children: children,
+  );
 }

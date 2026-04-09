@@ -48,6 +48,19 @@ If the spec leaves something intentionally open, choose the smallest reasonable 
 
 ---
 
+## Tooling commands
+
+This repository uses FVM for Flutter SDK version management.
+
+When running Flutter or Dart commands for this repository:
+- prefer `fvm flutter ...` over `flutter ...`
+- prefer `fvm dart ...` over `dart ...`
+- treat `.fvmrc` as the source of truth for the expected SDK version
+
+Do not assume the globally active `flutter` or `dart` binary matches the version required by this repository.
+
+---
+
 ## Before changing UI code
 
 For tasks affecting presentation, layout, navigation, interaction, or styling:
