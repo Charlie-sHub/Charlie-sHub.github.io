@@ -28,6 +28,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/content/
-    - assets/media/
-    - assets/documents/
+    # Flutter only bundles direct files from listed directories, so these
+    # entries point at the leaf folders that actually contain repo assets.
+    - assets/content/about/
+    - assets/content/case_studies/
+    - assets/content/certifications/
+    - assets/content/courses/
+    - assets/content/projects/
+    - assets/content/resume/
+    - assets/media/content/projects/world_on/
+    - assets/documents/certifications/
+    - assets/documents/resume/
