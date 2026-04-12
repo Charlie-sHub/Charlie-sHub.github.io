@@ -15,14 +15,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Widget buildPresentationTestApp(Widget child) => MaterialApp(
+Widget buildPresentationTestApp(
+  Widget child, {
+  double width = 960,
+}) => MaterialApp(
   theme: buildAppTheme(),
   home: Scaffold(
     body: SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: SizedBox(
-          width: 960,
+          width: width,
           child: child,
         ),
       ),
@@ -34,6 +37,7 @@ Future<TestContentCubit> pumpWithContentState(
   WidgetTester tester, {
   required Widget child,
   required ContentState state,
+  double width = 960,
 }) async {
   final cubit = TestContentCubit()..emitState(state);
   addTearDown(cubit.close);
@@ -41,7 +45,10 @@ Future<TestContentCubit> pumpWithContentState(
   await tester.pumpWidget(
     BlocProvider<ContentCubit>.value(
       value: cubit,
-      child: buildPresentationTestApp(child),
+      child: buildPresentationTestApp(
+        child,
+        width: width,
+      ),
     ),
   );
   await tester.pump();

@@ -78,7 +78,7 @@ void main() {
           expect(find.byType(FieldFailureWidget), findsNWidgets(3));
           expect(find.text('Building maintainable software.'), findsOneWidget);
           expect(find.text('A portfolio proof project.'), findsOneWidget);
-          expect(find.text('A security case study.'), findsOneWidget);
+          expect(find.text('A security case study.'), findsNWidgets(2));
         },
       );
 
@@ -139,10 +139,10 @@ void main() {
             ),
           );
 
-          expect(find.text('Security+'), findsOneWidget);
-          expect(find.text('Google Networking'), findsOneWidget);
-          expect(find.text('CompTIA'), findsOneWidget);
-          expect(find.text('Google'), findsOneWidget);
+          expect(find.text('Security+'), findsNWidgets(2));
+          expect(find.text('Google Networking'), findsNWidgets(2));
+          expect(find.text('CompTIA'), findsNWidgets(2));
+          expect(find.text('Google'), findsNWidgets(2));
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.text('Course proof'), findsOneWidget);
           expect(find.byType(MediaPlaceholder), findsNWidgets(4));

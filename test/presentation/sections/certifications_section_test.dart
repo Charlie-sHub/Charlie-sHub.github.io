@@ -8,12 +8,15 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart'
+    as content_title;
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/presentation/sections/certifications_section.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/feedback/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/feedback/field_failure_widget.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../application/content/content_test_entity_builders.dart';
@@ -51,12 +54,51 @@ void main() {
             ),
           );
 
-          expect(find.text('Security+'), findsOneWidget);
+          expect(find.text('Security+'), findsNWidgets(2));
           expect(find.text('A certification summary.'), findsOneWidget);
-          expect(find.text('CompTIA'), findsOneWidget);
+          expect(find.text('CompTIA'), findsNWidgets(2));
           expect(find.byType(MediaPlaceholder), findsNWidgets(2));
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'switches visible detail content when another entry is selected',
+        (tester) async {
+          final firstCertification = buildCertification();
+          final secondCertification = buildCertification().copyWith(
+            title: content_title.Title('Network+'),
+            summary: NonEmptyText('A second certification summary.'),
+            credentialDetails: buildCertification().credentialDetails.copyWith(
+              issuer: SingleLineText('Cisco'),
+            ),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const CertificationsSection(),
+            state: _certificationsState(
+              right(<SectionItemLoad<Certification>>[
+                right(firstCertification),
+                right(secondCertification),
+              ]),
+            ),
+          );
+
+          expect(find.text('A certification summary.'), findsOneWidget);
+          expect(find.text('A second certification summary.'), findsNothing);
+
+          await tester.tap(
+            find.byKey(const ValueKey<String>('entry-selector-item-1')),
+          );
+          await tester.pump();
+
+          expect(find.text('A certification summary.'), findsNothing);
+          expect(
+            find.text('A second certification summary.'),
+            findsOneWidget,
+          );
         },
       );
 
@@ -75,6 +117,35 @@ void main() {
 
           expect(find.byType(MediaPlaceholder), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'uses disclosure controls for long certification summaries',
+        (tester) async {
+          final certification = buildCertification().copyWith(
+            summary: NonEmptyText(_buildLongText()),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const CertificationsSection(),
+            state: _certificationsState(
+              right(<SectionItemLoad<Certification>>[
+                right(certification),
+              ]),
+            ),
+            width: 360,
+          );
+
+          expect(find.text('Read more'), findsOneWidget);
+          expect(find.text('Show less'), findsNothing);
+
+          await tester.tap(find.text('Read more'));
+          await tester.pump();
+
+          expect(find.text('Show less'), findsOneWidget);
+          expect(find.text('Read more'), findsNothing);
         },
       );
 
@@ -98,6 +169,37 @@ void main() {
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.byType(MediaPlaceholder), findsNothing);
           expect(find.text('A certification summary.'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'defaults to the first available valid entry when earlier items fail',
+        (tester) async {
+          final certification = buildCertification().copyWith(
+            summary: NonEmptyText('Selected valid certification.'),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const CertificationsSection(),
+            state: _certificationsState(
+              right(<SectionItemLoad<Certification>>[
+                const Left<AppFailure, Certification>(
+                  AppFailure.assetNotFound(
+                    path: 'assets/content/certifications/first_missing.json',
+                  ),
+                ),
+                right(certification),
+              ]),
+            ),
+          );
+
+          expect(find.text('Unavailable certification'), findsOneWidget);
+          expect(find.byType(AppFailureCard), findsNothing);
+          expect(
+            find.text('Selected valid certification.'),
+            findsOneWidget,
+          );
         },
       );
 
@@ -128,7 +230,35 @@ void main() {
       );
 
       testWidgets(
-        'renders item-level failures inline inside a successful section',
+        'renders selector label field failures explicitly',
+        (tester) async {
+          final certification = buildCertification().copyWith(
+            credentialDetails: buildCertification().credentialDetails.copyWith(
+              issuer: SingleLineText(''),
+            ),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const CertificationsSection(),
+            state: _certificationsState(
+              right(<SectionItemLoad<Certification>>[
+                right(certification),
+              ]),
+            ),
+          );
+
+          expect(
+            find.byType(FieldFailureWidget),
+            findsAtLeastNWidgets(2),
+          );
+          expect(find.text('A certification summary.'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'renders failure entries in the selector '
+        'and shows details when selected',
         (tester) async {
           await pumpWithContentState(
             tester,
@@ -144,6 +274,15 @@ void main() {
               ]),
             ),
           );
+
+          expect(find.text('Security+'), findsNWidgets(2));
+          expect(find.text('Unavailable certification'), findsOneWidget);
+          expect(find.byType(AppFailureCard), findsNothing);
+
+          await tester.tap(
+            find.byKey(const ValueKey<String>('entry-selector-item-1')),
+          );
+          await tester.pump();
 
           expect(find.text('Security+'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);
@@ -187,3 +326,8 @@ ContentState _certificationsState(
   status: ContentStatus.loaded,
   certificationsOption: some(certificationsLoad),
 );
+
+String _buildLongText() => List<String>.filled(
+  60,
+  'This certification summary is intentionally long for disclosure testing.',
+).join(' ');

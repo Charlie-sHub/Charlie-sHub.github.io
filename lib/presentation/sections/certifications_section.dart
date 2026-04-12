@@ -4,6 +4,10 @@ import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/entry_selector_labels.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/entry_selector_panel.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/expandable_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/validated_bullet_list.dart';
@@ -14,6 +18,7 @@ import 'package:charlie_shub_portfolio/presentation/widgets/core/content_card.da
 import 'package:charlie_shub_portfolio/presentation/widgets/core/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/core/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/feedback/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/feedback/field_failure_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,25 +63,18 @@ class CertificationsSection extends StatelessWidget {
             ),
           ];
         } else {
-          return _buildSectionItems(items);
+          return <Widget>[
+            EntrySelectorPanel<SectionItemLoad<Certification>>(
+              entries: items,
+              initialSelectedIndex: _preferredSelectedIndex(items),
+              labelBuilder: _buildSelectorLabel,
+              detailBuilder: (context, item) => _buildItem(item),
+            ),
+          ];
         }
       },
     ),
   );
-
-  List<Widget> _buildSectionItems(List<SectionItemLoad<Certification>> items) {
-    final widgets = <Widget>[];
-
-    for (var index = 0; index < items.length; index++) {
-      widgets.add(_buildItem(items[index]));
-
-      if (index < items.length - 1) {
-        widgets.add(const SizedBox(height: 16));
-      }
-    }
-
-    return widgets;
-  }
 
   Widget _buildItem(SectionItemLoad<Certification> item) => item.fold(
     (failure) => AppFailureCard(
@@ -87,6 +85,46 @@ class CertificationsSection extends StatelessWidget {
       certification: certification,
     ),
   );
+
+  Widget _buildSelectorLabel(
+    BuildContext context,
+    SectionItemLoad<Certification> item, {
+    required bool isSelected,
+  }) => item.fold(
+    (_) => UnavailableEntrySelectorLabel(
+      title: 'Unavailable certification',
+      isSelected: isSelected,
+    ),
+    (certification) => EntrySelectorLabel(
+      title: ValidatedText(
+        field: certification.title,
+        style: _selectorTitleStyle(context, isSelected),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: ValidatedText(
+        field: certification.credentialDetails.issuer,
+        style: Theme.of(context).textTheme.bodySmall,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    ),
+  );
+
+  int _preferredSelectedIndex(List<SectionItemLoad<Certification>> items) {
+    final successfulIndex = items.indexWhere((item) => item.isRight());
+
+    if (successfulIndex == -1) {
+      return 0;
+    }
+
+    return successfulIndex;
+  }
+
+  TextStyle? _selectorTitleStyle(BuildContext context, bool isSelected) =>
+      Theme.of(context).textTheme.titleSmall?.copyWith(
+        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+      );
 }
 
 class _CertificationCard extends StatelessWidget {
@@ -128,9 +166,9 @@ class _CertificationCard extends StatelessWidget {
             style: textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          ValidatedText(
-            field: certification.summary,
-            style: textTheme.bodyLarge,
+          _buildExpandableText(
+            certification.summary,
+            textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),
           MetadataRow(items: metadataItems),
@@ -201,4 +239,17 @@ class _CertificationCard extends StatelessWidget {
 
   static String _buildDocumentLabel(String value) =>
       'Certificate document available: ${value.split('/').last}';
+
+  Widget _buildExpandableText(
+    ValueObject<String> field,
+    TextStyle? style,
+  ) => field.value.fold(
+    (failure) => FieldFailureWidget(
+      failure: failure,
+    ),
+    (value) => ExpandableTextBlock(
+      text: value,
+      style: style,
+    ),
+  );
 }

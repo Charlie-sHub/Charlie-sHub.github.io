@@ -4,6 +4,8 @@ import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/expandable_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/tag_chip_list.dart';
@@ -15,6 +17,7 @@ import 'package:charlie_shub_portfolio/presentation/widgets/core/content_card.da
 import 'package:charlie_shub_portfolio/presentation/widgets/core/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/core/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/feedback/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/feedback/field_failure_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -110,9 +113,9 @@ class _ProjectCard extends StatelessWidget {
             style: textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          ValidatedText(
-            field: project.summary,
-            style: textTheme.bodyLarge,
+          _buildExpandableText(
+            project.summary,
+            textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),
           MetadataRow(
@@ -142,17 +145,17 @@ class _ProjectCard extends StatelessWidget {
           const SizedBox(height: 20),
           ContentBlock(
             title: 'Role and scope',
-            child: ValidatedText(
-              field: project.roleAndScope,
-              style: textTheme.bodyMedium,
+            child: _buildExpandableText(
+              project.roleAndScope,
+              textTheme.bodyMedium,
             ),
           ),
           const SizedBox(height: 16),
           ContentBlock(
             title: 'Product context',
-            child: ValidatedText(
-              field: project.productContext,
-              style: textTheme.bodyMedium,
+            child: _buildExpandableText(
+              project.productContext,
+              textTheme.bodyMedium,
             ),
           ),
           const SizedBox(height: 16),
@@ -169,9 +172,9 @@ class _ProjectCard extends StatelessWidget {
           const SizedBox(height: 16),
           ContentBlock(
             title: 'Implementation',
-            child: ValidatedText(
-              field: project.implementation,
-              style: textTheme.bodyMedium,
+            child: _buildExpandableText(
+              project.implementation,
+              textTheme.bodyMedium,
             ),
           ),
           const SizedBox(height: 16),
@@ -190,9 +193,9 @@ class _ProjectCard extends StatelessWidget {
             const SizedBox(height: 16),
             ContentBlock(
               title: 'Security and quality',
-              child: ValidatedText(
-                field: project.securityAndQuality!,
-                style: textTheme.bodyMedium,
+              child: _buildExpandableText(
+                project.securityAndQuality!,
+                textTheme.bodyMedium,
               ),
             ),
           ],
@@ -220,4 +223,17 @@ class _ProjectCard extends StatelessWidget {
 
   static String _buildHeroLabel(String value) =>
       'Project media available: ${value.split('/').last}';
+
+  Widget _buildExpandableText(
+    ValueObject<String> field,
+    TextStyle? style,
+  ) => field.value.fold(
+    (failure) => FieldFailureWidget(
+      failure: failure,
+    ),
+    (value) => ExpandableTextBlock(
+      text: value,
+      style: style,
+    ),
+  );
 }

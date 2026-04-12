@@ -8,6 +8,8 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_lin
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart'
     as content_title;
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/entry_selector_panel.dart';
+import 'package:charlie_shub_portfolio/presentation/widgets/content/expandable_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/widgets/content/labeled_tag_group_card.dart';
@@ -134,6 +136,33 @@ class WidgetShowcaseSection extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 16),
+            _ShowcaseWrap(
+              children: [
+                const _ExampleCard(
+                  title: 'ExpandableTextBlock',
+                  child: ExpandableTextBlock(
+                    text:
+                        'This mirrors long-form supporting content that should '
+                        'stay easy to scan on first pass while still allowing '
+                        'deeper technical detail to stay available inside the '
+                        'same entry without forcing a separate route or page.',
+                    collapsedMaxLines: 3,
+                  ),
+                ),
+                _ExampleCard(
+                  title: 'EntrySelectorPanel',
+                  child: EntrySelectorPanel<String>(
+                    entries: const ['Certification', 'Course', 'Case study'],
+                    labelBuilder: (context, entry, {required isSelected}) =>
+                        Text(entry),
+                    detailBuilder: (context, entry) => Text(
+                      'Selected detail: $entry',
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

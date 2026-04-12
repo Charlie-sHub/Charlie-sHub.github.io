@@ -510,8 +510,14 @@ Preferred direction:
 - top-level content easy to scan at a high level, with deeper detail available without making the first view dense
 - straightforward movement through content before introducing more state-driven patterns
 - progressive disclosure where it helps reveal technical depth gradually rather than placing everything at first glance
+- reusable progressive disclosure is approved for oversized entry content, for example through a neutral read-more or show-less text block pattern
 - expand or collapse patterns used selectively for deeper technical detail where they improve clarity
 - tabs, hidden panels, or similar patterns only where they clearly reduce clutter
+- a reusable entry selector or master-detail pattern is approved for dense multi-entry supporting sections where it materially improves scanning
+- the initial approved target sections for that selector pattern are certifications, courses, and case studies
+- for desktop and tablet layouts, the selector should sit to the left of the active entry content
+- for smaller screens, the selector should adapt to a simple responsive fallback rather than forcing a left-rail layout
+- strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity
 
 A cleaner path-style routing model can wait unless later needs justify the extra complexity.
@@ -520,8 +526,10 @@ Interaction should improve clarity, not compete with content.
 
 Avoid:
 - tab-heavy interaction models or more elaborate routing than the initial implementation needs
+- turning the site into a broadly tab-heavy or selector-heavy experience
 - clutter that weakens scanning and hierarchy
 - unnecessary friction between the reader and the underlying proof
+- hiding major project or flagship proof sections behind selector panels by default unless later density clearly justifies it
 - decorative interaction that distracts from technical substance
 - generic landing-page interaction patterns that weaken credibility
 - over-designed interaction patterns that obscure structure or proof
@@ -603,6 +611,16 @@ Clarification is required before implementation when a UI change would materiall
 
 Those decisions should be surfaced explicitly rather than settled accidentally through code.
 
+The following interaction directions are now approved and do not require separate clarification when implemented within their documented scope:
+
+- reusable progressive disclosure for oversized entry content
+- reusable entry selector or master-detail treatment for dense multi-entry supporting sections
+- desktop and tablet placement with the selector on the left and the active content on the right
+- a simple responsive fallback on smaller screens rather than a forced left-rail layout
+- initial approved target sections of certifications, courses, and case studies
+
+Outside that scope, clarification is still required before turning the selector pattern into a site-wide default or applying it to major flagship proof sections.
+
 ### 13.4 Initial UI composition baseline
 
 Initial UI implementation should start from a small reusable UI vocabulary rather than page-specific bespoke layouts.
@@ -615,11 +633,15 @@ Directional examples include:
 - certification or course card
 - metadata or tag row
 - detail expansion block
+- expandable text block
+- entry selector panel
 - CTA block
 - resume or download block
 - contact block
 
 These are directional examples rather than final component names. Prefer reusable patterns shared across sections where the underlying structure is similar.
+
+Reusable naming should stay neutral and flexible, for example `ExpandableTextBlock` or `EntrySelectorPanel`, rather than assuming a tab-only model.
 
 ---
 
@@ -697,7 +719,7 @@ The finished project should aim for:
 
 The following areas are expected to change as the project evolves:
 
-- detailed UX behavior and interaction decisions
+- detailed UX behavior and interaction decisions outside the approved progressive disclosure and dense-section selector patterns
 - detailed UI specification
 - section ordering
 - exact content schema and normalization rules
@@ -708,6 +730,8 @@ The following areas are expected to change as the project evolves:
 - how deep individual project breakdowns should go
 - whether a cleaner path-style routing model becomes worthwhile later
 - whether search and filtering become worthwhile later
+- the exact small-screen fallback variant for the approved entry selector pattern, so long as it remains a simple responsive adaptation rather than a forced left rail
+- whether additional supporting sections later justify the same selector pattern without weakening scanability
 - whether courses and case studies deserve separate navigation priority
 - whether any experimental features are actually worth implementing
 
