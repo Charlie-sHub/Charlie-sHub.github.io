@@ -33,10 +33,10 @@ class ValidatedBulletList extends StatelessWidget {
 
     final textColor =
         style?.color ?? Theme.of(context).textTheme.bodyMedium?.color;
-    final widgets = <Widget>[];
+    final children = <Widget>[];
 
     for (var index = 0; index < items.length; index++) {
-      widgets.add(
+      children.add(
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -65,13 +65,13 @@ class ValidatedBulletList extends StatelessWidget {
       );
 
       if (index < items.length - 1) {
-        widgets.add(const SizedBox(height: 10));
+        children.add(const SizedBox(height: 10));
       }
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widgets,
+      children: children,
     );
   }
 }

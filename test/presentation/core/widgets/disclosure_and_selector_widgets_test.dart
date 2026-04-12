@@ -1,7 +1,10 @@
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_text_block.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -91,6 +94,52 @@ void main() {
           );
 
           expect(contentText.maxLines, 2);
+          expect(find.text('Read more'), findsNothing);
+          expect(find.text('Show less'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ExpandableValueTextBlock',
+    () {
+      testWidgets(
+        'renders expandable validated content for a valid long-form field',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 220,
+              child: ExpandableValueTextBlock(
+                field: NonEmptyText(_buildLongText()),
+                collapsedMaxLines: 2,
+              ),
+            ),
+          );
+
+          expect(find.text('Read more'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+
+          await tester.tap(find.text('Read more'));
+          await tester.pump();
+
+          expect(find.text('Show less'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'renders a failure widget when the field is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 320,
+              child: ExpandableValueTextBlock(
+                field: NonEmptyText(''),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('Read more'), findsNothing);
           expect(find.text('Show less'), findsNothing);
         },

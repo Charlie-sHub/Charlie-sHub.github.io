@@ -36,11 +36,11 @@ class ExternalLinkList extends StatelessWidget {
       );
     }
 
-    final widgets = <Widget>[];
+    final children = <Widget>[];
 
     for (var index = 0; index < links.length; index++) {
       final link = links[index];
-      widgets.add(
+      children.add(
         ExternalLinkTile(
           linkReference: link,
           onTap: onLinkTap == null ? null : () => onLinkTap!(link),
@@ -49,13 +49,13 @@ class ExternalLinkList extends StatelessWidget {
       );
 
       if (index < links.length - 1) {
-        widgets.add(const SizedBox(height: 12));
+        children.add(const SizedBox(height: 12));
       }
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widgets,
+      children: children,
     );
   }
 }
