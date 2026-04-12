@@ -1,4 +1,4 @@
-import 'package:charlie_shub_portfolio/presentation/portfolio_app.dart';
+import 'package:charlie_shub_portfolio/presentation/core/app/portfolio_app.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

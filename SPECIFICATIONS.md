@@ -434,7 +434,7 @@ Testing guidance:
 - prefer tests that verify important logic and important UI behavior over exhaustive tests for every small widget
 
 ### 11.7 Presentation styling direction
-Styling-related files may live under `lib/presentation/theme/`.
+Styling-related files may live under `lib/presentation/core/theme/`.
 
 Centralize colors, typography assignments, styling tokens, and any later visual variants there or in closely related configuration so visual refinement does not require scattered edits.
 

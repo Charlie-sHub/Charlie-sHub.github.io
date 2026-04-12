@@ -1,0 +1,525 @@
+import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../presentation_test_helpers.dart';
+
+void main() {
+  group(
+    'ValidatedText',
+    () {
+      testWidgets(
+        'renders value when valid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedText(
+                field: Title('Expected value'),
+              ),
+            ),
+          );
+
+          expect(find.text('Expected value'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders failure widget when invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedText(
+                field: Title(''),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Expected value'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ValidatedPlaceholder',
+    () {
+      testWidgets(
+        'renders media placeholder when path is valid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedPlaceholder(
+                path: AssetPath(
+                  'assets/media/content/projects/pami/hero.png',
+                ),
+                labelBuilder: _heroLabelBuilder,
+              ),
+            ),
+          );
+
+          expect(find.byType(MediaPlaceholder), findsOneWidget);
+          expect(find.textContaining('hero.png'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders failure widget when path is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedPlaceholder(
+                path: AssetPath('invalid/path.png'),
+                labelBuilder: _heroLabelBuilder,
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.byType(MediaPlaceholder), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'TagChipList',
+    () {
+      testWidgets(
+        'renders all tags',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              TagChipList(
+                tags: [
+                  SingleLineText('Flutter'),
+                  SingleLineText('Firebase'),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Flutter'), findsOneWidget);
+          expect(find.text('Firebase'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'renders no chips for an empty list',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const TagChipList(tags: []),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsNothing);
+          expect(find.text('Flutter'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders failure widgets for invalid tags while preserving valid ones',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              TagChipList(
+                tags: [
+                  SingleLineText('Flutter'),
+                  SingleLineText(''),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Flutter'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'renders a collection failure instead of tags '
+        'when collection is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const TagChipList(
+                tags: [],
+                collectionFailure:
+                    ValueFailure<List<String>>.collectionTooShort(
+                      failedValue: <String>[],
+                      minLength: 1,
+                    ),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Flutter'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ValidatedBulletList',
+    () {
+      testWidgets(
+        'renders all validated items',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedBulletList(
+                items: [
+                  NonEmptyText('Structured delivery'),
+                  NonEmptyText('Security-aware implementation'),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Structured delivery'), findsOneWidget);
+          expect(
+            find.text('Security-aware implementation'),
+            findsOneWidget,
+          );
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders failure widgets for invalid entries while keeping valid items',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedBulletList(
+                items: [
+                  NonEmptyText('Structured delivery'),
+                  NonEmptyText(''),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Structured delivery'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'handles an empty list gracefully',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const ValidatedBulletList(items: []),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsNothing);
+          expect(find.text('Structured delivery'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders a collection failure instead of list items',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const ValidatedBulletList(
+                items: [],
+                collectionFailure:
+                    ValueFailure<List<String>>.collectionTooShort(
+                      failedValue: <String>[],
+                      minLength: 1,
+                    ),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Structured delivery'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ExternalLinkTile',
+    () {
+      testWidgets(
+        'renders label and triggers onTap callback',
+        (tester) async {
+          var tapped = false;
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ExternalLinkTile(
+                linkReference: LinkReference(
+                  label: SingleLineText('Repository'),
+                  url: UrlValue('https://example.com/project'),
+                ),
+                onTap: () => tapped = true,
+              ),
+            ),
+          );
+
+          await tester.tap(find.text('Repository'));
+
+          expect(find.text('Repository'), findsOneWidget);
+          expect(find.text('https://example.com/project'), findsOneWidget);
+          expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'renders a failure widget when the label is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ExternalLinkTile(
+                linkReference: LinkReference(
+                  label: SingleLineText(''),
+                  url: UrlValue('https://example.com/project'),
+                ),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Repository'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ExternalLinkList',
+    () {
+      testWidgets(
+        'renders multiple links and triggers callbacks for each item',
+        (tester) async {
+          final tappedLabels = <String>[];
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ExternalLinkList(
+                links: [
+                  LinkReference(
+                    label: SingleLineText('Repository'),
+                    url: UrlValue('https://example.com/project'),
+                  ),
+                  LinkReference(
+                    label: SingleLineText('Documentation'),
+                    url: UrlValue('https://example.com/docs'),
+                  ),
+                ],
+                onLinkTap: (link) {
+                  final label = link.label.getOrCrash();
+                  tappedLabels.add(label);
+                },
+              ),
+            ),
+          );
+
+          await tester.tap(find.text('Repository'));
+          await tester.pump();
+          await tester.tap(find.text('Documentation'));
+          await tester.pump();
+
+          expect(find.text('Repository'), findsOneWidget);
+          expect(find.text('Documentation'), findsOneWidget);
+          expect(tappedLabels, ['Repository', 'Documentation']);
+        },
+      );
+
+      testWidgets(
+        'handles an empty list gracefully',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const ExternalLinkList(links: []),
+            ),
+          );
+
+          expect(find.byType(ExternalLinkTile), findsNothing);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders a collection failure instead of links',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const ExternalLinkList(
+                links: [],
+                collectionFailure:
+                    ValueFailure<List<String>>.collectionTooShort(
+                      failedValue: <String>[],
+                      minLength: 1,
+                    ),
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.byType(ExternalLinkTile), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'MetadataRow',
+    () {
+      testWidgets(
+        'renders all provided metadata entries',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              MetadataRow(
+                items: [
+                  MetadataItemData(
+                    label: 'Issuer',
+                    value: SingleLineText('CompTIA'),
+                  ),
+                  MetadataItemData(
+                    label: 'Level',
+                    value: SingleLineText('Associate'),
+                  ),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Issuer'), findsOneWidget);
+          expect(find.text('CompTIA'), findsOneWidget);
+          expect(find.text('Level'), findsOneWidget);
+          expect(find.text('Associate'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'handles empty metadata gracefully',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const MetadataRow(items: []),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsNothing);
+          expect(find.text('Issuer'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders failure widgets for invalid values',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              MetadataRow(
+                items: [
+                  MetadataItemData(
+                    label: 'Issuer',
+                    value: SingleLineText(''),
+                  ),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+        },
+      );
+    },
+  );
+
+  group(
+    'LabeledTagGroupCard',
+    () {
+      testWidgets(
+        'renders the label and tags for valid content',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              LabeledTagGroupCard(
+                label: SingleLineText('Engineering'),
+                items: [
+                  SingleLineText('Flutter'),
+                  SingleLineText('Dart'),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Engineering'), findsOneWidget);
+          expect(find.text('Flutter'), findsOneWidget);
+          expect(find.text('Dart'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders label failures while preserving valid tags',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              LabeledTagGroupCard(
+                label: SingleLineText(''),
+                items: [
+                  SingleLineText('Flutter'),
+                ],
+              ),
+            ),
+          );
+
+          expect(find.text('Flutter'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'renders collection failures for invalid tag groups',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              LabeledTagGroupCard(
+                label: SingleLineText('Engineering'),
+                items: const [],
+                collectionFailure:
+                    const ValueFailure<List<String>>.collectionTooShort(
+                      failedValue: <String>[],
+                      minLength: 1,
+                    ),
+              ),
+            ),
+          );
+
+          expect(find.text('Engineering'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Flutter'), findsNothing);
+        },
+      );
+    },
+  );
+}
+
+String _heroLabelBuilder(String value) => 'Project media available: $value';
