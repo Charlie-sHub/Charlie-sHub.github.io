@@ -1,247 +1,119 @@
 # AGENTS.md
 
-## Purpose
+## Repo purpose
 
-This file tells coding agents how to operate safely in this repository.
+This repository contains a public portfolio website built with Flutter Web, along with its public-safe content, assets, tests, and repository documentation.
 
-It is **not** the main project specification.
-Before making changes, read `SPECIFICATIONS.md` and treat it as the primary source for project direction, constraints, architecture, and open decisions.
+Use this file for repo workflow, validation, edit discipline, and change safety. Use `SPECIFICATIONS.md` for product direction, architecture, scope, invariants, and open decisions.
 
-This file should stay focused on:
-- agent behavior
-- edit discipline
-- ambiguity handling
-- workflow rules
+## Source of truth
 
----
-
-## Primary references
-
-Check these sources in this order:
+Use repository sources in this order:
 
 1. direct user request
-2. `SPECIFICATIONS.md`
-3. existing repo code and structure
-4. `README.md`
+2. this `AGENTS.md` for how to work in the repo
+3. `SPECIFICATIONS.md` for what is true about the project
+4. relevant code, tests, schemas, assets, and content
+5. `README.md` for public-facing repository context
 
-Do not duplicate stable project direction here if it already belongs in `SPECIFICATIONS.md`.
-
----
-
-## Before making changes
-
-1. Read `SPECIFICATIONS.md` first.
-2. Extract only the parts relevant to the task.
-3. Check whether the request, current code, and repository docs agree.
-
-If you find a contradiction:
-- state it explicitly
+If these sources conflict:
+- state the contradiction clearly
 - do not guess
-- ask for clarification before making the change
+- ask before making a change that would settle the conflict
 
-Examples of contradiction:
-- the request conflicts with `SPECIFICATIONS.md`
-- the codebase has drifted from documented direction
-- the task would force a decision that the spec still marks as open
+If the spec leaves something open, choose the smallest reversible implementation that does not materially decide an open product, UX, UI, schema, or architecture question.
 
-If the spec leaves something intentionally open, choose the smallest reasonable and reversible implementation consistent with the current direction only when doing so does not materially decide an open UX, UI, schema, or architecture question.
+## Important paths
 
----
+- `SPECIFICATIONS.md`: canonical project direction, constraints, and open decisions
+- `README.md`: public introduction and usage context
+- `prompts/`: reusable task templates; keep them task-specific and let them defer to `AGENTS.md` for stable repo rules
+- `lib/presentation/`, `lib/application/`, `lib/domain/`, `lib/data/`: primary Flutter implementation layers
+- `assets/content/`: structured public content
+- `assets/media/` and `assets/documents/`: supporting public assets
+- `schemas/`: design-time contracts for structured content
+- `test/`: automated coverage
+- `web/` plus root legacy site files: migration or bootstrapping surfaces; do not treat them as the default target for new Flutter UI work unless the task explicitly calls for them
 
-## Tooling commands
+## Workflow
 
-This repository uses FVM for Flutter SDK version management.
+Before editing:
 
-When running Flutter or Dart commands for this repository:
-- prefer `fvm flutter ...` over `flutter ...`
-- prefer `fvm dart ...` over `dart ...`
-- treat `.fvmrc` as the source of truth for the expected SDK version
+1. Read the relevant `SPECIFICATIONS.md` sections for the touched area.
+2. Check the request, spec, and current implementation for agreement.
+3. Identify whether the task is implementing established direction or would settle an open or provisional decision.
 
-Do not assume the globally active `flutter` or `dart` binary matches the version required by this repository.
+Proceed with the smallest coherent change when the direction is already established. Pause and ask when the task would materially change project direction, architecture, schema rules, UX/UI behavior, public positioning, or documentation policy.
 
----
+## Tooling and validation
 
-## Before changing UI code
+This repo uses FVM. Treat `.fvmrc` as the Flutter SDK source of truth.
 
-For tasks affecting presentation, layout, navigation, interaction, or styling:
+When running Flutter or Dart commands:
+- prefer `fvm flutter ...`
+- prefer `fvm dart ...`
 
-1. Re-read the relevant UX, UI, styling, and AI-assisted sections in `SPECIFICATIONS.md`.
-2. Identify whether the task is implementing an established rule, a provisional preference, or an open decision as defined in `SPECIFICATIONS.md`.
-3. Reuse existing widgets, tokens, and patterns before creating new ones.
-4. Keep style values centralized where practical rather than solving local issues with scattered literals.
-5. Do not treat provisional preferences or open decisions as settled through implementation.
-6. Treat any new reusable pattern, interaction model, or visual treatment as a clarification point and ask first.
-7. If `SPECIFICATIONS.md` approves a reusable interaction pattern for only certain section types, keep that scope boundary intact instead of generalizing it into a site-wide default.
-8. Legacy static-site files may remain at the repo root for migration or reference, but new website UI work should treat Flutter files under `lib/presentation/` and `web/` as the primary implementation path unless the task explicitly targets legacy artifacts.
+Use the lightest validation that proves the change:
 
----
+- Interactive local run when needed: `fvm flutter run -d chrome` or another available web target
+- Docs or prompt-only changes: proofread the edited files and run `git diff --check`
+- Dart or Flutter code changes: run `fvm dart format <paths>`, `fvm flutter analyze`, and the relevant tests under `test/`
+- Changes to `freezed`, DTO, or generated-model surfaces: run `fvm dart run build_runner build --delete-conflicting-outputs`
+- Build verification when the task affects release output or explicitly asks for it: run `fvm flutter build web`
 
-## Editing rules
+If you cannot run a relevant validation step, say so in the final handoff.
+
+## Conventions and constraints
 
 - Make the smallest change that fully solves the task.
-- Do not perform unrelated refactors.
-- Do not add speculative features.
-- Do not introduce abstraction unless the current task clearly needs it.
-- Do not silently change project direction through implementation.
-- Prefer extending existing patterns already present in the repo over importing a new pattern casually.
+- Do not do unrelated refactors or add speculative features.
+- Prefer existing widgets, validators, tokens, patterns, and file structure before introducing new ones.
+- Keep styling values centralized when working in presentation code, especially under `lib/presentation/core/theme/` and shared presentation widgets.
+- Use descriptive names, keep constants centralized, and avoid scattered magic values.
+- Prefer `if (...) { ... } else { ... }` when it improves clarity. 
+- Avoid early-return chains.
+- Use `Option` and `Either` where the existing domain patterns already call for them.
+- Add comments only when the intent or constraint would otherwise be unclear.
+- Keep public-facing copy, comments, and docs professional, factual, and restrained. Do not overstate security claims.
+- Do not place secrets, tokens, or personal data in code, docs, fixtures, or examples.
 
-If a requested change would materially alter project direction, architecture, scope, or documentation policy, surface that first instead of quietly implementing it.
+For reusable documentation:
+- keep durable repo workflow guidance in `AGENTS.md`
+- keep product and architecture truth in `SPECIFICATIONS.md`
+- keep `README.md` user-facing
+- keep `prompts/` focused on task-specific instructions instead of restating repo policy
 
----
+## UI and architecture safety
 
-## Coding standards
+For presentation, layout, navigation, interaction, or styling work:
+- re-read the relevant UX, UI, styling, and AI-assisted sections in `SPECIFICATIONS.md`
+- reuse existing widgets and tokens before creating new reusable patterns
+- do not silently turn a provisional or open UI preference into a settled project rule
 
-- Use descriptive identifiers. Prefer clear names such as `messageController` over shortened names such as `msgCtrl`.
-- Prefer self-explanatory code. Add comments only when the intent, constraint, or non-obvious logic would not be clear from the code itself.
-- Prefer `if (...) { ... } else { ... }` when it improves clarity. Avoid early-return chains when they make the control flow harder to follow.
-- Use `Option` and `Either` for optional or failure paths where the repository’s existing patterns call for them.
-- Centralize configuration values, constants, enums, and shared tokens. Avoid scattered magic numbers and hardcoded values.
-- Do not place secrets, tokens, or personal data in code, logs, examples, fixtures, or documentation.
-- Use trailing commas consistently where valid and formatter-friendly. Omit them only when the language syntax or tooling would reject them.
+For architecture, schema, or content-model work:
+- keep changes aligned with the layered structure and content flow documented in `SPECIFICATIONS.md`
+- do not quietly redefine validation boundaries, schema expectations, or repo structure
 
----
+## Completion criteria
 
-## Implementation vs proposal rule
+A task is done when:
 
-Before changing code, determine whether the task is:
-- implementing existing documented direction
-- proposing a new direction not yet documented
+- the request, `AGENTS.md`, `SPECIFICATIONS.md`, and changed files agree for the edited scope
+- the diff is minimal, readable, and reviewable
+- generated files are updated when needed
+- relevant validation has been run, or any limitation has been stated clearly
+- no durable project decision is left living only in code when the spec should also be updated
 
-Use the decision status model in `SPECIFICATIONS.md` when making that distinction.
+## Change safety notes
 
-If the task is implementing existing direction, proceed with the smallest clear change consistent with the spec and current code patterns.
-
-If the task is proposing a new direction, or would materially settle an open or provisional point, surface that explicitly and ask before locking it in through code.
-
-Do not hide new project direction inside generated implementation.
-
----
-
-## Public-facing content rules
-
-This repository is public.
-Treat repository-visible code comments, docs, content structure, and copy as public-facing material.
-
-Keep public-facing writing:
-- clear
-- grounded
-- professional
-- practical
-
-Avoid:
-- internal-only planning language
-- manipulative audience-optimization language
-- inflated claims
-- sensitive details better kept outside the repo
-
-Do not drift into a stronger security identity than the documented evidence supports.
-
-### Portfolio framing guardrail
-
-For generated public-facing UI copy such as labels, summaries, and section descriptions:
-- keep development as the base
-- frame security as a real direction of growth, not a completed transformation
-- avoid inflated cybersecurity claims
-- prefer evidence-backed, restrained wording over branding-heavy language
-
----
-
-## Documentation discipline
-
-Keep the documents aligned, but do not duplicate them unnecessarily.
-
-Use them like this:
-- `SPECIFICATIONS.md`: project direction, constraints, architecture, open decisions
-- `README.md`: public repo introduction and usage context
-- `AGENTS.md`: agent operating instructions
-
-Update:
-- `SPECIFICATIONS.md` when durable project direction changes
-- `AGENTS.md` when agent workflow guidance changes
-- `README.md` when public-facing repo explanation or setup guidance changes
-
-If the information already belongs in `SPECIFICATIONS.md`, prefer updating that file rather than repeating it here.
-
----
-
-## Ambiguity handling
-
-Ask for clarification before changing code when:
-- the task conflicts with `SPECIFICATIONS.md`
-- multiple valid interpretations would lead to meaningfully different implementations
-- the task would lock in an open product, UX, UI, schema, or architecture decision
-- the safe public/private boundary is unclear
-
-If clarification is not strictly required, proceed with the least risky interpretation and keep the implementation easy to revise.
-
----
-
-## UI ambiguity rules
-
-For UI-related tasks, follow the decision status model in `SPECIFICATIONS.md` and ask for clarification before implementing if any of these are materially unclear:
-- page structure
-- section order
-- navigation pattern
-- disclosure pattern
-- whether a new component family is needed
-- visual hierarchy
-- motion or animation behavior
-- mobile-versus-desktop layout differences
-- whether a styling choice is local or project-wide
-
-Vague aesthetic language alone is not sufficient design direction.
-
----
-
-## Quality bar for changes
-
-Every change should aim to be:
-- scoped
-- understandable
-- maintainable
-- consistent with the repo’s documented direction
-- easy for a human maintainer to review
-
-AI assistance is allowed, but do not treat generated output as correct by default.
-Committed changes should be understandable and reviewable by a human.
-
----
-
-## Generated UI code quality rules
-
-Generated UI code should:
-- stay readable and reviewable
-- prefer small purpose-driven widgets over large monolithic build methods
-- avoid speculative abstraction
-- avoid duplicated styling logic where practical
-- preserve explicit content-to-UI flow
-- remain easy to test where behavior matters
-
-Generated UI should not:
-- add dependencies for superficial convenience
-- hardcode broad project-wide decisions into one page implementation
-- couple raw asset data directly to rendering in ways that bypass the intended validation flow
-
----
-
-## Closing open decisions
-
-If an approved change resolves an open or provisional direction in `SPECIFICATIONS.md`, update the specification in the same change when appropriate.
-
-Do not leave a durable project decision living only in generated implementation.
-
----
+- This is a public repository. Avoid internal-only planning language in public-facing files.
+- Do not move the repo-level `AGENTS.md` into `.codex/`.
+- Do not create extra workflow documents such as `PLANS.md` or `code_review.md` unless the user explicitly asks for them.
+- Do not remove legacy files, change documentation roles, or alter public positioning without clear instruction.
 
 ## Commit messages
 
 When asked to prepare a commit message:
 - inspect the staged diff first
-- write a short subject in past tense
-- keep it specific enough to describe the actual change
-- avoid vague or overly broad subjects
-
-Examples:
-- `Updated AGENTS guidance`
-- `Added content validation`
-- `Renamed theme tokens`
-- `Removed legacy assets`
+- use a short past-tense subject
+- keep it specific to the actual change

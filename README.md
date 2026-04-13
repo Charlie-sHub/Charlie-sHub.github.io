@@ -184,8 +184,10 @@ The README is intentionally lighter than the specification. It should help a pub
 Standard release build:
 
 ```bash
-flutter build web
+fvm flutter build web
 ```
+
+The repository uses FVM, with `.fvmrc` as the expected Flutter SDK version.
 
 ---
 
