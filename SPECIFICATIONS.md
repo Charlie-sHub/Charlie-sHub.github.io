@@ -146,7 +146,8 @@ Current structured content areas under `assets/content/` should reflect the repo
 - `resume/`
 
 Recommended supporting asset conventions:
-- UI or decorative imagery such as backgrounds, textures, and icons should live under `assets/media/ui/...`
+- UI or decorative imagery such as backgrounds, textures, and icons should normally live under `assets/media/ui/...`
+- the current first-pass app-shell wallpaper is an approved exception at `assets/media/background.jpg`
 - content-tied images such as project screenshots, thumbnails, hero images, and certification badges should live under `assets/media/content/<section>/<slug>/...`
 - downloadable PDFs such as certification PDFs and CV or resume PDFs should live under `assets/documents/<section>/...`
 
@@ -511,12 +512,15 @@ Preferred direction:
 - straightforward movement through content before introducing more state-driven patterns
 - progressive disclosure where it helps reveal technical depth gradually rather than placing everything at first glance
 - reusable progressive disclosure is approved for oversized entry content, for example through a neutral read-more or show-less text block pattern
+- dense entities may also use progressive disclosure at the overall entry or entity level rather than only inside isolated text fields when that improves scanning
 - expand or collapse patterns used selectively for deeper technical detail where they improve clarity
 - tabs, hidden panels, or similar patterns only where they clearly reduce clutter
 - a reusable entry selector or master-detail pattern is approved for dense multi-entry supporting sections where it materially improves scanning
-- the initial approved target sections for that selector pattern are certifications, courses, and case studies
+- the current approved target sections for that selector pattern are projects, certifications, courses, and case studies
 - for desktop and tablet layouts, the selector should sit to the left of the active entry content
 - for smaller screens, the selector should adapt to a simple responsive fallback rather than forcing a left-rail layout
+- link and download tiles should favor human-readable labels rather than raw URLs as the primary visible affordance
+- PDF-backed assets may show a small in-page preview, while full viewing or downloading should open in a new tab
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity
 
@@ -548,18 +552,32 @@ The intended visual direction is minimalist, elegant, and deliberate.
 
 Preferred characteristics:
 - a warm overall identity rather than generic tech styling
-- warm orange tones as part of the core palette direction
-- transparency and blur as intended signature elements, introduced progressively from a strong clean base
 - selective use of high-resolution landscape imagery as atmospheric texture where it supports mood and identity without adding visual noise
+- rounded corners that feel disciplined and a little sharper than the current softer direction
+
+The current first-pass theme direction is now established enough to guide implementation:
+- the first pass is light-theme only
+- do not add dark mode, `darkTheme`, or theme switching in this pass
+- the app shell should use `assets/media/background.jpg` as its first-pass wallpaper image
+- the wallpaper should remain fully visible; do not add a global shell overlay or tint layer
+- section titles may sit directly on the wallpaper and should rely on readable styling, such as shadow, rather than a shell overlay
+- the first-pass palette should be derived from that image, using `#1A2225`, `#0D4449`, `#A64C23`, and `#E6E6E4` as the current approved palette anchors
+- cool is the main functional accent and warm is the restrained emphasis accent
+- reusable surfaces should remain readable above the wallpaper; readability and scanability take priority over decorative effect
+- blur and transparency are approved for section-card surfaces rather than the full shell background
+- inner content surfaces should remain opaque or near-opaque where needed for reliable readability
+- CTA treatment should stay neutral in this pass rather than establishing a strong primary or secondary CTA family
 
 Color and typography should feel intentional, consistent, readable, and easy to evolve before decorative effects are layered in.
 
-Current preferred font direction:
-- `Geometria` as the main font candidate for body and interface text
-- `Moving Skate` as a sparse accent candidate for the author's name or similarly high-value moments
+Current first-pass font direction:
+- placeholder or default fonts remain acceptable until the intended fonts are integrated
+- `Geometria` is the intended main font for general content and UI
+- `Moving Skate` may be used for the author's name and similarly high-value accent moments only
+- a limited cursive-like accent role may be used as a temporary stand-in for `Moving Skate` only when it is easy, low-risk, and used very sparingly
 - monospace used selectively for technical accents, labels, metadata, or comparable supporting roles rather than as the default reading font
 
-These remain current preferences rather than fixed requirements. Placeholder fonts may be used during implementation, and final choices remain subject to availability, usability, and refinement.
+These choices are settled enough to guide first-pass implementation. Exact scale, weight tuning, fallback behavior, and later refinement remain subject to availability, usability, and iteration.
 
 Animation and visual effects should be restrained and purposeful.
 
@@ -568,9 +586,9 @@ Avoid:
 - interchangeable gradient-heavy tech styling
 - inconsistent font pairings or weak hierarchy
 - animation or visual effects that distract from content
-- blur, transparency, or imagery that reduce readability or scannability
+- wallpaper treatment, tinting, imagery, or later effects that reduce readability or scannability
 
-The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Exact palette values, typography settings, and effect intensity remain subject to refinement.
+The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Longer-term palette expansion, typography settings, and any later effect intensity remain subject to refinement.
 
 ### 13.2 AI-generated UI constraints
 
@@ -613,13 +631,13 @@ Those decisions should be surfaced explicitly rather than settled accidentally t
 
 The following interaction directions are now approved and do not require separate clarification when implemented within their documented scope:
 
-- reusable progressive disclosure for oversized entry content
+- reusable progressive disclosure for oversized entry content, including at the overall entry or entity level when that improves scanning
 - reusable entry selector or master-detail treatment for dense multi-entry supporting sections
 - desktop and tablet placement with the selector on the left and the active content on the right
 - a simple responsive fallback on smaller screens rather than a forced left-rail layout
-- initial approved target sections of certifications, courses, and case studies
+- current approved target sections of projects, certifications, courses, and case studies
 
-Outside that scope, clarification is still required before turning the selector pattern into a site-wide default or applying it to major flagship proof sections.
+Outside that scope, clarification is still required before turning the selector pattern into a site-wide default or extending it to additional flagship proof areas.
 
 ### 13.4 Initial UI composition baseline
 
@@ -627,6 +645,7 @@ Initial UI implementation should start from a small reusable UI vocabulary rathe
 
 Directional examples include:
 - app shell
+- profile or about summary widget
 - section container
 - section heading block
 - proof or project card
@@ -642,6 +661,14 @@ Directional examples include:
 These are directional examples rather than final component names. Prefer reusable patterns shared across sections where the underlying structure is similar.
 
 Reusable naming should stay neutral and flexible, for example `ExpandableTextBlock` or `EntrySelectorPanel`, rather than assuming a tab-only model.
+
+On wide layouts, a profile or about summary widget may sit near the top-left of the main content area and remain sticky while the primary content scrolls.
+
+On smaller screens, that summary should fall back to a normal top block rather than a sticky side treatment.
+
+A temporary widget showcase may remain as a quick theme-verification surface during the first pass. During active theme iteration it may temporarily sit at the top of the page for faster visual checking, but it should be clearly segregated from the real portfolio hierarchy, not treated as the intended deployed hierarchy or section priority, and removed before deployment.
+
+Current width, spacing, and breakpoint defaults remain provisional pending manual mobile review.
 
 ---
 
@@ -731,8 +758,13 @@ The following areas are expected to change as the project evolves:
 - whether a cleaner path-style routing model becomes worthwhile later
 - whether search and filtering become worthwhile later
 - the exact small-screen fallback variant for the approved entry selector pattern, so long as it remains a simple responsive adaptation rather than a forced left rail
+- the exact width, spacing rhythm, and breakpoint defaults after manual mobile review
 - whether additional supporting sections later justify the same selector pattern without weakening scanability
 - whether courses and case studies deserve separate navigation priority
+- whether any later theme variants, including dark mode, become worthwhile after the first-pass light theme is proven
+- the exact typography scale, weight discipline, and fallback handling once the intended font direction is implemented
+- the exact blur or transparency treatment for section-card surfaces after readability is validated in live layouts
+- whether a stronger CTA hierarchy becomes worthwhile after the base content hierarchy is validated
 - whether any experimental features are actually worth implementing
 
 Open items should be resolved progressively rather than guessed too early.

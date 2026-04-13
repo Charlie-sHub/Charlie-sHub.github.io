@@ -1,4 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class ValidatedPlaceholder extends StatelessWidget {
   const ValidatedPlaceholder({
     required this.path,
     required this.labelBuilder,
-    this.height = 180,
+    this.height = AppLayout.mediaPlaceholderHeight,
     this.icon = Icons.image_outlined,
     super.key,
   });

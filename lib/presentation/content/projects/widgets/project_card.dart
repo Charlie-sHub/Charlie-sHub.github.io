@@ -1,7 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
@@ -27,8 +27,10 @@ class ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return ContentCard(
-      child: Column(
+    return EntityDisclosureCard(
+      expandLabel: 'View project details',
+      collapseLabel: 'Hide project details',
+      preview: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ValidatedText(
@@ -36,9 +38,11 @@ class ProjectCard extends StatelessWidget {
             style: textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          ExpandableValueTextBlock(
+          ValidatedText(
             field: project.summary,
             style: textTheme.bodyLarge,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 16),
           MetadataRow(
@@ -58,14 +62,18 @@ class ProjectCard extends StatelessWidget {
             SizedBox(height: 12),
             SupportingText(text: 'In progress'),
           ],
+        ],
+      ),
+      details: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           if (project.heroImagePath != null) ...[
-            const SizedBox(height: 16),
             ValidatedPlaceholder(
               path: project.heroImagePath!,
               labelBuilder: _buildHeroLabel,
             ),
+            const SizedBox(height: 20),
           ],
-          const SizedBox(height: 20),
           ContentBlock(
             title: 'Role and scope',
             child: ExpandableValueTextBlock(

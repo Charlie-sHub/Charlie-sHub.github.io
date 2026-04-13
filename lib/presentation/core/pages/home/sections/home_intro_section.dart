@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,12 @@ class HomeIntroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const SectionPanel(
-    title: 'Charlie Shub',
+    title: 'Portfolio Overview',
     children: [
       HeadingText(
         text: 'Structured portfolio content with explicit validation.',
       ),
-      SizedBox(height: 12),
+      SizedBox(height: AppSpacing.size12),
       BodyText(
         text:
             'The current build renders validated portfolio content through a '

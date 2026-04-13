@@ -34,7 +34,7 @@ void main() {
     'ContentCard',
     () {
       testWidgets(
-        'renders child content',
+        'renders child content without section blur',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
@@ -45,6 +45,7 @@ void main() {
           );
 
           expect(find.text('Card content'), findsOneWidget);
+          expect(find.byType(BackdropFilter), findsNothing);
         },
       );
     },
@@ -54,7 +55,7 @@ void main() {
     'SectionContainer',
     () {
       testWidgets(
-        'renders heading and child content',
+        'renders heading and child content with a section surface blur',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
@@ -69,6 +70,7 @@ void main() {
 
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Section body'), findsOneWidget);
+          expect(find.byType(BackdropFilter), findsOneWidget);
         },
       );
     },

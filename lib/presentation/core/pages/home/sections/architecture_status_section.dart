@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,13 @@ class ArchitectureStatusSection extends StatelessWidget {
       BodyText(
         text: 'Flutter Web now renders the full portfolio content set.',
       ),
-      SizedBox(height: 8),
+      SizedBox(height: AppSpacing.size8),
       BodyText(
         text:
             'Schema-backed content, DTOs, and validated domain models drive '
             'the rendered sections through ContentCubit state.',
       ),
-      SizedBox(height: 8),
+      SizedBox(height: AppSpacing.size8),
       BodyText(
         text:
             'Reusable presentation widgets still keep invalid fields, '

@@ -1,6 +1,8 @@
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 
 /// Displays an application or content-loading failure inside a shared card.
@@ -23,15 +25,32 @@ class AppFailureCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ContentCard(
+      variant: AppSurfaceVariant.failure,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HeadingText(text: title),
-          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: colorScheme.error,
+              ),
+              const SizedBox(width: AppSpacing.size8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.heading(context)?.copyWith(
+                    color: colorScheme.error,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.size8),
           Text(
             failure.message,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: colorScheme.error,
+            style: AppTextStyles.bodyCompact(context)?.copyWith(
+              color: colorScheme.onErrorContainer,
             ),
           ),
         ],

@@ -5,6 +5,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.da
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
@@ -72,11 +73,9 @@ class CourseCard extends StatelessWidget {
           ],
           if (course.certificatePdfPath != null) ...[
             const SizedBox(height: 16),
-            ValidatedPlaceholder(
+            ValidatedPdfPreviewTile(
               path: course.certificatePdfPath!,
-              labelBuilder: _buildDocumentLabel,
-              height: 140,
-              icon: Icons.description_outlined,
+              title: 'Course PDF',
             ),
           ],
           const SizedBox(height: 20),
@@ -127,7 +126,4 @@ class CourseCard extends StatelessWidget {
 
   static String _buildBadgeLabel(String value) =>
       'Course media available: ${value.split('/').last}';
-
-  static String _buildDocumentLabel(String value) =>
-      'Course document available: ${value.split('/').last}';
 }

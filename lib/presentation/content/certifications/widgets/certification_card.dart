@@ -5,6 +5,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.da
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
@@ -68,11 +69,9 @@ class CertificationCard extends StatelessWidget {
           ],
           if (certification.certificatePdfPath != null) ...[
             const SizedBox(height: 16),
-            ValidatedPlaceholder(
+            ValidatedPdfPreviewTile(
               path: certification.certificatePdfPath!,
-              labelBuilder: _buildDocumentLabel,
-              height: 140,
-              icon: Icons.description_outlined,
+              title: 'Certificate PDF',
             ),
           ],
           const SizedBox(height: 20),
@@ -123,7 +122,4 @@ class CertificationCard extends StatelessWidget {
 
   static String _buildBadgeLabel(String value) =>
       'Certification media available: ${value.split('/').last}';
-
-  static String _buildDocumentLabel(String value) =>
-      'Certificate document available: ${value.split('/').last}';
 }

@@ -6,12 +6,14 @@ import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
-import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart'
+    as content_title;
 import 'package:charlie_shub_portfolio/presentation/content/projects/projects_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../application/content/content_test_entity_builders.dart';
@@ -51,11 +53,52 @@ void main() {
           await tester.pumpAndSettle();
 
           expect(find.text('Loading project content...'), findsNothing);
-          expect(find.text('PAMi'), findsOneWidget);
-          expect(find.text('A portfolio proof project.'), findsOneWidget);
+          expect(find.text('PAMi'), findsNWidgets(2));
+          expect(find.text('A portfolio proof project.'), findsNWidgets(2));
+          expect(find.text('View project details'), findsOneWidget);
+          expect(find.text('Flutter'), findsNothing);
+          expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
+
+          expect(find.text('Hide project details'), findsOneWidget);
           expect(find.text('Flutter'), findsOneWidget);
           expect(find.byType(MediaPlaceholder), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'switches the selected project detail when another entry is chosen',
+        (tester) async {
+          final firstProject = buildProject();
+          final secondProject = buildProject().copyWith(
+            title: content_title.Title('Portfolio Shell'),
+            summary: NonEmptyText('A second portfolio project.'),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProjectsSection(),
+            state: _projectsState(
+              right(<SectionItemLoad<Project>>[
+                right(firstProject),
+                right(secondProject),
+              ]),
+            ),
+          );
+
+          expect(find.text('A portfolio proof project.'), findsNWidgets(2));
+          expect(find.text('A second portfolio project.'), findsOneWidget);
+
+          await tester.tap(
+            find.byKey(const ValueKey<String>('entry-selector-item-1')),
+          );
+          await tester.pump();
+
+          expect(find.text('A portfolio proof project.'), findsOneWidget);
+          expect(find.text('A second portfolio project.'), findsNWidgets(2));
         },
       );
 
@@ -63,7 +106,7 @@ void main() {
         'renders valid fields and failure widgets together for mixed content',
         (tester) async {
           final mixedProject = buildProject().copyWith(
-            title: Title(''),
+            title: content_title.Title(''),
             heroImagePath: AssetPath('invalid/path.png'),
           );
 
@@ -77,8 +120,13 @@ void main() {
             ),
           );
 
-          expect(find.text('A portfolio proof project.'), findsOneWidget);
+          expect(find.text('A portfolio proof project.'), findsNWidgets(2));
           expect(find.byType(FieldFailureWidget), findsNWidgets(2));
+
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
+
+          expect(find.byType(FieldFailureWidget), findsNWidgets(3));
         },
       );
 
@@ -100,6 +148,9 @@ void main() {
             ),
           );
 
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
+
           expect(find.byType(FieldFailureWidget), findsNWidgets(2));
           expect(find.text('Flutter'), findsNothing);
           expect(find.text('Delivered a maintainable baseline.'), findsNothing);
@@ -118,6 +169,9 @@ void main() {
               ]),
             ),
           );
+
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
 
           expect(find.byType(MediaPlaceholder), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
@@ -141,6 +195,15 @@ void main() {
               ]),
             ),
           );
+
+          expect(find.text('PAMi'), findsNWidgets(2));
+          expect(find.text('Unavailable project'), findsOneWidget);
+          expect(find.byType(AppFailureCard), findsNothing);
+
+          await tester.tap(
+            find.byKey(const ValueKey<String>('entry-selector-item-1')),
+          );
+          await tester.pump();
 
           expect(find.text('PAMi'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);

@@ -1,4 +1,8 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
@@ -10,7 +14,7 @@ class ExternalLinkTile extends StatelessWidget {
   const ExternalLinkTile({
     required this.linkReference,
     this.onTap,
-    this.showUrl = true,
+    this.showUrl = false,
     super.key,
   });
 
@@ -58,51 +62,42 @@ class _LinkTileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final resolvedOnTap = resolveOpenExternalResource(url, onTap: onTap);
 
-    final content = ContentCard(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 14,
-      ),
+    return ContentCard(
+      onTap: resolvedOnTap,
+      isLink: true,
+      padding: AppSpacing.externalLinkTilePadding,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeadingText(text: label),
-                if (showUrl) const SizedBox(height: 4),
+                if (showUrl) const SizedBox(height: AppSpacing.size4),
                 if (showUrl) SupportingText(text: url),
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          Icon(
-            Icons.open_in_new,
-            color: colorScheme.primary,
-            size: 18,
+          const SizedBox(width: AppSpacing.size12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Open link',
+                style: AppTextStyles.tag(context),
+              ),
+              const SizedBox(height: AppSpacing.size4),
+              Icon(
+                Icons.open_in_new,
+                color: colorScheme.primary,
+                size: AppLayout.externalLinkIndicatorIconSize,
+              ),
+            ],
           ),
         ],
-      ),
-    );
-
-    if (onTap == null) {
-      return Semantics(
-        link: true,
-        child: content,
-      );
-    }
-
-    return Semantics(
-      button: true,
-      link: true,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onTap,
-          child: content,
-        ),
       ),
     );
   }

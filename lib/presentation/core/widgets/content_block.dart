@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class ContentBlock extends StatelessWidget {
   const ContentBlock({
     required this.title,
     required this.child,
-    this.spacing = 8,
+    this.spacing = AppSpacing.size8,
     super.key,
   });
 

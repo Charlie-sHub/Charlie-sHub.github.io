@@ -59,10 +59,19 @@ void main() {
           expect(find.text('Cutting Edge'), findsNWidgets(2));
           expect(find.text('A security case study.'), findsOneWidget);
           expect(find.text('CE-2024-001'), findsNWidgets(2));
+          expect(find.text('View case study details'), findsOneWidget);
+          expect(find.text('ATLAS mapping'), findsNothing);
+          expect(find.text('Indicators'), findsNothing);
+          expect(find.text('Reference'), findsNothing);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+
+          await tester.tap(find.text('View case study details'));
+          await tester.pump();
+
+          expect(find.text('Hide case study details'), findsOneWidget);
           expect(find.text('ATLAS mapping'), findsOneWidget);
           expect(find.text('Indicators'), findsOneWidget);
           expect(find.text('Reference'), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
 
@@ -90,16 +99,16 @@ void main() {
             ),
           );
 
-          expect(find.text('Overview of the case.'), findsOneWidget);
-          expect(find.text('Overview of the second case.'), findsNothing);
+          expect(find.text('A security case study.'), findsOneWidget);
+          expect(find.text('A second security case study.'), findsNothing);
 
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
           await tester.pump();
 
-          expect(find.text('Overview of the case.'), findsNothing);
-          expect(find.text('Overview of the second case.'), findsOneWidget);
+          expect(find.text('A security case study.'), findsNothing);
+          expect(find.text('A second security case study.'), findsOneWidget);
         },
       );
 
@@ -122,14 +131,14 @@ void main() {
             width: 360,
           );
 
-          expect(find.text('Read more'), findsOneWidget);
-          expect(find.text('Show less'), findsNothing);
+          expect(find.text('View case study details'), findsOneWidget);
+          expect(find.text('Hide case study details'), findsNothing);
 
-          await tester.tap(find.text('Read more'));
+          await tester.tap(find.text('View case study details'));
           await tester.pump();
 
-          expect(find.text('Show less'), findsOneWidget);
-          expect(find.text('Read more'), findsNothing);
+          expect(find.text('Hide case study details'), findsOneWidget);
+          expect(find.text('View case study details'), findsNothing);
         },
       );
 
@@ -152,6 +161,10 @@ void main() {
           );
 
           expect(find.text('Cutting Edge'), findsNWidgets(2));
+          expect(find.byType(FieldFailureWidget), findsNothing);
+          await tester.tap(find.text('View case study details'));
+          await tester.pump();
+
           expect(find.byType(FieldFailureWidget), findsNWidgets(2));
           expect(find.text('Overview of the case.'), findsNothing);
         },

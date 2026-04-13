@@ -8,6 +8,7 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_lin
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart'
     as content_title;
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
@@ -18,6 +19,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_t
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
@@ -61,7 +63,7 @@ class WidgetShowcaseSection extends StatelessWidget {
               'Developer-only visual inspection surface. Remove this section '
               'after reviewing the reusable widget bank.',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.size20),
         _ShowcaseGroup(
           title: 'Text & Content',
           children: [
@@ -73,15 +75,15 @@ class WidgetShowcaseSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SectionHeadingText(text: 'Section heading example'),
-                      SizedBox(height: 12),
+                      SizedBox(height: AppSpacing.size12),
                       HeadingText(text: 'Heading example'),
-                      SizedBox(height: 8),
+                      SizedBox(height: AppSpacing.size8),
                       BodyText(
                         text:
                             'Long-form body copy for projects, about content, '
                             'and case-study explanations.',
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: AppSpacing.size8),
                       SupportingText(
                         text:
                             'Supporting copy for metadata, annotations, and '
@@ -96,13 +98,13 @@ class WidgetShowcaseSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SupportingText(text: 'Valid'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       ValidatedText(
                         field: content_title.Title('Realistic project title'),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Invalid'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       ValidatedText(
                         field: content_title.Title(''),
                       ),
@@ -111,7 +113,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             _ExampleCard(
               title: 'Heading + long-form body pattern',
               child: Column(
@@ -127,7 +129,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.size16),
                   ContentBlock(
                     title: 'Invalid long-form block',
                     child: ValidatedText(
@@ -137,7 +139,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             _ShowcaseWrap(
               children: [
                 const _ExampleCard(
@@ -166,7 +168,7 @@ class WidgetShowcaseSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.size16),
         _ShowcaseGroup(
           title: 'Lists & Tags',
           children: [
@@ -178,7 +180,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SupportingText(text: 'Valid'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       TagChipList(
                         tags: [
                           SingleLineText('Flutter'),
@@ -186,25 +188,25 @@ class WidgetShowcaseSection extends StatelessWidget {
                           SingleLineText('AppSec'),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Invalid item'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       TagChipList(
                         tags: [
                           SingleLineText('Flutter'),
                           SingleLineText(''),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Collection failure'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       const TagChipList(
                         tags: [],
                         collectionFailure: collectionFailure,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Empty'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       const TagChipList(tags: []),
                     ],
                   ),
@@ -215,39 +217,39 @@ class WidgetShowcaseSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SupportingText(text: 'Valid'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       ValidatedBulletList(
                         items: [
                           NonEmptyText('Structured delivery habits'),
                           NonEmptyText('Explicit validation boundaries'),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Invalid item'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       ValidatedBulletList(
                         items: [
                           NonEmptyText('Readable implementation notes'),
                           NonEmptyText(''),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Collection failure'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       const ValidatedBulletList(
                         items: [],
                         collectionFailure: collectionFailure,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const SupportingText(text: 'Empty'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       const ValidatedBulletList(items: []),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             _ShowcaseWrap(
               children: [
                 _ExampleCard(
@@ -263,7 +265,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           SingleLineText('Threat modeling'),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       LabeledTagGroupCard(
                         label: SingleLineText(''),
                         items: [
@@ -285,7 +287,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           SingleLineText('Responsive layouts'),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.size12),
                       LabeledTagGroupCard(
                         label: SingleLineText('Security growth'),
                         items: const [],
@@ -298,7 +300,7 @@ class WidgetShowcaseSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.size16),
         _ShowcaseGroup(
           title: 'Metadata & Links',
           children: [
@@ -325,7 +327,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       MetadataRow(
                         items: [
                           MetadataItemData(
@@ -334,7 +336,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       const MetadataRow(items: []),
                     ],
                   ),
@@ -352,7 +354,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       ExternalLinkTile(
                         linkReference: LinkReference(
                           label: SingleLineText(''),
@@ -366,26 +368,26 @@ class WidgetShowcaseSection extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             _ExampleCard(
               title: 'ExternalLinkList',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ExternalLinkList(links: realisticLinks),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.size16),
                   const ExternalLinkList(
                     links: [],
                     collectionFailure: collectionFailure,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.size16),
                   const ExternalLinkList(links: []),
                 ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.size16),
         _ShowcaseGroup(
           title: 'Media & Placeholders',
           children: [
@@ -402,7 +404,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                         ),
                         labelBuilder: _buildMediaLabel,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       ValidatedPlaceholder(
                         path: AssetPath('invalid/path.png'),
                         labelBuilder: _buildMediaLabel,
@@ -411,24 +413,20 @@ class WidgetShowcaseSection extends StatelessWidget {
                   ),
                 ),
                 _ExampleCard(
-                  title: 'Document placeholder',
+                  title: 'PDF preview tile',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ValidatedPlaceholder(
+                      ValidatedPdfPreviewTile(
                         path: DocumentPath(
                           'assets/documents/certifications/security_plus.pdf',
                         ),
-                        labelBuilder: _buildDocumentLabel,
-                        height: 140,
-                        icon: Icons.description_outlined,
+                        title: 'Certificate PDF',
                       ),
-                      const SizedBox(height: 16),
-                      ValidatedPlaceholder(
+                      const SizedBox(height: AppSpacing.size16),
+                      ValidatedPdfPreviewTile(
                         path: DocumentPath('invalid/document.pdf'),
-                        labelBuilder: _buildDocumentLabel,
-                        height: 140,
-                        icon: Icons.description_outlined,
+                        title: 'Certificate PDF',
                       ),
                     ],
                   ),
@@ -437,7 +435,7 @@ class WidgetShowcaseSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.size16),
         _ShowcaseGroup(
           title: 'Repeated Patterns',
           children: [
@@ -453,7 +451,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           'Security learning highlight',
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.size8),
                       ContentBlock(
                         title: 'Structure',
                         child: ValidatedText(
@@ -463,7 +461,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       MetadataRow(
                         items: [
                           MetadataItemData(
@@ -476,14 +474,14 @@ class WidgetShowcaseSection extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       ValidatedPlaceholder(
                         path: AssetPath(
                           'assets/media/content/courses/google_networking/badge.png',
                         ),
                         labelBuilder: _buildMediaLabel,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.size16),
                       ExternalLinkList(links: realisticLinks),
                     ],
                   ),
@@ -506,7 +504,7 @@ class WidgetShowcaseSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.size16),
         const _ShowcaseGroup(
           title: 'Failure States',
           children: [
@@ -532,7 +530,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppSpacing.size16),
             _ExampleCard(
               title: 'Collection-level failure examples',
               child: Column(
@@ -542,12 +540,12 @@ class WidgetShowcaseSection extends StatelessWidget {
                     tags: [],
                     collectionFailure: collectionFailure,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppSpacing.size16),
                   ValidatedBulletList(
                     items: [],
                     collectionFailure: collectionFailure,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppSpacing.size16),
                   ExternalLinkList(
                     links: [],
                     collectionFailure: collectionFailure,
@@ -563,9 +561,6 @@ class WidgetShowcaseSection extends StatelessWidget {
 
   static String _buildMediaLabel(String value) =>
       'Media available: ${value.split('/').last}';
-
-  static String _buildDocumentLabel(String value) =>
-      'Document available: ${value.split('/').last}';
 }
 
 class _ShowcaseGroup extends StatelessWidget {
@@ -580,7 +575,7 @@ class _ShowcaseGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ContentBlock(
     title: title,
-    spacing: 12,
+    spacing: AppSpacing.size12,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -597,8 +592,8 @@ class _ShowcaseWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Wrap(
-    spacing: 16,
-    runSpacing: 16,
+    spacing: AppSpacing.size16,
+    runSpacing: AppSpacing.size16,
     children: [
       for (final child in children)
         SizedBox(
@@ -622,7 +617,7 @@ class _ExampleCard extends StatelessWidget {
   Widget build(BuildContext context) => ContentCard(
     child: ContentBlock(
       title: title,
-      spacing: 12,
+      spacing: AppSpacing.size12,
       child: child,
     ),
   );

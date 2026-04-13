@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
@@ -96,6 +97,57 @@ void main() {
           expect(contentText.maxLines, 2);
           expect(find.text('Read more'), findsNothing);
           expect(find.text('Show less'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'EntityDisclosureCard',
+    () {
+      testWidgets(
+        'starts collapsed and reveals details when expanded',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 480,
+              child: const EntityDisclosureCard(
+                preview: Text('Preview content'),
+                details: Text('Detailed content'),
+              ),
+            ),
+          );
+
+          expect(find.text('Preview content'), findsOneWidget);
+          expect(find.text('Detailed content'), findsNothing);
+          expect(find.text('View details'), findsOneWidget);
+
+          await tester.tap(find.text('View details'));
+          await tester.pump();
+
+          expect(find.text('Detailed content'), findsOneWidget);
+          expect(find.text('Hide details'), findsOneWidget);
+          expect(find.text('View details'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders expanded content immediately when initiallyExpanded is true',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 480,
+              child: const EntityDisclosureCard(
+                preview: Text('Preview content'),
+                details: Text('Detailed content'),
+                initiallyExpanded: true,
+              ),
+            ),
+          );
+
+          expect(find.text('Preview content'), findsOneWidget);
+          expect(find.text('Detailed content'), findsOneWidget);
+          expect(find.text('Hide details'), findsOneWidget);
         },
       );
     },

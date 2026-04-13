@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class ExternalLinkList extends StatelessWidget {
     required this.links,
     this.collectionFailure,
     this.onLinkTap,
-    this.showUrls = true,
+    this.showUrls = false,
     super.key,
   });
 
@@ -49,7 +50,7 @@ class ExternalLinkList extends StatelessWidget {
       );
 
       if (index < links.length - 1) {
-        children.add(const SizedBox(height: 12));
+        children.add(const SizedBox(height: AppSpacing.size12));
       }
     }
 

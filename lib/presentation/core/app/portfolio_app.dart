@@ -31,7 +31,8 @@ class PortfolioApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: const PortfolioHomePage(),
             theme: buildAppTheme(),
-            title: 'Charlie Shub Portfolio',
+            themeMode: ThemeMode.light,
+            title: 'Carlos Mendez Portfolio',
           ),
         ),
       );

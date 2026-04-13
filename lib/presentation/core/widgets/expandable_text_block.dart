@@ -1,3 +1,5 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/disclosure_toggle_button.dart';
 import 'package:flutter/material.dart';
 
 /// Displays long-form text with a simple read-more or show-less control.
@@ -74,19 +76,13 @@ class _ExpandableTextBlockState extends State<ExpandableTextBlock> {
             textAlign: widget.textAlign,
           ),
           if (shouldShowToggle) ...[
-            const SizedBox(height: 8),
-            TextButton(
+            const SizedBox(height: AppSpacing.size8),
+            DisclosureToggleButton(
+              showIcon: false,
+              isExpanded: _isExpanded,
+              expandLabel: widget.readMoreLabel,
+              collapseLabel: widget.showLessLabel,
               onPressed: _toggleExpanded,
-              style: TextButton.styleFrom(
-                alignment: Alignment.centerLeft,
-                minimumSize: Size.zero,
-                padding: EdgeInsets.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                visualDensity: VisualDensity.compact,
-              ),
-              child: Text(
-                _isExpanded ? widget.showLessLabel : widget.readMoreLabel,
-              ),
             ),
           ],
         ],

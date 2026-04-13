@@ -1,7 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
@@ -25,8 +25,10 @@ class CaseStudyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return ContentCard(
-      child: Column(
+    return EntityDisclosureCard(
+      expandLabel: 'View case study details',
+      collapseLabel: 'Hide case study details',
+      preview: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ValidatedText(
@@ -34,9 +36,11 @@ class CaseStudyCard extends StatelessWidget {
             style: textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          ExpandableValueTextBlock(
+          ValidatedText(
             field: caseStudy.summary,
             style: textTheme.bodyLarge,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
           ),
           if (caseStudy.incidentCode != null) ...[
             const SizedBox(height: 16),
@@ -49,7 +53,11 @@ class CaseStudyCard extends StatelessWidget {
               ],
             ),
           ],
-          const SizedBox(height: 20),
+        ],
+      ),
+      details: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           ContentBlock(
             title: 'Incident overview',
             child: ExpandableValueTextBlock(

@@ -9,6 +9,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ Widget buildPresentationTestApp(
   home: Scaffold(
     body: SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: AppSpacing.pagePadding,
         child: SizedBox(
           width: width,
           child: child,

@@ -1,3 +1,7 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_radii.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +25,9 @@ class EntrySelectorPanel<T> extends StatefulWidget {
     required this.labelBuilder,
     required this.detailBuilder,
     this.initialSelectedIndex = 0,
-    this.compactBreakpoint = 720,
-    this.selectorWidth = 260,
-    this.gap = 16,
+    this.compactBreakpoint = AppLayout.entrySelectorCompactBreakpoint,
+    this.selectorWidth = AppLayout.entrySelectorWidth,
+    this.gap = AppSpacing.size16,
     super.key,
   });
 
@@ -135,7 +139,7 @@ class _EntrySelectorPanelState<T> extends State<EntrySelectorPanel<T>> {
 
     for (var index = 0; index < widget.entries.length; index++) {
       if (index > 0) {
-        children.add(const SizedBox(height: 8));
+        children.add(const SizedBox(height: AppSpacing.size8));
       }
 
       children.add(
@@ -153,7 +157,7 @@ class _EntrySelectorPanelState<T> extends State<EntrySelectorPanel<T>> {
     }
 
     return ContentCard(
-      padding: const EdgeInsets.all(12),
+      padding: AppSpacing.selectorPanelPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children,
@@ -188,7 +192,7 @@ class _EntrySelectorPanelState<T> extends State<EntrySelectorPanel<T>> {
   }
 }
 
-class _SelectorButton extends StatelessWidget {
+class _SelectorButton extends StatefulWidget {
   const _SelectorButton({
     required this.child,
     required this.isSelected,
@@ -201,36 +205,77 @@ class _SelectorButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+  State<_SelectorButton> createState() => _SelectorButtonState();
+}
 
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(16),
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isSelected
-                    ? colorScheme.primary
-                    : colorScheme.outlineVariant,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              color: isSelected
-                  ? colorScheme.primary.withValues(alpha: 0.08)
-                  : colorScheme.surface,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: child,
-            ),
+class _SelectorButtonState extends State<_SelectorButton> {
+  bool _isHovered = false;
+  bool _isFocused = false;
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    selected: widget.isSelected,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: widget.onPressed,
+        onHover: _handleHoverChanged,
+        onFocusChange: _handleFocusChanged,
+        onHighlightChanged: _handlePressedChanged,
+        borderRadius: AppRadii.selectorItem,
+        overlayColor: WidgetStatePropertyAll(
+          AppSurfaceStyles.stateLayerFor(
+            Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        child: AnimatedContainer(
+          duration: AppSurfaceStyles.transitionDuration,
+          curve: Curves.easeOutCubic,
+          decoration: AppSurfaceStyles.selectorDecoration(
+            context,
+            isSelected: widget.isSelected,
+            hovered: _isHovered,
+            focused: _isFocused,
+            pressed: _isPressed,
+          ),
+          child: Padding(
+            padding: AppSpacing.selectorButtonPadding,
+            child: widget.child,
           ),
         ),
       ),
-    );
+    ),
+  );
+
+  void _handleFocusChanged(bool isFocused) {
+    if (_isFocused == isFocused) {
+      return;
+    }
+
+    setState(() {
+      _isFocused = isFocused;
+    });
+  }
+
+  void _handleHoverChanged(bool isHovered) {
+    if (_isHovered == isHovered) {
+      return;
+    }
+
+    setState(() {
+      _isHovered = isHovered;
+    });
+  }
+
+  void _handlePressedChanged(bool isPressed) {
+    if (_isPressed == isPressed) {
+      return;
+    }
+
+    setState(() {
+      _isPressed = isPressed;
+    });
   }
 }

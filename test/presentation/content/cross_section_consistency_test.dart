@@ -21,6 +21,7 @@ import 'package:charlie_shub_portfolio/presentation/content/projects/projects_se
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,12 +73,21 @@ void main() {
             ),
           );
 
+          await tester.ensureVisible(find.text('View project details'));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
+          await tester.ensureVisible(find.text('View case study details'));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('View case study details'));
+          await tester.pump();
+
           expect(find.text('About'), findsOneWidget);
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Case Studies'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNWidgets(3));
           expect(find.text('Building maintainable software.'), findsOneWidget);
-          expect(find.text('A portfolio proof project.'), findsOneWidget);
+          expect(find.text('A portfolio proof project.'), findsNWidgets(2));
           expect(find.text('A security case study.'), findsNWidgets(2));
         },
       );
@@ -145,7 +155,8 @@ void main() {
           expect(find.text('Google'), findsNWidgets(2));
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.text('Course proof'), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsNWidgets(4));
+          expect(find.byType(MediaPlaceholder), findsNWidgets(2));
+          expect(find.byType(PdfPreviewTile), findsNWidgets(2));
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );

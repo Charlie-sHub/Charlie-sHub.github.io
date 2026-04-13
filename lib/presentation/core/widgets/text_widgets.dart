@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Renders a reusable section heading.
@@ -14,7 +15,7 @@ class SectionHeadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: Theme.of(context).textTheme.headlineSmall,
+    style: AppTextStyles.sectionHeading(context),
   );
 }
 
@@ -32,7 +33,7 @@ class HeadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: Theme.of(context).textTheme.titleMedium,
+    style: AppTextStyles.heading(context),
   );
 }
 
@@ -50,7 +51,7 @@ class BodyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: Theme.of(context).textTheme.bodyLarge,
+    style: AppTextStyles.body(context),
   );
 }
 
@@ -68,6 +69,6 @@ class SupportingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: Theme.of(context).textTheme.bodySmall,
+    style: AppTextStyles.supporting(context),
   );
 }

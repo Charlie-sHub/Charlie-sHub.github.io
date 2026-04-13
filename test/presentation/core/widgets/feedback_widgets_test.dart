@@ -28,6 +28,10 @@ void main() {
             find.text('Invalid content: String must not be empty.'),
             findsOneWidget,
           );
+          expect(
+            find.byIcon(Icons.report_gmailerrorred_outlined),
+            findsOneWidget,
+          );
         },
       );
 
@@ -97,6 +101,7 @@ void main() {
             ),
             findsOneWidget,
           );
+          expect(find.byIcon(Icons.error_outline), findsOneWidget);
           expect(find.text('Unrelated content'), findsNothing);
         },
       );

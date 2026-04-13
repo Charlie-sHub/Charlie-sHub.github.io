@@ -15,6 +15,7 @@ import 'package:charlie_shub_portfolio/presentation/content/certifications/certi
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,7 +58,8 @@ void main() {
           expect(find.text('Security+'), findsNWidgets(2));
           expect(find.text('A certification summary.'), findsOneWidget);
           expect(find.text('CompTIA'), findsNWidgets(2));
-          expect(find.byType(MediaPlaceholder), findsNWidgets(2));
+          expect(find.byType(MediaPlaceholder), findsOneWidget);
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
@@ -116,6 +118,7 @@ void main() {
           );
 
           expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(PdfPreviewTile), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
@@ -167,7 +170,7 @@ void main() {
           );
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(PdfPreviewTile), findsNothing);
           expect(find.text('A certification summary.'), findsOneWidget);
         },
       );

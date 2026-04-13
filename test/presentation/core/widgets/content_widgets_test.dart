@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
@@ -11,10 +12,12 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_w
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
+import 'package:flutter/material.dart' show Icons;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../presentation_test_helpers.dart';
@@ -281,10 +284,33 @@ void main() {
           );
 
           await tester.tap(find.text('Repository'));
+          await tester.pump();
+
+          expect(find.text('Repository'), findsOneWidget);
+          expect(find.text('Open link'), findsOneWidget);
+          expect(find.byIcon(Icons.open_in_new), findsOneWidget);
+          expect(find.text('https://example.com/project'), findsNothing);
+          expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'shows the URL when explicitly requested',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ExternalLinkTile(
+                linkReference: LinkReference(
+                  label: SingleLineText('Repository'),
+                  url: UrlValue('https://example.com/project'),
+                ),
+                showUrl: true,
+              ),
+            ),
+          );
 
           expect(find.text('Repository'), findsOneWidget);
           expect(find.text('https://example.com/project'), findsOneWidget);
-          expect(tapped, isTrue);
         },
       );
 
@@ -304,6 +330,57 @@ void main() {
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('Repository'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ValidatedPdfPreviewTile',
+    () {
+      testWidgets(
+        'renders a PDF preview tile and triggers the tap callback',
+        (tester) async {
+          var tapped = false;
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedPdfPreviewTile(
+                path: DocumentPath('assets/documents/resume/resume.pdf'),
+                title: 'Resume PDF',
+                onTap: () => tapped = true,
+              ),
+            ),
+          );
+
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
+          expect(find.text('Resume PDF'), findsOneWidget);
+          expect(find.text('resume.pdf'), findsOneWidget);
+          expect(find.text('Open PDF'), findsOneWidget);
+          expect(find.text('PDF preview'), findsOneWidget);
+          expect(find.byIcon(Icons.open_in_new), findsOneWidget);
+
+          await tester.tap(find.text('Resume PDF'));
+          await tester.pump();
+
+          expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'renders a failure widget when the document path is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedPdfPreviewTile(
+                path: DocumentPath('invalid/document.pdf'),
+                title: 'Resume PDF',
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.byType(PdfPreviewTile), findsNothing);
         },
       );
     },

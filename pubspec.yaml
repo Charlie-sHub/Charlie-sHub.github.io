@@ -36,6 +36,53 @@ flutter:
     - assets/content/courses/
     - assets/content/projects/
     - assets/content/resume/
+    - assets/media/background.jpg
     - assets/media/content/projects/world_on/
     - assets/documents/certifications/
     - assets/documents/resume/
+  fonts:
+    - family: Geometria
+      fonts:
+        - asset: assets/fonts/geometria/Geometria-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/geometria/Geometria-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/geometria/Geometria-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-Light.ttf
+          weight: 300
+        - asset: assets/fonts/geometria/Geometria-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/geometria/Geometria.ttf
+          weight: 400
+        - asset: assets/fonts/geometria/Geometria-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/geometria/Geometria-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/geometria/Geometria-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/geometria/Geometria-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/geometria/Geometria-Heavy.ttf
+          weight: 900
+        - asset: assets/fonts/geometria/Geometria-HeavyItalic.ttf
+          weight: 900
+          style: italic
+    - family: MovingSkate
+      fonts:
+        - asset: assets/fonts/moving_skate/Moving Skate.ttf

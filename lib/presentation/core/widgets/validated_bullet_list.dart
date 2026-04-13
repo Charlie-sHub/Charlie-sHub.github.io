@@ -1,5 +1,8 @@
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +34,7 @@ class ValidatedBulletList extends StatelessWidget {
       );
     }
 
-    final textColor =
-        style?.color ?? Theme.of(context).textTheme.bodyMedium?.color;
+    final textColor = style?.color ?? AppTextStyles.bodyCompact(context)?.color;
     final children = <Widget>[];
 
     for (var index = 0; index < items.length; index++) {
@@ -41,13 +43,10 @@ class ValidatedBulletList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                top: 6,
-                right: 8,
-              ),
+              padding: AppSpacing.bulletMarkerPadding,
               child: Container(
-                width: 6,
-                height: 6,
+                width: AppLayout.bulletMarkerSize,
+                height: AppLayout.bulletMarkerSize,
                 decoration: BoxDecoration(
                   color: textColor,
                   shape: BoxShape.circle,
@@ -65,7 +64,7 @@ class ValidatedBulletList extends StatelessWidget {
       );
 
       if (index < items.length - 1) {
-        children.add(const SizedBox(height: 10));
+        children.add(const SizedBox(height: AppSpacing.size10));
       }
     }
 

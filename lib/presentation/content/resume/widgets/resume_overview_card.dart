@@ -1,9 +1,10 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 
@@ -30,26 +31,24 @@ class ResumeOverviewCard extends StatelessWidget {
             field: resume.name,
             style: textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: resume.location,
             style: textTheme.bodyMedium,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.size12),
           ValidatedText(
             field: resume.summary,
             style: textTheme.bodyLarge,
           ),
           if (resume.resumePdfPath != null) ...[
-            const SizedBox(height: 16),
-            ValidatedPlaceholder(
+            const SizedBox(height: AppSpacing.size16),
+            ValidatedPdfPreviewTile(
               path: resume.resumePdfPath!,
-              labelBuilder: _buildResumeLabel,
-              height: 140,
-              icon: Icons.description_outlined,
+              title: 'Resume PDF',
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Contact links',
             child: ExternalLinkList(
@@ -64,7 +63,4 @@ class ResumeOverviewCard extends StatelessWidget {
       ),
     );
   }
-
-  static String _buildResumeLabel(String value) =>
-      'Resume document available: ${value.split('/').last}';
 }

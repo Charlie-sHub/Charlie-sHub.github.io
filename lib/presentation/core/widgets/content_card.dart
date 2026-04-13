@@ -1,11 +1,18 @@
+import 'dart:ui';
+
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Provides a shared card-like surface for content blocks.
-class ContentCard extends StatelessWidget {
+class ContentCard extends StatefulWidget {
   /// Creates a content card.
   const ContentCard({
     required this.child,
-    this.padding = const EdgeInsets.all(20),
+    this.padding = AppSpacing.contentCardPadding,
+    this.onTap,
+    this.isLink = false,
+    this.variant = AppSurfaceVariant.solid,
     super.key,
   });
 
@@ -15,20 +22,115 @@ class ContentCard extends StatelessWidget {
   /// The internal padding applied to the card.
   final EdgeInsetsGeometry padding;
 
+  /// Optional tap handler for interactive card surfaces.
+  final VoidCallback? onTap;
+
+  /// Whether the interactive card represents a link target.
+  final bool isLink;
+
+  /// The shared surface treatment for this card.
+  final AppSurfaceVariant variant;
+
+  @override
+  State<ContentCard> createState() => _ContentCardState();
+}
+
+class _ContentCardState extends State<ContentCard> {
+  bool _isHovered = false;
+  bool _isFocused = false;
+  bool _isPressed = false;
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final radius = AppSurfaceStyles.radiusFor(widget.variant);
+    final content = ClipRRect(
+      borderRadius: radius,
+      child: _buildSurface(context),
+    );
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(20),
-        color: colorScheme.surface,
-      ),
-      child: Padding(
-        padding: padding,
-        child: child,
+    if (widget.onTap == null) {
+      return content;
+    }
+
+    return Semantics(
+      button: true,
+      link: widget.isLink,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: widget.onTap,
+          onHover: _handleHoverChanged,
+          onFocusChange: _handleFocusChanged,
+          onHighlightChanged: _handlePressedChanged,
+          borderRadius: radius,
+          overlayColor: WidgetStatePropertyAll(
+            AppSurfaceStyles.stateLayerFor(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          child: content,
+        ),
       ),
     );
+  }
+
+  Widget _buildSurface(BuildContext context) {
+    final surface = AnimatedContainer(
+      duration: AppSurfaceStyles.transitionDuration,
+      curve: Curves.easeOutCubic,
+      decoration: AppSurfaceStyles.cardDecoration(
+        context,
+        variant: widget.variant,
+        hovered: _isHovered,
+        focused: _isFocused,
+        pressed: _isPressed,
+      ),
+      child: Padding(
+        padding: widget.padding,
+        child: widget.child,
+      ),
+    );
+
+    if (widget.variant != AppSurfaceVariant.section) {
+      return surface;
+    }
+
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: AppSurfaceStyles.sectionBlurSigma,
+        sigmaY: AppSurfaceStyles.sectionBlurSigma,
+      ),
+      child: surface,
+    );
+  }
+
+  void _handleFocusChanged(bool isFocused) {
+    if (_isFocused == isFocused) {
+      return;
+    }
+
+    setState(() {
+      _isFocused = isFocused;
+    });
+  }
+
+  void _handleHoverChanged(bool isHovered) {
+    if (_isHovered == isHovered) {
+      return;
+    }
+
+    setState(() {
+      _isHovered = isHovered;
+    });
+  }
+
+  void _handlePressedChanged(bool isPressed) {
+    if (_isPressed == isPressed) {
+      return;
+    }
+
+    setState(() {
+      _isPressed = isPressed;
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Displays the primary and secondary content used in an entry selector item.
@@ -21,7 +23,7 @@ class EntrySelectorLabel extends StatelessWidget {
     children: [
       title,
       if (subtitle case final subtitle?) ...[
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.size4),
         subtitle,
       ],
     ],
@@ -49,24 +51,20 @@ class UnavailableEntrySelectorLabel extends StatelessWidget {
   final String message;
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: textTheme.titleSmall?.copyWith(
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-          ),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: AppTextStyles.selectorTitle(context)?.copyWith(
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
         ),
-        const SizedBox(height: 4),
-        Text(
-          message,
-          style: textTheme.bodySmall,
-        ),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: AppSpacing.size4),
+      Text(
+        message,
+        style: AppTextStyles.supporting(context),
+      ),
+    ],
+  );
 }

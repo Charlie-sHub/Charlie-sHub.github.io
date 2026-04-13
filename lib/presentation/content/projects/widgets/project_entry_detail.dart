@@ -4,10 +4,10 @@ import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/pro
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:flutter/material.dart';
 
-/// Renders one project entry while keeping item-level failures local.
-class ProjectSectionEntry extends StatelessWidget {
-  /// Creates a project section entry.
-  const ProjectSectionEntry({
+/// Renders one project entry while keeping item failures local.
+class ProjectEntryDetail extends StatelessWidget {
+  /// Creates a project entry detail widget.
+  const ProjectEntryDetail({
     required this.item,
     super.key,
   });

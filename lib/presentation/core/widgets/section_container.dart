@@ -1,3 +1,5 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:flutter/material.dart';
 
@@ -17,17 +19,34 @@ class SectionContainer extends StatelessWidget {
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) => ContentCard(
-    padding: const EdgeInsets.all(24),
-    child: Column(
+  Widget build(BuildContext context) {
+    final body = children.isEmpty
+        ? null
+        : ContentCard(
+            variant: AppSurfaceVariant.section,
+            padding: AppSpacing.sectionPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
+          );
+    final sectionChildren = <Widget>[];
+
+    if (heading != null) {
+      sectionChildren.add(heading!);
+
+      if (body != null) {
+        sectionChildren.add(const SizedBox(height: AppSpacing.size12));
+      }
+    }
+
+    if (body != null) {
+      sectionChildren.add(body);
+    }
+
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (heading case final heading?) ...[
-          heading,
-          if (children.isNotEmpty) const SizedBox(height: 16),
-        ],
-        ...children,
-      ],
-    ),
-  );
+      children: sectionChildren,
+    );
+  }
 }

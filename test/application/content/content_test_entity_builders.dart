@@ -178,7 +178,7 @@ Course buildCourse() => Course(
 Resume buildResume() => Resume(
   slug: Slug('resume'),
   sourcePath: SingleLineText('sources_of_truth/resume.md'),
-  name: SingleLineText('Charlie Shub'),
+  name: SingleLineText('Carlos Mendez'),
   location: SingleLineText('Madrid, Spain'),
   summary: NonEmptyText('Software engineer with structured delivery habits.'),
   contactLinks: <LinkReference>[

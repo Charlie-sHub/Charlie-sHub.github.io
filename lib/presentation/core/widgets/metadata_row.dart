@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 
@@ -30,26 +31,25 @@ class MetadataRow extends StatelessWidget {
   final List<MetadataItemData> items;
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Wrap(
-      spacing: 16,
-      runSpacing: 12,
-      children: [
-        for (final item in items)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SupportingText(text: item.label),
-              const SizedBox(height: 4),
-              ValidatedText(
-                field: item.value,
-                style: textTheme.bodyMedium,
-              ),
-            ],
-          ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Wrap(
+    spacing: AppSpacing.size16,
+    runSpacing: AppSpacing.size12,
+    children: [
+      for (final item in items)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              item.label,
+              style: AppTextStyles.metadataLabel(context),
+            ),
+            const SizedBox(height: AppSpacing.size4),
+            ValidatedText(
+              field: item.value,
+              style: AppTextStyles.bodyCompact(context),
+            ),
+          ],
+        ),
+    ],
+  );
 }

@@ -1,3 +1,5 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ class MediaPlaceholder extends StatelessWidget {
   /// Creates a media placeholder.
   const MediaPlaceholder({
     required this.label,
-    this.height = 180,
+    this.height = AppLayout.mediaPlaceholderHeight,
     this.icon = Icons.image_outlined,
     super.key,
   });
@@ -37,7 +39,7 @@ class MediaPlaceholder extends StatelessWidget {
                 icon,
                 color: colorScheme.primary,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.size12),
               SupportingText(text: label),
             ],
           ),

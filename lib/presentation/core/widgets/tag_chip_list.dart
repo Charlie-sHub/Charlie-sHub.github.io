@@ -1,5 +1,8 @@
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +30,8 @@ class TagChipList extends StatelessWidget {
     }
 
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: AppSpacing.size8,
+      runSpacing: AppSpacing.size8,
       children: [
         for (final tag in tags)
           tag.value.fold(
@@ -52,26 +55,14 @@ class _TagChip extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(999),
-        color: colorScheme.surfaceContainerHighest,
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: AppSurfaceStyles.tagDecoration(context),
+    child: Padding(
+      padding: AppSpacing.tagChipPadding,
+      child: Text(
+        label,
+        style: AppTextStyles.tag(context),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
-        child: Text(
-          label,
-          style: textTheme.labelLarge,
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }

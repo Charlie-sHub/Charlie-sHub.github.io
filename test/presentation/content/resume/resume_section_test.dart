@@ -13,7 +13,7 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/year_month
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,14 +35,14 @@ void main() {
             ),
           );
 
-          expect(find.text('Charlie Shub'), findsOneWidget);
+          expect(find.text('Carlos Mendez'), findsOneWidget);
           expect(find.text('LinkedIn'), findsOneWidget);
           expect(find.text('Engineering'), findsOneWidget);
           expect(find.text('Software Engineer'), findsOneWidget);
           expect(find.text('Computer Science'), findsOneWidget);
           expect(find.text('English'), findsOneWidget);
           expect(find.text('C1'), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsOneWidget);
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
@@ -120,7 +120,7 @@ void main() {
             ),
           );
 
-          expect(find.text('Charlie Shub'), findsOneWidget);
+          expect(find.text('Carlos Mendez'), findsOneWidget);
           expect(find.text('Software Engineer'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(
@@ -146,7 +146,7 @@ void main() {
           );
 
           expect(find.byType(AppFailureCard), findsOneWidget);
-          expect(find.text('Charlie Shub'), findsNothing);
+          expect(find.text('Carlos Mendez'), findsNothing);
           expect(find.text('Resume section unavailable'), findsOneWidget);
         },
       );

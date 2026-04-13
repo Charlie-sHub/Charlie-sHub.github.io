@@ -1,8 +1,12 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
-import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/project_section_entry.dart';
+import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
+import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/project_entry_detail.dart';
+import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/project_selector_label.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -50,13 +54,31 @@ class ProjectsSection extends StatelessWidget {
           ];
         } else {
           return <Widget>[
-            for (var index = 0; index < items.length; index++) ...[
-              ProjectSectionEntry(item: items[index]),
-              if (index < items.length - 1) const SizedBox(height: 16),
-            ],
+            EntrySelectorPanel<SectionItemLoad<Project>>(
+              entries: items,
+              initialSelectedIndex: _preferredSelectedIndex(items),
+              labelBuilder: (context, item, {required isSelected}) =>
+                  ProjectSelectorLabel(
+                    item: item,
+                    isSelected: isSelected,
+                  ),
+              detailBuilder: (context, item) => ProjectEntryDetail(
+                item: item,
+              ),
+            ),
           ];
         }
       },
     ),
   );
+
+  int _preferredSelectedIndex(List<SectionItemLoad<Project>> items) {
+    final successfulIndex = items.indexWhere((item) => item.isRight());
+
+    if (successfulIndex == -1) {
+      return 0;
+    }
+
+    return successfulIndex;
+  }
 }
