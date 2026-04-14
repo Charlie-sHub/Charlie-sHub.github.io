@@ -8,12 +8,12 @@ import 'package:flutter/widgets.dart';
 final class AppRadii {
   const AppRadii._();
 
-  static const BorderRadius section = BorderRadius.all(Radius.circular(16));
-  static const BorderRadius card = BorderRadius.all(Radius.circular(12));
+  static const BorderRadius section = BorderRadius.all(Radius.circular(14));
+  static const BorderRadius card = BorderRadius.all(Radius.circular(10));
   static const BorderRadius selectorItem = BorderRadius.all(
-    Radius.circular(10),
+    Radius.circular(8),
   );
-  static const BorderRadius feedback = BorderRadius.all(Radius.circular(8));
-  static const BorderRadius control = BorderRadius.all(Radius.circular(10));
-  static const BorderRadius pill = BorderRadius.all(Radius.circular(999));
+  static const BorderRadius feedback = BorderRadius.all(Radius.circular(7));
+  static const BorderRadius control = BorderRadius.all(Radius.circular(8));
+  static const BorderRadius pill = BorderRadius.all(Radius.circular(14));
 }

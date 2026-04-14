@@ -26,8 +26,8 @@ final class AppSpacing {
   static const EdgeInsets selectorPanelPadding = EdgeInsets.all(size12);
   static const EdgeInsets selectorButtonPadding = EdgeInsets.all(size12);
   static const EdgeInsets externalLinkTilePadding = EdgeInsets.symmetric(
-    horizontal: size16,
-    vertical: size14,
+    horizontal: size14,
+    vertical: size10,
   );
   static const EdgeInsets fieldFailurePadding = EdgeInsets.symmetric(
     horizontal: size12,

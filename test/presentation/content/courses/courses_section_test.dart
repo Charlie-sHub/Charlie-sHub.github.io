@@ -14,8 +14,8 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.
 import 'package:charlie_shub_portfolio/presentation/content/courses/courses_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,10 +61,17 @@ void main() {
           expect(find.text('Google Networking'), findsNWidgets(2));
           expect(find.text('A networking course.'), findsOneWidget);
           expect(find.text('Google'), findsNWidgets(2));
-          expect(find.text('Course proof'), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsOneWidget);
-          expect(find.byType(PdfPreviewTile), findsOneWidget);
+          expect(find.text('Course proof'), findsNothing);
+          expect(find.byType(AssetMediaCard), findsNothing);
+          expect(find.byType(PdfPreviewTile), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
+
+          await tester.tap(find.text('View course details'));
+          await tester.pump();
+
+          expect(find.text('Course proof'), findsOneWidget);
+          expect(find.byType(AssetMediaCard), findsOneWidget);
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
         },
       );
 
@@ -105,7 +112,7 @@ void main() {
       );
 
       testWidgets(
-        'uses disclosure controls for long course summaries',
+        'uses entity-level disclosure for dense course content',
         (tester) async {
           final course = buildCourse().copyWith(
             summary: NonEmptyText(_buildLongText()),
@@ -122,14 +129,15 @@ void main() {
             width: 360,
           );
 
-          expect(find.text('Read more'), findsOneWidget);
-          expect(find.text('Show less'), findsNothing);
+          expect(find.text('View course details'), findsOneWidget);
+          expect(find.text('Read more'), findsNothing);
+          expect(find.text('Networking fundamentals.'), findsNothing);
 
-          await tester.tap(find.text('Read more'));
+          await tester.tap(find.text('View course details'));
           await tester.pump();
 
-          expect(find.text('Show less'), findsOneWidget);
-          expect(find.text('Read more'), findsNothing);
+          expect(find.text('Hide course details'), findsOneWidget);
+          expect(find.text('Networking fundamentals.'), findsOneWidget);
         },
       );
 
@@ -149,6 +157,9 @@ void main() {
               ]),
             ),
           );
+
+          await tester.tap(find.text('View course details'));
+          await tester.pump();
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('Networking fundamentals.'), findsNothing);
@@ -184,6 +195,7 @@ void main() {
           expect(find.text('Unavailable course'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsNothing);
           expect(find.text('Selected valid course.'), findsOneWidget);
+          expect(find.text('View course details'), findsOneWidget);
         },
       );
 

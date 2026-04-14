@@ -1,18 +1,20 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+const _directEmailAddress = 'carlosrafael-mg@hotmail.com';
 
 /// Resume-backed profile summary surface used near the top of the home page.
 class ProfileSummaryCard extends StatelessWidget {
@@ -48,6 +50,7 @@ class _ResumeProfileSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final contactTiles = _buildContactTiles();
 
     return ContentCard(
       variant: AppSurfaceVariant.section,
@@ -74,18 +77,42 @@ class _ResumeProfileSummaryCard extends StatelessWidget {
           ContentBlock(
             title: 'Contact',
             spacing: AppSpacing.size12,
-            child: ExternalLinkList(
-              links: resume.contactLinks,
-              collectionFailure: collectionFailureOrNull(
-                resume.contactLinks,
-                minLength: 1,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: contactTiles,
             ),
           ),
         ],
       ),
     );
   }
+
+  List<Widget> _buildContactTiles() {
+    final filteredLinks = resume.contactLinks
+        .where(_shouldKeepStickyLink)
+        .toList();
+    final children = <Widget>[
+      const ActionLinkTile(
+        label: 'Email',
+        subtitle: _directEmailAddress,
+        url: 'mailto:$_directEmailAddress',
+        actionLabel: 'Write',
+      ),
+    ];
+
+    for (final link in filteredLinks) {
+      children
+        ..add(const SizedBox(height: AppSpacing.size12))
+        ..add(ExternalLinkTile(linkReference: link));
+    }
+
+    return children;
+  }
+
+  bool _shouldKeepStickyLink(LinkReference link) => link.label.value.fold(
+    (_) => true,
+    (label) => label.toLowerCase() != 'portfolio',
+  );
 }
 
 class _ProfileSummaryStatusCard extends StatelessWidget {

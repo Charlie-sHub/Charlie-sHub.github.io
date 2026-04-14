@@ -56,22 +56,69 @@ ThemeData buildAppTheme() {
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(colorScheme.primary),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+
+          return colorScheme.secondary;
+        }),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.secondaryContainer;
+          }
+
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.secondaryContainer.withValues(alpha: 0.92);
+          }
+
+          return colorScheme.secondaryContainer.withValues(alpha: 0.7);
+        }),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return BorderSide(
+              color: colorScheme.outlineVariant,
+            );
+          }
+
+          if (states.contains(WidgetState.pressed)) {
+            return BorderSide(
+              color: colorScheme.secondary.withValues(alpha: 0.56),
+            );
+          }
+
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return BorderSide(
+              color: colorScheme.secondary.withValues(alpha: 0.48),
+            );
+          }
+
+          return BorderSide(
+            color: colorScheme.secondary.withValues(alpha: 0.34),
+          );
+        }),
         surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
         textStyle: WidgetStatePropertyAll(
-          textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+          textTheme.labelLarge?.copyWith(
+            color: colorScheme.secondary,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         padding: const WidgetStatePropertyAll(
           EdgeInsets.symmetric(
-            horizontal: AppSpacing.size10,
+            horizontal: AppSpacing.size8,
             vertical: AppSpacing.size4,
           ),
         ),
         shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: AppRadii.control),
         ),
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         overlayColor: WidgetStatePropertyAll(
-          AppSurfaceStyles.stateLayerFor(colorScheme.primary),
+          AppSurfaceStyles.stateLayerFor(colorScheme.secondary),
         ),
       ),
     ),

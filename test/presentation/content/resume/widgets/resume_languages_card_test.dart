@@ -3,6 +3,7 @@ import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficien
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/widgets/resume_languages_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../application/content/content_test_entity_builders.dart';
@@ -25,6 +26,7 @@ void main() {
 
           expect(find.text('English'), findsOneWidget);
           expect(find.text('C1'), findsOneWidget);
+          expect(find.byType(Wrap), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
@@ -45,7 +47,7 @@ void main() {
             ),
           );
 
-          expect(find.text('English'), findsOneWidget);
+          expect(find.text('English'), findsNothing);
           expect(find.text('C1'), findsNothing);
           expect(find.byType(FieldFailureWidget), findsOneWidget);
         },

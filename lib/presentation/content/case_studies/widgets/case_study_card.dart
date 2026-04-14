@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
@@ -35,7 +36,7 @@ class CaseStudyCard extends StatelessWidget {
             field: caseStudy.title,
             style: textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: caseStudy.summary,
             style: textTheme.bodyLarge,
@@ -43,7 +44,7 @@ class CaseStudyCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           if (caseStudy.incidentCode != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             MetadataRow(
               items: [
                 MetadataItemData(
@@ -80,7 +81,7 @@ class CaseStudyCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SupportingText(text: 'Tactics'),
-                const SizedBox(height: 6),
+                const SizedBox(height: AppSpacing.size6),
                 ValidatedBulletList(
                   items: caseStudy.attackMapping.tactics,
                   collectionFailure: collectionFailureOrNull(
@@ -89,9 +90,9 @@ class CaseStudyCard extends StatelessWidget {
                   ),
                   style: textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.size12),
                 const SupportingText(text: 'Techniques'),
-                const SizedBox(height: 6),
+                const SizedBox(height: AppSpacing.size6),
                 ValidatedBulletList(
                   items: caseStudy.attackMapping.techniques,
                   collectionFailure: collectionFailureOrNull(
@@ -100,9 +101,9 @@ class CaseStudyCard extends StatelessWidget {
                   ),
                   style: textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.size12),
                 const SupportingText(text: 'Procedure examples'),
-                const SizedBox(height: 6),
+                const SizedBox(height: AppSpacing.size6),
                 ValidatedBulletList(
                   items: caseStudy.attackMapping.procedureExamples,
                   collectionFailure: collectionFailureOrNull(
@@ -147,18 +148,18 @@ class CaseStudyCard extends StatelessWidget {
                       .atlasMapping!
                       .tacticsAndTechniques
                       .isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.size12),
                     const SupportingText(text: 'Tactics and techniques'),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppSpacing.size6),
                     ValidatedBulletList(
                       items: caseStudy.atlasMapping!.tacticsAndTechniques,
                       style: textTheme.bodyMedium,
                     ),
                   ],
                   if (caseStudy.atlasMapping!.procedureExamples.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.size12),
                     const SupportingText(text: 'Procedure examples'),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppSpacing.size6),
                     ValidatedBulletList(
                       items: caseStudy.atlasMapping!.procedureExamples,
                       style: textTheme.bodyMedium,
@@ -180,7 +181,7 @@ class CaseStudyCard extends StatelessWidget {
                       field: caseStudy.indicators!.summary!,
                       style: textTheme.bodyMedium,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.size8),
                   ],
                   ValidatedBulletList(
                     items: caseStudy.indicators!.items,

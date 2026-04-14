@@ -36,28 +36,42 @@ class ExternalLinkTile extends StatelessWidget {
       (failure) => FieldFailureWidget(
         failure: failure,
       ),
-      (url) => _LinkTileContent(
+      (url) => ActionLinkTile(
         label: label,
         onTap: onTap,
-        showUrl: showUrl,
         url: url,
+        subtitle: showUrl ? url : null,
       ),
     ),
   );
 }
 
-class _LinkTileContent extends StatelessWidget {
-  const _LinkTileContent({
+/// Renders a simple action tile that opens a URL-like resource.
+class ActionLinkTile extends StatelessWidget {
+  /// Creates an action link tile.
+  const ActionLinkTile({
     required this.label,
     required this.url,
-    required this.showUrl,
+    this.subtitle,
+    this.actionLabel = 'Open link',
     this.onTap,
+    super.key,
   });
 
+  /// The primary label shown for the resource.
   final String label;
-  final VoidCallback? onTap;
-  final bool showUrl;
+
+  /// The resource URL or URI to open.
   final String url;
+
+  /// Optional secondary text shown under the label.
+  final String? subtitle;
+
+  /// Short action hint shown beside the tile affordance.
+  final String actionLabel;
+
+  /// Optional tap override used mainly in tests.
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +90,10 @@ class _LinkTileContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeadingText(text: label),
-                if (showUrl) const SizedBox(height: AppSpacing.size4),
-                if (showUrl) SupportingText(text: url),
+                if (subtitle case final subtitle?) ...[
+                  const SizedBox(height: AppSpacing.size4),
+                  SupportingText(text: subtitle),
+                ],
               ],
             ),
           ),
@@ -86,13 +102,13 @@ class _LinkTileContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                'Open link',
-                style: AppTextStyles.tag(context),
+                actionLabel,
+                style: AppTextStyles.actionLabel(context),
               ),
               const SizedBox(height: AppSpacing.size4),
               Icon(
                 Icons.open_in_new,
-                color: colorScheme.primary,
+                color: colorScheme.secondary,
                 size: AppLayout.externalLinkIndicatorIconSize,
               ),
             ],

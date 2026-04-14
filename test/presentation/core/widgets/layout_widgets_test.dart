@@ -71,6 +71,13 @@ void main() {
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Section body'), findsOneWidget);
           expect(find.byType(BackdropFilter), findsOneWidget);
+          expect(
+            find.descendant(
+              of: find.byType(BackdropFilter),
+              matching: find.text('Projects'),
+            ),
+            findsOneWidget,
+          );
         },
       );
     },

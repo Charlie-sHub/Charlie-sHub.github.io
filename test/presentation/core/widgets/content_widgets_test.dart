@@ -14,6 +14,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placehold
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
@@ -55,6 +56,47 @@ void main() {
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('Expected value'), findsNothing);
+        },
+      );
+    },
+  );
+
+  group(
+    'ValidatedAssetMediaCard',
+    () {
+      testWidgets(
+        'renders an asset media card when path is valid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedAssetMediaCard(
+                path: AssetPath(
+                  'assets/media/content/projects/world_on/world_on_login.png',
+                ),
+                labelBuilder: _heroLabelBuilder,
+              ),
+            ),
+          );
+
+          expect(find.byType(AssetMediaCard), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders a failure widget when the media path is invalid',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedAssetMediaCard(
+                path: AssetPath('invalid/path.png'),
+                labelBuilder: _heroLabelBuilder,
+              ),
+            ),
+          );
+
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.byType(AssetMediaCard), findsNothing);
         },
       );
     },
@@ -266,6 +308,33 @@ void main() {
   group(
     'ExternalLinkTile',
     () {
+      testWidgets(
+        'renders a generic action link tile with subtitle text',
+        (tester) async {
+          var tapped = false;
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ActionLinkTile(
+                label: 'Email',
+                subtitle: 'carlosrafael-mg@hotmail.com',
+                url: 'mailto:carlosrafael-mg@hotmail.com',
+                actionLabel: 'Write',
+                onTap: () => tapped = true,
+              ),
+            ),
+          );
+
+          await tester.tap(find.text('Email'));
+          await tester.pump();
+
+          expect(find.text('Email'), findsOneWidget);
+          expect(find.text('carlosrafael-mg@hotmail.com'), findsOneWidget);
+          expect(find.text('Write'), findsOneWidget);
+          expect(tapped, isTrue);
+        },
+      );
+
       testWidgets(
         'renders label and triggers onTap callback',
         (tester) async {

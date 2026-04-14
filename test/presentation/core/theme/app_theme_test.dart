@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,23 @@ void main() {
 
           expect(text.style?.fontFamily, 'MovingSkate');
           expect(text.style?.fontFamilyFallback, contains('Geometria'));
+        },
+      );
+
+      test(
+        'uses the warm accent for default text button treatment',
+        () {
+          final theme = buildAppTheme();
+          final foregroundColor = theme.textButtonTheme.style?.foregroundColor
+              ?.resolve(const <WidgetState>{});
+          final backgroundColor = theme.textButtonTheme.style?.backgroundColor
+              ?.resolve(const <WidgetState>{});
+
+          expect(foregroundColor, AppColors.warmAccent);
+          expect(
+            backgroundColor,
+            AppColors.warmAccentSoft.withValues(alpha: 0.7),
+          );
         },
       );
     },

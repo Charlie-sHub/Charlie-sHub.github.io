@@ -18,11 +18,11 @@ final class AppColors {
   static const Color surfaceElevated = Color(0xFFF8F4EF);
   static const Color surfaceSecondary = Color(0xFFF2ECE4);
   static const Color surfaceMuted = Color(0xFFE8E1D7);
-  static const Color surfaceGlass = Color(0xC9F2ECE3);
-  static const Color surfaceGlassHover = Color(0xD9F7F2EA);
-  static const Color surfaceGlassPressed = Color(0xE1FBF7F1);
-  static const Color surfaceGlassBorder = Color(0x8AE6E6E4);
-  static const Color surfaceGlassBorderStrong = Color(0xC6E6E6E4);
+  static const Color surfaceGlass = Color(0xA8F5F0E8);
+  static const Color surfaceGlassHover = Color(0xBDF8F4EC);
+  static const Color surfaceGlassPressed = Color(0xCDFBF7F0);
+  static const Color surfaceGlassBorder = Color(0x9AE2DDD5);
+  static const Color surfaceGlassBorderStrong = Color(0xC6E2DDD5);
 
   static const Color border = Color(0xFFAEA59A);
   static const Color borderSoft = Color(0xFFD3CCC3);

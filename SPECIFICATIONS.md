@@ -460,10 +460,9 @@ Avoid:
 
 CodersRank widgets may be used as optional supporting proof signals in the Flutter website, but they are not part of the site's core content model.
 
-Current approved scope:
-- CodersRank summary
-- CodersRank activity
-- CodersRank skills
+Current approved widget scope:
+- CodersRank rank widgets
+- CodersRank GitHub activity matrix
 
 These widgets are intentionally low-priority and should only be considered after the main first-party website implementation is complete.
 
@@ -473,9 +472,11 @@ Rules:
 - CodersRank widgets must not replace first-party sections such as projects, experience, education, certifications, case studies, or about content
 - any CodersRank integration must degrade gracefully if the provider, script, or widget fails
 - omission is preferred over a broken or unstable embed
+- if a widget fails to load, initialize, or render correctly, it should be omitted entirely from the rendered UI rather than showing broken placeholders, visible fallback errors, or provider-facing failure states
 - implementation should remain isolated and easy to remove without affecting surrounding page structure
-- any Flutter integration should be treated as web-only presentation behavior rather than part of the structured content-loading architecture
-- styling and layout around the widgets should stay consistent with the site's own design system rather than allowing the embed to dictate page structure
+- any Flutter integration should remain web-only presentation behavior rather than part of the structured content-loading architecture or shared domain or application layers
+- styling and layout around the widgets should stay consistent with the site's own design system; the widgets should be themed to fit the site rather than dictating page structure or appearance
+- the approved rank-widget surface should prefer a row presentation rather than a vertically stacked treatment where layout allows
 - if the widgets prove visually weak, operationally brittle, or redundant, they may be removed without replacement
 
 Preferred placement direction:
@@ -486,7 +487,8 @@ Preferred placement direction:
 Avoid:
 - placing CodersRank widgets above the main project and portfolio proof
 - treating CodersRank as a source of truth for portfolio content
-- widening the approved widget scope without updating this specification
+- widening the approved widget scope beyond rank widgets and the GitHub activity matrix without updating this specification
+- leaving visible broken placeholders, error copy, or unstable empty shells when the integration fails
 
 ---
 
@@ -513,6 +515,7 @@ Preferred direction:
 - progressive disclosure where it helps reveal technical depth gradually rather than placing everything at first glance
 - reusable progressive disclosure is approved for oversized entry content, for example through a neutral read-more or show-less text block pattern
 - dense entities may also use progressive disclosure at the overall entry or entity level rather than only inside isolated text fields when that improves scanning
+- entity-level progressive disclosure is now explicitly approved for projects, case studies, and courses when it improves scanning without turning those sections into hidden-first experiences
 - expand or collapse patterns used selectively for deeper technical detail where they improve clarity
 - tabs, hidden panels, or similar patterns only where they clearly reduce clutter
 - a reusable entry selector or master-detail pattern is approved for dense multi-entry supporting sections where it materially improves scanning
@@ -521,6 +524,7 @@ Preferred direction:
 - for smaller screens, the selector should adapt to a simple responsive fallback rather than forcing a left-rail layout
 - link and download tiles should favor human-readable labels rather than raw URLs as the primary visible affordance
 - PDF-backed assets may show a small in-page preview, while full viewing or downloading should open in a new tab
+- PDF previews should frame the full first page, even at small display sizes, rather than showing only a cropped subsection
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity
 
@@ -553,20 +557,21 @@ The intended visual direction is minimalist, elegant, and deliberate.
 Preferred characteristics:
 - a warm overall identity rather than generic tech styling
 - selective use of high-resolution landscape imagery as atmospheric texture where it supports mood and identity without adding visual noise
-- rounded corners that feel disciplined and a little sharper than the current softer direction
+- rounded corners that feel disciplined and a little sharper than the current softer direction across the system, including chips and tags
 
 The current first-pass theme direction is now established enough to guide implementation:
 - the first pass is light-theme only
 - do not add dark mode, `darkTheme`, or theme switching in this pass
 - the app shell should use `assets/media/background.jpg` as its first-pass wallpaper image
 - the wallpaper should remain fully visible; do not add a global shell overlay or tint layer
-- section titles may sit directly on the wallpaper and should rely on readable styling, such as shadow, rather than a shell overlay
+- section titles should sit inside the section cards, aligned at the top-left of the card, rather than outside on the wallpaper
 - the first-pass palette should be derived from that image, using `#1A2225`, `#0D4449`, `#A64C23`, and `#E6E6E4` as the current approved palette anchors
-- cool is the main functional accent and warm is the restrained emphasis accent
+- cool remains the general functional accent and warm is the approved emphasis accent, including section titles and the default state of buttons
 - reusable surfaces should remain readable above the wallpaper; readability and scanability take priority over decorative effect
-- blur and transparency are approved for section-card surfaces rather than the full shell background
+- section titles inside cards should use the warm or orange accent treatment
+- blur and transparency are approved for section-card surfaces rather than the full shell background, with more transparency than the current implementation so the wallpaper comes through more strongly
 - inner content surfaces should remain opaque or near-opaque where needed for reliable readability
-- CTA treatment should stay neutral in this pass rather than establishing a strong primary or secondary CTA family
+- buttons should use the warm or orange accent in their default non-hovered state so they read clearly as buttons without overpowering the surrounding content
 
 Color and typography should feel intentional, consistent, readable, and easy to evolve before decorative effects are layered in.
 
@@ -632,6 +637,7 @@ Those decisions should be surfaced explicitly rather than settled accidentally t
 The following interaction directions are now approved and do not require separate clarification when implemented within their documented scope:
 
 - reusable progressive disclosure for oversized entry content, including at the overall entry or entity level when that improves scanning
+- entity-level progressive disclosure is explicitly approved for projects, case studies, and courses
 - reusable entry selector or master-detail treatment for dense multi-entry supporting sections
 - desktop and tablet placement with the selector on the left and the active content on the right
 - a simple responsive fallback on smaller screens rather than a forced left-rail layout
@@ -664,7 +670,11 @@ Reusable naming should stay neutral and flexible, for example `ExpandableTextBlo
 
 On wide layouts, a profile or about summary widget may sit near the top-left of the main content area and remain sticky while the primary content scrolls.
 
+That sticky profile widget should prioritize direct contact by using email rather than a self-link back to the portfolio site, and the displayed name should be larger than the current implementation.
+
 On smaller screens, that summary should fall back to a normal top block rather than a sticky side treatment.
+
+Compact metadata-like subsections such as language items should prefer a horizontal row when layout allows, with a simple stacked fallback on smaller screens.
 
 A temporary widget showcase may remain as a quick theme-verification surface during the first pass. During active theme iteration it may temporarily sit at the top of the page for faster visual checking, but it should be clearly segregated from the real portfolio hierarchy, not treated as the intended deployed hierarchy or section priority, and removed before deployment.
 
@@ -763,7 +773,7 @@ The following areas are expected to change as the project evolves:
 - whether courses and case studies deserve separate navigation priority
 - whether any later theme variants, including dark mode, become worthwhile after the first-pass light theme is proven
 - the exact typography scale, weight discipline, and fallback handling once the intended font direction is implemented
-- the exact blur or transparency treatment for section-card surfaces after readability is validated in live layouts
+- the exact numeric blur radius and opacity values for section-card surfaces after the approved more-transparent direction is tuned in live layouts
 - whether a stronger CTA hierarchy becomes worthwhile after the base content hierarchy is validated
 - whether any experimental features are actually worth implementing
 

@@ -6,6 +6,7 @@ import 'package:charlie_shub_portfolio/presentation/content/resume/widgets/resum
 import 'package:charlie_shub_portfolio/presentation/content/resume/widgets/resume_languages_card.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/widgets/resume_overview_card.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/widgets/resume_skill_groups.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
@@ -47,34 +48,34 @@ class ResumeSection extends StatelessWidget {
           ],
           (resume) => <Widget>[
             ResumeOverviewCard(resume: resume),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Core skills',
-              spacing: 12,
+              spacing: AppSpacing.size12,
               child: ResumeSkillGroups(
                 skillGroups: resume.coreSkills,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Professional experience',
-              spacing: 12,
+              spacing: AppSpacing.size12,
               child: ResumeExperienceList(
                 items: resume.professionalExperience,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Education',
-              spacing: 12,
+              spacing: AppSpacing.size12,
               child: ResumeEducationList(
                 items: resume.education,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Languages',
-              spacing: 12,
+              spacing: AppSpacing.size12,
               child: ResumeLanguagesCard(languages: resume.languages),
             ),
           ],

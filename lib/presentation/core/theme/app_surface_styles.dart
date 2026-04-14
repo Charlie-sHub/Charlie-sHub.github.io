@@ -23,7 +23,7 @@ final class AppSurfaceStyles {
   const AppSurfaceStyles._();
 
   static const Duration transitionDuration = Duration(milliseconds: 180);
-  static const double sectionBlurSigma = 14;
+  static const double sectionBlurSigma = 16;
 
   static BorderRadius radiusFor(AppSurfaceVariant variant) => switch (variant) {
     AppSurfaceVariant.section => AppRadii.section,

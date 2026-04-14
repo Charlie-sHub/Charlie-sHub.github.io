@@ -65,7 +65,9 @@ class _ContentCardState extends State<ContentCard> {
           borderRadius: radius,
           overlayColor: WidgetStatePropertyAll(
             AppSurfaceStyles.stateLayerFor(
-              Theme.of(context).colorScheme.primary,
+              widget.isLink
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           child: content,

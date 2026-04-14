@@ -85,12 +85,12 @@ class PdfPreviewTile extends StatelessWidget {
                 children: [
                   Text(
                     actionLabel,
-                    style: AppTextStyles.tag(context),
+                    style: AppTextStyles.actionLabel(context),
                   ),
                   const SizedBox(height: AppSpacing.size4),
                   Icon(
                     Icons.open_in_new,
-                    color: colorScheme.primary,
+                    color: colorScheme.secondary,
                     size: AppLayout.externalLinkIndicatorIconSize,
                   ),
                 ],

@@ -10,6 +10,12 @@ TextTheme buildAppTextTheme() {
   ).textTheme;
 
   return base.copyWith(
+    displayLarge: base.displayLarge?.copyWith(
+      color: AppColors.textPrimary,
+      fontWeight: FontWeight.w600,
+      height: 0.92,
+      letterSpacing: -1.3,
+    ),
     displayMedium: base.displayMedium?.copyWith(
       color: AppColors.textPrimary,
       fontWeight: FontWeight.w600,

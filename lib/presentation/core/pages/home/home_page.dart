@@ -7,6 +7,7 @@ import 'package:charlie_shub_portfolio/presentation/content/courses/courses_sect
 import 'package:charlie_shub_portfolio/presentation/content/projects/projects_section.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/sections/architecture_status_section.dart';
+import 'package:charlie_shub_portfolio/presentation/core/pages/home/sections/codersrank_supporting_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/sections/home_intro_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/sections/widget_showcase_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/widgets/profile_summary_card.dart';
@@ -151,6 +152,7 @@ class _HomePageContent extends StatelessWidget {
       const SizedBox(height: AppSpacing.size24),
       const ResumeSection(),
       const SizedBox(height: AppSpacing.size24),
+      const CodersRankSupportingSection(),
       const ArchitectureStatusSection(),
     ],
   );

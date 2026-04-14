@@ -11,7 +11,7 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart
 import 'package:charlie_shub_portfolio/presentation/content/projects/projects_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,7 +57,7 @@ void main() {
           expect(find.text('A portfolio proof project.'), findsNWidgets(2));
           expect(find.text('View project details'), findsOneWidget);
           expect(find.text('Flutter'), findsNothing);
-          expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(AssetMediaCard), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
 
           await tester.tap(find.text('View project details'));
@@ -65,7 +65,7 @@ void main() {
 
           expect(find.text('Hide project details'), findsOneWidget);
           expect(find.text('Flutter'), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsOneWidget);
+          expect(find.byType(AssetMediaCard), findsOneWidget);
         },
       );
 
@@ -173,8 +173,47 @@ void main() {
           await tester.tap(find.text('View project details'));
           await tester.pump();
 
-          expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(AssetMediaCard), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'renders gallery media for projects that provide multiple screens',
+        (tester) async {
+          final worldOnProject = buildProject().copyWith(
+            title: content_title.Title('World On'),
+            heroImagePath: AssetPath(
+              'assets/media/content/projects/world_on/world_on_home_and_search.png',
+            ),
+            galleryImagePaths: <AssetPath>[
+              AssetPath(
+                'assets/media/content/projects/world_on/world_on_home_and_search.png',
+              ),
+              AssetPath(
+                'assets/media/content/projects/world_on/world_on_login.png',
+              ),
+              AssetPath(
+                'assets/media/content/projects/world_on/world_on_profile_and_store.png',
+              ),
+            ],
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProjectsSection(),
+            state: _projectsState(
+              right(<SectionItemLoad<Project>>[
+                right(worldOnProject),
+              ]),
+            ),
+          );
+
+          await tester.tap(find.text('View project details'));
+          await tester.pump();
+
+          expect(find.text('Selected screens'), findsOneWidget);
+          expect(find.byType(AssetMediaCard), findsNWidgets(3));
         },
       );
 

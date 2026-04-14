@@ -1,13 +1,14 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 
@@ -53,28 +54,28 @@ class CertificationCard extends StatelessWidget {
             field: certification.title,
             style: textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.size8),
           ExpandableValueTextBlock(
             field: certification.summary,
             style: textTheme.bodyLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           MetadataRow(items: metadataItems),
           if (certification.badgeImagePath != null) ...[
-            const SizedBox(height: 16),
-            ValidatedPlaceholder(
+            const SizedBox(height: AppSpacing.size16),
+            ValidatedAssetMediaCard(
               path: certification.badgeImagePath!,
               labelBuilder: _buildBadgeLabel,
             ),
           ],
           if (certification.certificatePdfPath != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ValidatedPdfPreviewTile(
               path: certification.certificatePdfPath!,
               title: 'Certificate PDF',
             ),
           ],
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.size20),
           ContentBlock(
             title: 'Knowledge areas',
             child: ValidatedBulletList(

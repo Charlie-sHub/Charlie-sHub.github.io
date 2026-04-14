@@ -11,29 +11,15 @@ final class AppTextStyles {
 
   static TextStyle? sectionHeading(BuildContext context) =>
       Theme.of(context).textTheme.headlineSmall?.copyWith(
-        color: AppColors.textOnWallpaper,
-        shadows: const [
-          Shadow(
-            color: AppColors.textOnWallpaperShadow,
-            blurRadius: 16,
-            offset: Offset(0, 4),
-          ),
-        ],
+        color: AppColors.warmAccent,
       );
 
   static TextStyle? authorName(BuildContext context) =>
-      Theme.of(context).textTheme.displayMedium?.copyWith(
+      Theme.of(context).textTheme.displayLarge?.copyWith(
         fontFamily: 'MovingSkate',
         fontFamilyFallback: const ['Geometria'],
         color: AppColors.warmAccent,
         height: 0.9,
-        shadows: const [
-          Shadow(
-            color: AppColors.textOnWallpaperShadow,
-            blurRadius: 14,
-            offset: Offset(0, 4),
-          ),
-        ],
       );
 
   static TextStyle? heading(BuildContext context) =>
@@ -56,4 +42,9 @@ final class AppTextStyles {
 
   static TextStyle? tag(BuildContext context) =>
       Theme.of(context).textTheme.labelLarge;
+
+  static TextStyle? actionLabel(BuildContext context) =>
+      Theme.of(context).textTheme.labelLarge?.copyWith(
+        color: AppColors.warmAccent,
+      );
 }

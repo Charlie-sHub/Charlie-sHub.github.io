@@ -20,33 +20,29 @@ class SectionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final body = children.isEmpty
-        ? null
-        : ContentCard(
-            variant: AppSurfaceVariant.section,
-            padding: AppSpacing.sectionPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
-          );
+    if (heading == null && children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     final sectionChildren = <Widget>[];
 
     if (heading != null) {
       sectionChildren.add(heading!);
-
-      if (body != null) {
-        sectionChildren.add(const SizedBox(height: AppSpacing.size12));
-      }
     }
 
-    if (body != null) {
-      sectionChildren.add(body);
+    if (heading != null && children.isNotEmpty) {
+      sectionChildren.add(const SizedBox(height: AppSpacing.size12));
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: sectionChildren,
+    sectionChildren.addAll(children);
+
+    return ContentCard(
+      variant: AppSurfaceVariant.section,
+      padding: AppSpacing.sectionPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: sectionChildren,
+      ),
     );
   }
 }
