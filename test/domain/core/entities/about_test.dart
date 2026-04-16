@@ -18,6 +18,9 @@ void main() {
             slug: Slug('about_me'),
             sourcePath: SingleLineText('sources_of_truth/about_me.md'),
             title: Title('About Me'),
+            professionalSummaryShort: NonEmptyText(
+              'Software developer with cross-platform experience',
+            ),
             whoIAmProfessionally: NonEmptyText(
               'Software developer with Flutter experience',
             ),
@@ -56,6 +59,9 @@ void main() {
             slug: Slug('about_me'),
             sourcePath: SingleLineText('sources_of_truth/about_me.md'),
             title: Title('About Me'),
+            professionalSummaryShort: NonEmptyText(
+              'Software developer with cross-platform experience',
+            ),
             whoIAmProfessionally: NonEmptyText(
               'Software developer with Flutter experience',
             ),
@@ -82,6 +88,43 @@ void main() {
           expect(about.isValid, isFalse);
           expect(about.failureOption.isSome(), isTrue);
           expect(about.failureOrUnit.isLeft(), isTrue);
+        },
+      );
+
+      test(
+        'is valid when the short professional summary is absent',
+        () {
+          final about = About(
+            slug: Slug('about_me'),
+            sourcePath: SingleLineText('sources_of_truth/about_me.md'),
+            title: Title('About Me'),
+            whoIAmProfessionally: NonEmptyText(
+              'Software developer with Flutter experience',
+            ),
+            currentPositioning: NonEmptyText(
+              'Security-oriented software developer',
+            ),
+            developmentBackground: NonEmptyText(
+              'Product development background',
+            ),
+            securityDirection: NonEmptyText('Growing into secure engineering'),
+            strengthsAndWorkingStyle: <NonEmptyText>[
+              NonEmptyText('Structured planning before implementation'),
+            ],
+            selectedSkillsAndTools: <AboutSkillGroup>[
+              AboutSkillGroup(
+                label: SingleLineText('Languages and frameworks'),
+                items: <SingleLineText>[SingleLineText('Flutter')],
+              ),
+            ],
+            howIBuildSoftware: NonEmptyText('Keep responsibilities clear'),
+            howDevelopmentAndSecurityConnect: NonEmptyText(
+              'Through disciplined engineering',
+            ),
+          );
+
+          expect(about.isValid, isTrue);
+          expect(about.failureOption.isNone(), isTrue);
         },
       );
     },

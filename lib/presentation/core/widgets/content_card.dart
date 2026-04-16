@@ -77,6 +77,11 @@ class _ContentCardState extends State<ContentCard> {
   }
 
   Widget _buildSurface(BuildContext context) {
+    final accentColor = widget.onTap == null
+        ? null
+        : widget.isLink
+        ? Theme.of(context).colorScheme.secondary
+        : Theme.of(context).colorScheme.primary;
     final surface = AnimatedContainer(
       duration: AppSurfaceStyles.transitionDuration,
       curve: Curves.easeOutCubic,
@@ -86,6 +91,7 @@ class _ContentCardState extends State<ContentCard> {
         hovered: _isHovered,
         focused: _isFocused,
         pressed: _isPressed,
+        accentColor: accentColor,
       ),
       child: Padding(
         padding: widget.padding,

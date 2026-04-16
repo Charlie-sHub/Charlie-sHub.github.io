@@ -15,11 +15,50 @@ void main() {
 
           final dto = AboutDto.fromJson(json);
           final about = dto.toDomain();
+          final professionalSummaryShort = about.professionalSummaryShort;
 
           expect(about.isValid, isTrue);
           expect(about.slug.getOrCrash(), 'about_me');
           expect(about.title.getOrCrash(), 'About Me');
+          expect(professionalSummaryShort, isNotNull);
+          expect(
+            professionalSummaryShort!.getOrCrash(),
+            contains('Flutter developer with 5+ years'),
+          );
           expect(about.selectedSkillsAndTools, hasLength(5));
+        },
+      );
+
+      test(
+        'accepts a null short professional summary and maps it to a null '
+        'domain field',
+        () {
+          final json = loadJsonFixture('assets/content/about/about_me.json');
+          final content = json['content'] as Map<String, dynamic>;
+          content['professional_summary_short'] = null;
+
+          final dto = AboutDto.fromJson(json);
+          final about = dto.toDomain();
+
+          expect(about.isValid, isTrue);
+          expect(about.professionalSummaryShort, isNull);
+        },
+      );
+
+      test(
+        'accepts a missing short professional summary and maps it to a null '
+        'domain field',
+        () {
+          final json = loadJsonFixture('assets/content/about/about_me.json');
+          (json['content'] as Map<String, dynamic>).remove(
+            'professional_summary_short',
+          );
+
+          final dto = AboutDto.fromJson(json);
+          final about = dto.toDomain();
+
+          expect(about.isValid, isTrue);
+          expect(about.professionalSummaryShort, isNull);
         },
       );
 

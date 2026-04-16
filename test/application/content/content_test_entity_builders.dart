@@ -27,6 +27,9 @@ About buildAbout() => About(
   slug: Slug('about_me'),
   sourcePath: SingleLineText('sources_of_truth/about_me.md'),
   title: Title('About Me'),
+  professionalSummaryShort: NonEmptyText(
+    'Software developer focused on maintainable cross-platform apps.',
+  ),
   whoIAmProfessionally: NonEmptyText('Software engineer.'),
   currentPositioning: NonEmptyText('Building maintainable software.'),
   developmentBackground: NonEmptyText('Flutter and backend development.'),
@@ -54,6 +57,9 @@ About buildInvalidAbout() => About(
   slug: Slug('Invalid Slug'),
   sourcePath: SingleLineText('sources_of_truth/about_me.md'),
   title: Title('About Me'),
+  professionalSummaryShort: NonEmptyText(
+    'Software developer focused on maintainable cross-platform apps.',
+  ),
   whoIAmProfessionally: NonEmptyText('Software engineer.'),
   currentPositioning: NonEmptyText('Building maintainable software.'),
   developmentBackground: NonEmptyText('Flutter and backend development.'),

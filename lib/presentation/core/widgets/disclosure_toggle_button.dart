@@ -1,4 +1,5 @@
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Reusable disclosure control for toggling expanded content in place.
@@ -31,12 +32,22 @@ class DisclosureToggleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = isExpanded ? collapseLabel : expandLabel;
-    final style = TextButton.styleFrom(
+    final colorScheme = Theme.of(context).colorScheme;
+    final style = ButtonStyle(
       alignment: Alignment.centerLeft,
-      minimumSize: Size.zero,
-      padding: AppSpacing.zero,
+      minimumSize: const WidgetStatePropertyAll(Size.zero),
+      padding: const WidgetStatePropertyAll(AppSpacing.zero),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
+      foregroundColor: WidgetStatePropertyAll(colorScheme.primary),
+      backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+      side: const WidgetStatePropertyAll(
+        BorderSide(color: Colors.transparent),
+      ),
+      surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+      overlayColor: WidgetStatePropertyAll(
+        AppSurfaceStyles.stateLayerFor(colorScheme.primary),
+      ),
     );
 
     if (showIcon) {

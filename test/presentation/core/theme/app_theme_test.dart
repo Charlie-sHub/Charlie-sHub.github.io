@@ -19,7 +19,7 @@ void main() {
       );
 
       testWidgets(
-        'uses MovingSkate only for the author-name accent role',
+        'keeps the author-name accent role on Geometria',
         (tester) async {
           await tester.pumpWidget(
             MaterialApp(
@@ -35,8 +35,8 @@ void main() {
 
           final text = tester.widget<Text>(find.text('Carlos Mendez'));
 
-          expect(text.style?.fontFamily, 'MovingSkate');
-          expect(text.style?.fontFamilyFallback, contains('Geometria'));
+          expect(text.style?.fontFamily, 'Geometria');
+          expect(text.style?.fontFamilyFallback, isNull);
         },
       );
 

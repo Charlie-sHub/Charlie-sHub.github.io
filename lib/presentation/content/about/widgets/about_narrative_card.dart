@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
@@ -29,7 +30,7 @@ class AboutNarrativeCard extends StatelessWidget {
             field: about.title,
             style: textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Who I am professionally',
             child: ValidatedText(
@@ -37,7 +38,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Current positioning',
             child: ValidatedText(
@@ -45,7 +46,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Development background',
             child: ValidatedText(
@@ -53,7 +54,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Security direction',
             child: ValidatedText(
@@ -61,7 +62,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Strengths and working style',
             child: ValidatedBulletList(
@@ -73,7 +74,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'How I build software',
             child: ValidatedText(
@@ -81,7 +82,7 @@ class AboutNarrativeCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'How development and security connect',
             child: ValidatedText(

@@ -28,6 +28,10 @@ void main() {
             resume.professionalExperience[1].organization?.getOrCrash(),
             'Media Mechanics',
           );
+          expect(
+            resume.contactLinks.map((link) => link.label.getOrCrash()).toList(),
+            <String>['LinkedIn', 'GitHub'],
+          );
         },
       );
 

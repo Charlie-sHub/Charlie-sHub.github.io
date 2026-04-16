@@ -66,7 +66,7 @@ class CaseStudyCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Adversary objectives',
             child: ExpandableValueTextBlock(
@@ -74,7 +74,7 @@ class CaseStudyCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'ATT&CK mapping',
             child: Column(
@@ -115,7 +115,7 @@ class CaseStudyCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Defensive analysis',
             child: ExpandableValueTextBlock(
@@ -124,7 +124,7 @@ class CaseStudyCard extends StatelessWidget {
             ),
           ),
           if (caseStudy.defensiveMapping != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Defensive mapping',
               child: ExpandableValueTextBlock(
@@ -134,7 +134,7 @@ class CaseStudyCard extends StatelessWidget {
             ),
           ],
           if (caseStudy.atlasMapping != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'ATLAS mapping',
               child: Column(
@@ -170,7 +170,7 @@ class CaseStudyCard extends StatelessWidget {
             ),
           ],
           if (caseStudy.indicators != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Indicators',
               child: Column(
@@ -195,7 +195,7 @@ class CaseStudyCard extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Lessons learned',
             child: ValidatedBulletList(
@@ -207,7 +207,7 @@ class CaseStudyCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Reflection',
             child: ExpandableValueTextBlock(
@@ -215,7 +215,7 @@ class CaseStudyCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'References',
             child: ExternalLinkList(

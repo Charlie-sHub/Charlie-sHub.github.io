@@ -11,7 +11,7 @@ final class AppCodersRankTheme {
 
   static const double widgetRowBreakpoint = 680;
   static const double rankWidgetHeight = 176;
-  static const double rankWidgetCompactHeight = 220;
+  static const double rankWidgetCompactHeight = 248;
   static const double activityWidgetHeight = 236;
   static const double activityWidgetCompactHeight = 208;
 
@@ -39,7 +39,7 @@ final class AppCodersRankTheme {
     '--badge-text-color': _cssColor(AppColors.textPrimary),
     '--badges-padding': '0px',
     '--badge-padding': '8px 12px',
-    '--badge-margin': isCompact ? '10px 0' : '10px',
+    '--badge-margin': '10px',
     '--badge-border-radius': '999px',
     '--badge-rank-font-size': '15px',
     '--badge-technology-font-size': '16px',

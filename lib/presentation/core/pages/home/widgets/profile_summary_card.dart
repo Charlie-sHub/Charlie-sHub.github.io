@@ -1,65 +1,84 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact_action_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const _directEmailAddress = 'carlosrafael-mg@hotmail.com';
-
-/// Resume-backed profile summary surface used near the top of the home page.
+/// Profile summary surface used near the top of the home page.
 class ProfileSummaryCard extends StatelessWidget {
   /// Creates a profile summary card.
   const ProfileSummaryCard({super.key});
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ContentCubit, ContentState>(
-    builder: (context, state) => state.resumeOption.fold(
-      () => _ProfileSummaryStatusCard(
-        message: state.status == ContentStatus.failure
-            ? 'Profile summary could not be requested because content '
-                  'loading was interrupted.'
-            : 'Loading profile summary...',
-      ),
-      (resumeLoad) => resumeLoad.fold(
-        (_) => const _ProfileSummaryStatusCard(
-          message: 'Profile summary is temporarily unavailable.',
+    builder: (context, state) {
+      final about = _loadedAbout(state);
+
+      return state.resumeOption.fold(
+        () => _ProfileSummaryStatusCard(
+          message: state.status == ContentStatus.failure
+              ? 'Profile summary could not be requested because content '
+                    'loading was interrupted.'
+              : 'Loading profile summary...',
         ),
-        (resume) => _ResumeProfileSummaryCard(resume: resume),
-      ),
+        (resumeLoad) => resumeLoad.fold(
+          (_) => const _ProfileSummaryStatusCard(
+            message: 'Profile summary is temporarily unavailable.',
+          ),
+          (resume) => _ProfileSummaryContentCard(
+            resume: resume,
+            about: about,
+          ),
+        ),
+      );
+    },
+  );
+
+  About? _loadedAbout(ContentState state) => state.aboutOption.fold(
+    () => null,
+    (aboutLoad) => aboutLoad.fold(
+      (_) => null,
+      (about) => about,
     ),
   );
 }
 
-class _ResumeProfileSummaryCard extends StatelessWidget {
-  const _ResumeProfileSummaryCard({
+class _ProfileSummaryContentCard extends StatelessWidget {
+  const _ProfileSummaryContentCard({
     required this.resume,
+    required this.about,
   });
 
   final Resume resume;
+  final About? about;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final contactTiles = _buildContactTiles();
 
     return ContentCard(
       variant: AppSurfaceVariant.section,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ValidatedText(
-            field: resume.name,
-            style: AppTextStyles.authorName(context),
+          FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: ValidatedText(
+              field: resume.name,
+              style: AppTextStyles.authorName(context),
+            ),
           ),
           const SizedBox(height: AppSpacing.size8),
           ValidatedText(
@@ -68,18 +87,17 @@ class _ResumeProfileSummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.size12),
           ValidatedText(
-            field: resume.summary,
+            field: _summaryField,
             style: textTheme.bodyLarge,
-            maxLines: 6,
+            maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Contact',
             spacing: AppSpacing.size12,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: contactTiles,
+            child: ContactActionList(
+              links: resume.contactLinks,
             ),
           ),
         ],
@@ -87,32 +105,8 @@ class _ResumeProfileSummaryCard extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildContactTiles() {
-    final filteredLinks = resume.contactLinks
-        .where(_shouldKeepStickyLink)
-        .toList();
-    final children = <Widget>[
-      const ActionLinkTile(
-        label: 'Email',
-        subtitle: _directEmailAddress,
-        url: 'mailto:$_directEmailAddress',
-        actionLabel: 'Write',
-      ),
-    ];
-
-    for (final link in filteredLinks) {
-      children
-        ..add(const SizedBox(height: AppSpacing.size12))
-        ..add(ExternalLinkTile(linkReference: link));
-    }
-
-    return children;
-  }
-
-  bool _shouldKeepStickyLink(LinkReference link) => link.label.value.fold(
-    (_) => true,
-    (label) => label.toLowerCase() != 'portfolio',
-  );
+  NonEmptyText get _summaryField =>
+      about?.professionalSummaryShort ?? resume.summary;
 }
 
 class _ProfileSummaryStatusCard extends StatelessWidget {

@@ -1,6 +1,8 @@
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/disclosure_toggle_button.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_text_block.dart';
@@ -10,6 +12,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group(
+    'DisclosureToggleButton',
+    () {
+      testWidgets(
+        'uses the cool accent as a text-only disclosure control',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 320,
+              child: const DisclosureToggleButton(
+                isExpanded: false,
+                expandLabel: 'Read more',
+                collapseLabel: 'Show less',
+                onPressed: _noop,
+              ),
+            ),
+          );
+
+          final button = tester.widget<TextButton>(find.byType(TextButton));
+          final foregroundColor = button.style?.foregroundColor?.resolve(
+            const <WidgetState>{},
+          );
+          final backgroundColor = button.style?.backgroundColor?.resolve(
+            const <WidgetState>{},
+          );
+
+          expect(foregroundColor, AppColors.coolAccent);
+          expect(backgroundColor, Colors.transparent);
+        },
+      );
+    },
+  );
+
   group(
     'ExpandableTextBlock',
     () {
@@ -369,3 +404,5 @@ String _buildLongText() => List<String>.filled(
   40,
   'This is intentionally long body copy.',
 ).join(' ');
+
+void _noop() {}

@@ -37,9 +37,11 @@ final class AppSurfaceStyles {
     bool hovered = false,
     bool focused = false,
     bool pressed = false,
+    Color? accentColor,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final hasEmphasis = hovered || focused;
+    final interactiveAccentColor = accentColor ?? colorScheme.primary;
 
     return switch (variant) {
       AppSurfaceVariant.section => BoxDecoration(
@@ -84,9 +86,9 @@ final class AppSurfaceStyles {
       AppSurfaceVariant.solid => BoxDecoration(
         border: Border.all(
           color: pressed
-              ? colorScheme.primary.withValues(alpha: 0.42)
+              ? interactiveAccentColor.withValues(alpha: 0.42)
               : hasEmphasis
-              ? colorScheme.primary.withValues(alpha: 0.28)
+              ? interactiveAccentColor.withValues(alpha: 0.28)
               : colorScheme.outlineVariant,
         ),
         borderRadius: radiusFor(variant),

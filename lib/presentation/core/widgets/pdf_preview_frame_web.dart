@@ -61,7 +61,8 @@ class _PdfPreviewFrameWebState extends State<_PdfPreviewFrameWeb> {
 
 String _registerPreviewView(String path) {
   final viewType = 'pdf-preview-${_pdfPreviewCounter++}';
-  final previewUrl = '$path#page=1&toolbar=0&navpanes=0&scrollbar=0&view=Fit';
+  final previewUrl =
+      '$path#page=1&toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit';
 
   ui_web.platformViewRegistry.registerViewFactory(
     viewType,

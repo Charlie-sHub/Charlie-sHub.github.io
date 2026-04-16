@@ -9,11 +9,11 @@
   },
   "content": {
     "title": "PAMi",
-    "summary": "PAMi is an in-progress location-aware exchange platform built around temporary shout-outs that help nearby users connect in real life for quick, lightweight exchanges. The MVP includes shout-out creation, map-based discovery, messaging, transaction verification, karma, notifications, onboarding, and lightweight analytics, with a clear focus on maintainability, privacy, and progressive delivery.",
+    "summary": "PAMi is a location-aware exchange platform built around temporary shout-outs that help nearby users connect in real life for quick, lightweight exchanges. The MVP includes shout-out creation, map-based discovery, messaging, transaction verification, karma, notifications, onboarding, and lightweight analytics, with a clear focus on maintainability, privacy, and progressive delivery.",
     "thumbnailPath": null,
     "heroImagePath": null,
     "galleryImagePaths": [],
-    "role_and_scope": "PAMi is still in development, so the strongest current evidence is in the engineering work itself: architecture, domain modeling, data flows, CI quality gates, release planning, and security- and privacy-related decisions across the MVP. At this stage, the value is best reflected in implementation quality and delivery discipline rather than adoption metrics.",
+    "role_and_scope": "The strongest current evidence is in the engineering work itself: architecture, domain modeling, data flows, CI quality gates, release planning, and security- and privacy-related decisions across the MVP. At this stage, the value is best reflected in implementation quality and delivery discipline rather than adoption metrics.",
     "product_context": "The product is a nearby exchange platform where users can post temporary shout-outs, discover relevant opportunities on a map, express interest, chat, verify an exchange, and leave karma feedback. The direction is centered on utility, trust, and proximity rather than long-form social networking.\n\nThe MVP scope includes:\n\n- account and profile management\n- map filtering by category, proximity, and recency\n- shout-out posting and editing\n- text chat\n- QR or manual transaction verification\n- simplified karma\n- smart notifications\n- exchange history\n- in-app feedback\n- onboarding\n- minimal analytics",
     "stack": [
       "Flutter and Dart",

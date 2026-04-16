@@ -26,7 +26,7 @@ void main() {
       );
 
       testWidgets(
-        'renders the supporting section in a row on wider layouts',
+        'renders the supporting panels in a column on wider layouts',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
@@ -63,13 +63,12 @@ void main() {
             find.byKey(const ValueKey<String>('codersrank-activity-panel')),
           );
 
-          expect(rankRect.left, lessThan(activityRect.left));
-          expect(rankRect.top, equals(activityRect.top));
+          expect(activityRect.top, greaterThan(rankRect.bottom));
         },
       );
 
       testWidgets(
-        'stacks the CodersRank panels on narrower layouts',
+        'keeps the rank panel above the activity panel on narrower layouts',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(

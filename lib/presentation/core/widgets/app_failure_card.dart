@@ -32,7 +32,7 @@ class AppFailureCard extends StatelessWidget {
           Row(
             children: [
               Icon(
-                Icons.error_outline,
+                Icons.error_outline_rounded,
                 color: colorScheme.error,
               ),
               const SizedBox(width: AppSpacing.size8),

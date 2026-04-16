@@ -27,6 +27,7 @@ abstract class About with _$About {
     required List<AboutSkillGroup> selectedSkillsAndTools,
     required NonEmptyText howIBuildSoftware,
     required NonEmptyText howDevelopmentAndSecurityConnect,
+    NonEmptyText? professionalSummaryShort,
   }) = _About;
   const About._();
 
@@ -36,6 +37,7 @@ abstract class About with _$About {
         slug.failureOrNull,
         sourcePath.failureOrNull,
         title.failureOrNull,
+        professionalSummaryShort?.failureOrNull,
         whoIAmProfessionally.failureOrNull,
         currentPositioning.failureOrNull,
         developmentBackground.failureOrNull,

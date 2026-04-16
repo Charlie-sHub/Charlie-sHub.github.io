@@ -2,7 +2,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
@@ -46,8 +46,8 @@ class CertificationCard extends StatelessWidget {
         ),
     ];
 
-    return ContentCard(
-      child: Column(
+    return EntityDisclosureCard(
+      preview: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ValidatedText(
@@ -75,6 +75,11 @@ class CertificationCard extends StatelessWidget {
               title: 'Certificate PDF',
             ),
           ],
+        ],
+      ),
+      details: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           const SizedBox(height: AppSpacing.size20),
           ContentBlock(
             title: 'Knowledge areas',
@@ -87,7 +92,7 @@ class CertificationCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Learning outcomes',
             child: ValidatedBulletList(
@@ -100,7 +105,7 @@ class CertificationCard extends StatelessWidget {
             ),
           ),
           if (certification.toolsAndFrameworks.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Tools and frameworks',
               child: ValidatedBulletList(
@@ -110,7 +115,7 @@ class CertificationCard extends StatelessWidget {
             ),
           ],
           if (certification.proof.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Proof',
               child: ExternalLinkList(links: certification.proof),

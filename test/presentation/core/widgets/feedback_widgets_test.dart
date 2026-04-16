@@ -29,7 +29,7 @@ void main() {
             findsOneWidget,
           );
           expect(
-            find.byIcon(Icons.report_gmailerrorred_outlined),
+            find.byIcon(Icons.error_outline_rounded),
             findsOneWidget,
           );
         },
@@ -101,7 +101,7 @@ void main() {
             ),
             findsOneWidget,
           );
-          expect(find.byIcon(Icons.error_outline), findsOneWidget);
+          expect(find.byIcon(Icons.error_outline_rounded), findsOneWidget);
           expect(find.text('Unrelated content'), findsNothing);
         },
       );

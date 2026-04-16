@@ -28,6 +28,17 @@
       "maxLength": 160,
       "pattern": "^[^\r\n]+$"
     },
+    "short_paragraph_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320
+    },
+    "nullable_short_paragraph_text": {
+      "anyOf": [
+        { "$ref": "#/$defs/short_paragraph_text" },
+        { "type": "null" }
+      ]
+    },
     "long_text": {
       "type": "string",
       "minLength": 1,
@@ -75,6 +86,9 @@
       ],
       "properties": {
         "title": { "$ref": "#/$defs/title_text" },
+        "professional_summary_short": {
+          "$ref": "#/$defs/nullable_short_paragraph_text"
+        },
         "who_i_am_professionally": { "$ref": "#/$defs/long_text" },
         "current_positioning": { "$ref": "#/$defs/long_text" },
         "development_background": { "$ref": "#/$defs/long_text" },

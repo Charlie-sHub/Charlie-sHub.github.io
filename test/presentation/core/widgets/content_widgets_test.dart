@@ -6,6 +6,8 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
@@ -18,7 +20,15 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
-import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/material.dart'
+    show
+        Column,
+        CrossAxisAlignment,
+        EdgeInsets,
+        Icons,
+        SizedBox,
+        TextButton,
+        WidgetState;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../presentation_test_helpers.dart';
@@ -360,6 +370,105 @@ void main() {
           expect(find.byIcon(Icons.open_in_new), findsOneWidget);
           expect(find.text('https://example.com/project'), findsNothing);
           expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'renders the contact-button variant as a label-only warm button',
+        (tester) async {
+          var tapped = false;
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ActionLinkTile(
+                label: 'GitHub',
+                url: 'https://example.com/github',
+                variant: ActionLinkVariant.contactButton,
+                onTap: () => tapped = true,
+              ),
+            ),
+          );
+
+          await tester.tap(find.text('GitHub'));
+          await tester.pump();
+
+          final button = tester.widget<TextButton>(find.byType(TextButton));
+          final defaultBackground = button.style?.backgroundColor?.resolve(
+            const <WidgetState>{},
+          );
+          final hoverBackground = button.style?.backgroundColor?.resolve(
+            const <WidgetState>{WidgetState.hovered},
+          );
+
+          expect(find.text('GitHub'), findsOneWidget);
+          expect(find.text('Open link'), findsNothing);
+          expect(find.byIcon(Icons.open_in_new), findsNothing);
+          expect(defaultBackground, AppColors.warmAccent);
+          expect(hoverBackground, AppColors.warmAccentSoft);
+          expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'renders the large contact-button variant with larger padding',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ActionLinkTile(
+                    label: 'Sticky',
+                    url: 'https://example.com/sticky',
+                    variant: ActionLinkVariant.contactButton,
+                  ),
+                  SizedBox(height: 12),
+                  ActionLinkTile(
+                    label: 'Resume',
+                    url: 'https://example.com/resume',
+                    variant: ActionLinkVariant.contactButtonLarge,
+                  ),
+                ],
+              ),
+            ),
+          );
+
+          final buttons = tester
+              .widgetList<TextButton>(
+                find.byType(TextButton),
+              )
+              .toList();
+          final compactPadding = buttons.first.style?.padding?.resolve(
+            const <WidgetState>{},
+          );
+          final largePadding = buttons.last.style?.padding?.resolve(
+            const <WidgetState>{},
+          );
+          final compactTextStyle = buttons.first.style?.textStyle?.resolve(
+            const <WidgetState>{},
+          );
+          final largeTextStyle = buttons.last.style?.textStyle?.resolve(
+            const <WidgetState>{},
+          );
+
+          expect(
+            compactPadding,
+            const EdgeInsets.symmetric(
+              horizontal: AppSpacing.size16,
+              vertical: AppSpacing.size10,
+            ),
+          );
+          expect(
+            largePadding,
+            const EdgeInsets.symmetric(
+              horizontal: AppSpacing.size20,
+              vertical: AppSpacing.size14,
+            ),
+          );
+          expect(
+            largeTextStyle?.fontSize,
+            greaterThan(compactTextStyle?.fontSize ?? 0),
+          );
         },
       );
 

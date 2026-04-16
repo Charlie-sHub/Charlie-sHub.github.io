@@ -15,9 +15,7 @@ final class AppTextStyles {
       );
 
   static TextStyle? authorName(BuildContext context) =>
-      Theme.of(context).textTheme.displayLarge?.copyWith(
-        fontFamily: 'MovingSkate',
-        fontFamilyFallback: const ['Geometria'],
+      Theme.of(context).textTheme.displayMedium?.copyWith(
         color: AppColors.warmAccent,
         height: 0.9,
       );
@@ -28,6 +26,13 @@ final class AppTextStyles {
   static TextStyle? selectorTitle(BuildContext context) =>
       Theme.of(context).textTheme.titleSmall;
 
+  static TextStyle? selectorTitleState(
+    BuildContext context, {
+    required bool isSelected,
+  }) => selectorTitle(context)?.copyWith(
+    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+  );
+
   static TextStyle? body(BuildContext context) =>
       Theme.of(context).textTheme.bodyLarge;
 
@@ -36,6 +41,9 @@ final class AppTextStyles {
 
   static TextStyle? supporting(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall;
+
+  static TextStyle? selectorSupporting(BuildContext context) =>
+      supporting(context);
 
   static TextStyle? metadataLabel(BuildContext context) =>
       Theme.of(context).textTheme.labelMedium;

@@ -1,9 +1,10 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact_action_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +52,13 @@ class ResumeOverviewCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Contact links',
-            child: ExternalLinkList(
+            child: ContactActionList(
               links: resume.contactLinks,
               collectionFailure: collectionFailureOrNull(
                 resume.contactLinks,
                 minLength: 1,
               ),
+              variant: ActionLinkVariant.contactButtonLarge,
             ),
           ),
         ],

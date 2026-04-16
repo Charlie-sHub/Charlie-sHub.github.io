@@ -400,7 +400,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                     children: [
                       ValidatedPlaceholder(
                         path: AssetPath(
-                          'assets/media/content/projects/world_on/hero.png',
+                          'assets/media/content/projects/world_on/world_on_home_and_search.png',
                         ),
                         labelBuilder: _buildMediaLabel,
                       ),
@@ -419,7 +419,7 @@ class WidgetShowcaseSection extends StatelessWidget {
                     children: [
                       ValidatedPdfPreviewTile(
                         path: DocumentPath(
-                          'assets/documents/certifications/security_plus.pdf',
+                          'assets/documents/certifications/comptia_security_plus_ce_certificate.pdf',
                         ),
                         title: 'Certificate PDF',
                       ),

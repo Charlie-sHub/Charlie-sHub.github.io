@@ -37,6 +37,9 @@ abstract class AboutDto with _$AboutDto {
     slug: Slug(meta.slug),
     sourcePath: SingleLineText(meta.sourcePath),
     title: Title(content.title),
+    professionalSummaryShort: content.professionalSummaryShort == null
+        ? null
+        : NonEmptyText(content.professionalSummaryShort!),
     whoIAmProfessionally: NonEmptyText(content.whoIAmProfessionally),
     currentPositioning: NonEmptyText(content.currentPositioning),
     developmentBackground: NonEmptyText(content.developmentBackground),
@@ -96,6 +99,7 @@ abstract class AboutContentJson with _$AboutContentJson {
     required List<AboutSkillGroupDto> selectedSkillsAndTools,
     required String howIBuildSoftware,
     required String howDevelopmentAndSecurityConnect,
+    String? professionalSummaryShort,
   }) = _AboutContentJson;
 
   /// Creates about content fields from raw JSON.

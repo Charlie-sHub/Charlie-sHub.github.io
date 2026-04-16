@@ -98,7 +98,7 @@ class ProjectCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Product context',
             child: ExpandableValueTextBlock(
@@ -106,7 +106,7 @@ class ProjectCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Stack',
             child: TagChipList(
@@ -117,7 +117,7 @@ class ProjectCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Implementation',
             child: ExpandableValueTextBlock(
@@ -125,7 +125,7 @@ class ProjectCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Outcomes',
             child: ValidatedBulletList(
@@ -138,7 +138,7 @@ class ProjectCard extends StatelessWidget {
             ),
           ),
           if (project.securityAndQuality != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Security and quality',
               child: ExpandableValueTextBlock(
@@ -148,7 +148,7 @@ class ProjectCard extends StatelessWidget {
             ),
           ],
           if (project.lessons.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Lessons',
               child: ValidatedBulletList(
@@ -158,7 +158,7 @@ class ProjectCard extends StatelessWidget {
             ),
           ],
           if (project.links.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Links',
               child: ExternalLinkList(links: project.links),

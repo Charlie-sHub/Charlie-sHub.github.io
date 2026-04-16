@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_item.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
@@ -40,7 +41,7 @@ class ResumeExperienceList extends StatelessWidget {
         );
 
         if (index < items.length - 1) {
-          children.add(const SizedBox(height: 12));
+          children.add(const SizedBox(height: AppSpacing.size12));
         }
       }
 
@@ -76,13 +77,13 @@ class _ResumeExperienceCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           if (item.organization != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.size8),
             ValidatedText(
               field: item.organization!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.size12),
           MetadataRow(
             items: [
               MetadataItemData(
@@ -101,14 +102,14 @@ class _ResumeExperienceCard extends StatelessWidget {
             ],
           ),
           if (item.isOngoing) ...const [
-            SizedBox(height: 12),
+            SizedBox(height: AppSpacing.size12),
             SupportingText(text: 'In progress'),
           ],
           if (timelineFailure != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.size12),
             FieldFailureWidget(failure: timelineFailure),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Highlights',
             child: ValidatedBulletList(

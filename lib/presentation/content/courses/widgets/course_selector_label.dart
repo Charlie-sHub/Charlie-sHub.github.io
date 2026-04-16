@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_labels.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +29,16 @@ class CourseSelectorLabel extends StatelessWidget {
     (course) => EntrySelectorLabel(
       title: ValidatedText(
         field: course.title,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+        style: AppTextStyles.selectorTitleState(
+          context,
+          isSelected: isSelected,
         ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: ValidatedText(
         field: course.courseDetails.provider,
-        style: Theme.of(context).textTheme.bodySmall,
+        style: AppTextStyles.selectorSupporting(context),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

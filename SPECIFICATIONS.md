@@ -577,9 +577,8 @@ Color and typography should feel intentional, consistent, readable, and easy to 
 
 Current first-pass font direction:
 - placeholder or default fonts remain acceptable until the intended fonts are integrated
-- `Geometria` is the intended main font for general content and UI
-- `Moving Skate` may be used for the author's name and similarly high-value accent moments only
-- a limited cursive-like accent role may be used as a temporary stand-in for `Moving Skate` only when it is easy, low-risk, and used very sparingly
+- `Geometria` is the intended main font for general content, UI, and the author's name treatment in the current implementation
+- no separate accent font is required for the current site pass; consistency should take priority over decorative contrast
 - monospace used selectively for technical accents, labels, metadata, or comparable supporting roles rather than as the default reading font
 
 These choices are settled enough to guide first-pass implementation. Exact scale, weight tuning, fallback behavior, and later refinement remain subject to availability, usability, and iteration.

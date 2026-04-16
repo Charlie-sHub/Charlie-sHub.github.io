@@ -56,14 +56,15 @@ class UnavailableEntrySelectorLabel extends StatelessWidget {
     children: [
       Text(
         title,
-        style: AppTextStyles.selectorTitle(context)?.copyWith(
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+        style: AppTextStyles.selectorTitleState(
+          context,
+          isSelected: isSelected,
         ),
       ),
       const SizedBox(height: AppSpacing.size4),
       Text(
         message,
-        style: AppTextStyles.supporting(context),
+        style: AppTextStyles.selectorSupporting(context),
       ),
     ],
   );

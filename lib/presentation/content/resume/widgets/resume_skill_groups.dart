@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class ResumeSkillGroups extends StatelessWidget {
         );
 
         if (index < skillGroups.length - 1) {
-          children.add(const SizedBox(height: 12));
+          children.add(const SizedBox(height: AppSpacing.size12));
         }
       }
 

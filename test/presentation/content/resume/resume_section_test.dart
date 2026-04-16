@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
+import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
@@ -9,6 +10,7 @@ import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficien
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/year_month.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
@@ -27,16 +29,37 @@ void main() {
       testWidgets(
         'renders grouped resume content and valid language proficiency',
         (tester) async {
+          final resume = buildResume().copyWith(
+            contactLinks: <LinkReference>[
+              LinkReference(
+                label: SingleLineText('LinkedIn'),
+                url: UrlValue('https://example.com/linkedin'),
+              ),
+              LinkReference(
+                label: SingleLineText('GitHub'),
+                url: UrlValue('https://example.com/github'),
+              ),
+              LinkReference(
+                label: SingleLineText('Portfolio'),
+                url: UrlValue('https://example.com/portfolio'),
+              ),
+            ],
+          );
+
           await pumpWithContentState(
             tester,
             child: const ResumeSection(),
             state: _resumeState(
-              right(buildResume()),
+              right(resume),
             ),
           );
 
           expect(find.text('Carlos Mendez'), findsOneWidget);
+          expect(find.text('Email'), findsOneWidget);
           expect(find.text('LinkedIn'), findsOneWidget);
+          expect(find.text('GitHub'), findsOneWidget);
+          expect(find.text('Portfolio'), findsNothing);
+          expect(find.text('Open link'), findsNothing);
           expect(find.text('Engineering'), findsOneWidget);
           expect(find.text('Software Engineer'), findsOneWidget);
           expect(find.text('Computer Science'), findsOneWidget);
@@ -67,7 +90,7 @@ void main() {
             ),
           );
 
-          expect(find.text('English'), findsOneWidget);
+          expect(find.text('English'), findsNothing);
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('C1'), findsNothing);
         },

@@ -1,4 +1,3 @@
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_codersrank_theme.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
@@ -41,44 +40,23 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
                     'the first-party portfolio content above.',
               ),
               const SizedBox(height: AppSpacing.size16),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final useRow =
-                      constraints.maxWidth >=
-                      AppCodersRankTheme.widgetRowBreakpoint;
-                  final rankPanel = _CodersRankPanel(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _CodersRankPanel(
                     cardKey: const ValueKey<String>('codersrank-rank-panel'),
                     title: 'Rank widgets',
                     child: rankWidget,
-                  );
-                  final activityPanel = _CodersRankPanel(
+                  ),
+                  const SizedBox(height: AppSpacing.size16),
+                  _CodersRankPanel(
                     cardKey: const ValueKey<String>(
                       'codersrank-activity-panel',
                     ),
                     title: 'GitHub activity matrix',
                     child: activityWidget,
-                  );
-
-                  if (useRow) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: rankPanel),
-                        const SizedBox(width: AppSpacing.size16),
-                        Expanded(child: activityPanel),
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        rankPanel,
-                        const SizedBox(height: AppSpacing.size16),
-                        activityPanel,
-                      ],
-                    );
-                  }
-                },
+                  ),
+                ],
               ),
             ],
           ),

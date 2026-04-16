@@ -83,6 +83,3 @@ flutter:
         - asset: assets/fonts/geometria/Geometria-HeavyItalic.ttf
           weight: 900
           style: italic
-    - family: MovingSkate
-      fonts:
-        - asset: assets/fonts/moving_skate/Moving Skate.ttf

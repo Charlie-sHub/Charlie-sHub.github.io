@@ -1,12 +1,23 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/action_card_footer.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
+
+/// Shared visual variants for external resource affordances.
+enum ActionLinkVariant {
+  /// Full clickable card surface with label, subtitle, and affordance.
+  card,
+
+  /// Compact sticky-profile contact button with label only.
+  contactButton,
+
+  /// Larger resume contact button with the same warm-accent treatment.
+  contactButtonLarge,
+}
 
 /// Renders an external link reference from validated domain fields.
 class ExternalLinkTile extends StatelessWidget {
@@ -15,6 +26,7 @@ class ExternalLinkTile extends StatelessWidget {
     required this.linkReference,
     this.onTap,
     this.showUrl = false,
+    this.variant = ActionLinkVariant.card,
     super.key,
   });
 
@@ -26,6 +38,9 @@ class ExternalLinkTile extends StatelessWidget {
 
   /// Whether the URL should be shown under the label.
   final bool showUrl;
+
+  /// The visual treatment used for the link affordance.
+  final ActionLinkVariant variant;
 
   @override
   Widget build(BuildContext context) => linkReference.label.value.fold(
@@ -41,6 +56,7 @@ class ExternalLinkTile extends StatelessWidget {
         onTap: onTap,
         url: url,
         subtitle: showUrl ? url : null,
+        variant: variant,
       ),
     ),
   );
@@ -55,6 +71,7 @@ class ActionLinkTile extends StatelessWidget {
     this.subtitle,
     this.actionLabel = 'Open link',
     this.onTap,
+    this.variant = ActionLinkVariant.card,
     super.key,
   });
 
@@ -73,47 +90,34 @@ class ActionLinkTile extends StatelessWidget {
   /// Optional tap override used mainly in tests.
   final VoidCallback? onTap;
 
+  /// The visual treatment used for the link affordance.
+  final ActionLinkVariant variant;
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final resolvedOnTap = resolveOpenExternalResource(url, onTap: onTap);
+
+    if (variant == ActionLinkVariant.contactButton ||
+        variant == ActionLinkVariant.contactButtonLarge) {
+      final style = variant == ActionLinkVariant.contactButtonLarge
+          ? AppButtonStyles.contactLinkLarge(context)
+          : AppButtonStyles.contactLink(context);
+
+      return TextButton(
+        onPressed: resolvedOnTap,
+        style: style,
+        child: Text(label),
+      );
+    }
 
     return ContentCard(
       onTap: resolvedOnTap,
       isLink: true,
       padding: AppSpacing.externalLinkTilePadding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeadingText(text: label),
-                if (subtitle case final subtitle?) ...[
-                  const SizedBox(height: AppSpacing.size4),
-                  SupportingText(text: subtitle),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.size12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                actionLabel,
-                style: AppTextStyles.actionLabel(context),
-              ),
-              const SizedBox(height: AppSpacing.size4),
-              Icon(
-                Icons.open_in_new,
-                color: colorScheme.secondary,
-                size: AppLayout.externalLinkIndicatorIconSize,
-              ),
-            ],
-          ),
-        ],
+      child: ActionCardFooter(
+        label: label,
+        subtitle: subtitle,
+        actionLabel: actionLabel,
       ),
     );
   }

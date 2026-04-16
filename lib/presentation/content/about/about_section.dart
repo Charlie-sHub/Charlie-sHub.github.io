@@ -3,6 +3,7 @@ import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/presentation/content/about/widgets/about_narrative_card.dart';
 import 'package:charlie_shub_portfolio/presentation/content/about/widgets/about_skill_groups.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
@@ -44,10 +45,10 @@ class AboutSection extends StatelessWidget {
           ],
           (about) => <Widget>[
             AboutNarrativeCard(about: about),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Selected skills and tools',
-              spacing: 12,
+              spacing: AppSpacing.size12,
               child: AboutSkillGroups(
                 skillGroups: about.selectedSkillsAndTools,
               ),

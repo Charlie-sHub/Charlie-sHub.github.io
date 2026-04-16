@@ -82,12 +82,12 @@ class CourseCard extends StatelessWidget {
             ),
           ),
           if (course.badgeImagePath != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ValidatedAssetMediaCard(
               path: course.badgeImagePath!,
               labelBuilder: _buildBadgeLabel,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
           ],
           if (course.certificatePdfPath != null) ...[
             ValidatedPdfPreviewTile(
@@ -109,7 +109,7 @@ class CourseCard extends StatelessWidget {
               style: textTheme.bodyMedium,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Relevance',
             child: ValidatedBulletList(
@@ -122,7 +122,7 @@ class CourseCard extends StatelessWidget {
             ),
           ),
           if (course.keyTakeaways.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Key takeaways',
               child: ValidatedBulletList(
@@ -132,7 +132,7 @@ class CourseCard extends StatelessWidget {
             ),
           ],
           if (course.proof.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.size16),
             ContentBlock(
               title: 'Proof',
               child: ExternalLinkList(links: course.proof),

@@ -34,7 +34,7 @@ class FieldFailureWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
-              Icons.report_gmailerrorred_outlined,
+              Icons.error_outline_rounded,
               size: 18,
               color: colorScheme.error,
             ),

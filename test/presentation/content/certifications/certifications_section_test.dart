@@ -14,8 +14,8 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.
 import 'package:charlie_shub_portfolio/presentation/content/certifications/certifications_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,7 +35,7 @@ void main() {
               'assets/media/content/certifications/security_plus/badge.png',
             ),
             certificatePdfPath: DocumentPath(
-              'assets/documents/certifications/security_plus.pdf',
+              'assets/documents/certifications/comptia_security_plus_ce_certificate.pdf',
             ),
             proof: <LinkReference>[
               LinkReference(
@@ -58,8 +58,14 @@ void main() {
           expect(find.text('Security+'), findsNWidgets(2));
           expect(find.text('A certification summary.'), findsOneWidget);
           expect(find.text('CompTIA'), findsNWidgets(2));
-          expect(find.byType(MediaPlaceholder), findsOneWidget);
+          expect(find.byType(AssetMediaCard), findsOneWidget);
           expect(find.byType(PdfPreviewTile), findsOneWidget);
+          expect(find.text('View details'), findsOneWidget);
+          expect(find.text('Credential proof'), findsNothing);
+          await tester.ensureVisible(find.text('View details'));
+          await tester.tap(find.text('View details'));
+          await tester.pump();
+          expect(find.text('Hide details'), findsOneWidget);
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
@@ -117,9 +123,36 @@ void main() {
             ),
           );
 
-          expect(find.byType(MediaPlaceholder), findsNothing);
+          expect(find.byType(AssetMediaCard), findsNothing);
           expect(find.byType(PdfPreviewTile), findsNothing);
+          expect(find.text('View details'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'places View details directly below the PDF preview',
+        (tester) async {
+          final certification = buildCertification().copyWith(
+            certificatePdfPath: DocumentPath(
+              'assets/documents/certifications/comptia_security_plus_ce_certificate.pdf',
+            ),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const CertificationsSection(),
+            state: _certificationsState(
+              right(<SectionItemLoad<Certification>>[
+                right(certification),
+              ]),
+            ),
+          );
+
+          final previewRect = tester.getRect(find.byType(PdfPreviewTile));
+          final buttonRect = tester.getRect(find.text('View details'));
+
+          expect(buttonRect.top, greaterThan(previewRect.bottom));
         },
       );
 
@@ -222,6 +255,9 @@ void main() {
               ]),
             ),
           );
+
+          await tester.tap(find.text('View details'));
+          await tester.pump();
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.text('Threats and vulnerabilities.'), findsNothing);
