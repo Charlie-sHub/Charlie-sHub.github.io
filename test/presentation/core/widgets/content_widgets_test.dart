@@ -12,13 +12,11 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_l
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart'
     show
@@ -107,48 +105,6 @@ void main() {
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.byType(AssetMediaCard), findsNothing);
-        },
-      );
-    },
-  );
-
-  group(
-    'ValidatedPlaceholder',
-    () {
-      testWidgets(
-        'renders media placeholder when path is valid',
-        (tester) async {
-          await tester.pumpWidget(
-            buildPresentationTestApp(
-              ValidatedPlaceholder(
-                path: AssetPath(
-                  'assets/media/content/projects/pami/hero.png',
-                ),
-                labelBuilder: _heroLabelBuilder,
-              ),
-            ),
-          );
-
-          expect(find.byType(MediaPlaceholder), findsOneWidget);
-          expect(find.textContaining('hero.png'), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsNothing);
-        },
-      );
-
-      testWidgets(
-        'renders failure widget when path is invalid',
-        (tester) async {
-          await tester.pumpWidget(
-            buildPresentationTestApp(
-              ValidatedPlaceholder(
-                path: AssetPath('invalid/path.png'),
-                labelBuilder: _heroLabelBuilder,
-              ),
-            ),
-          );
-
-          expect(find.byType(FieldFailureWidget), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsNothing);
         },
       );
     },

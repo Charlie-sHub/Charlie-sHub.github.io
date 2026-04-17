@@ -20,8 +20,8 @@ import 'package:charlie_shub_portfolio/presentation/content/courses/courses_sect
 import 'package:charlie_shub_portfolio/presentation/content/projects/projects_section.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/media_placeholder.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -149,13 +149,20 @@ void main() {
             ),
           );
 
+          await tester.ensureVisible(find.text('View details'));
+          await tester.tap(find.text('View details'));
+          await tester.pump();
+          await tester.ensureVisible(find.text('View course details'));
+          await tester.tap(find.text('View course details'));
+          await tester.pump();
+
           expect(find.text('Security+'), findsNWidgets(2));
           expect(find.text('Google Networking'), findsNWidgets(2));
           expect(find.text('CompTIA'), findsNWidgets(2));
           expect(find.text('Google'), findsNWidgets(2));
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.text('Course proof'), findsOneWidget);
-          expect(find.byType(MediaPlaceholder), findsNWidgets(2));
+          expect(find.byType(AssetMediaCard), findsNWidgets(2));
           expect(find.byType(PdfPreviewTile), findsNWidgets(2));
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
