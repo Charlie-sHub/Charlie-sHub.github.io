@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/action_card_footer.dart';
@@ -113,11 +114,18 @@ class ActionLinkTile extends StatelessWidget {
           ? AppButtonStyles.contactLinkLarge(context)
           : AppButtonStyles.contactLink(context);
 
-      return TextButton.icon(
+      return TextButton(
         onPressed: resolvedOnTap,
         style: style,
-        icon: Icon(resolvedLeadingIcon),
-        label: Text(label),
+        child: variant == ActionLinkVariant.contactButton
+            ? _StickyContactButtonContent(
+                label: label,
+                icon: resolvedLeadingIcon,
+              )
+            : _ContactButtonContent(
+                label: label,
+                icon: resolvedLeadingIcon,
+              ),
       );
     }
 
@@ -164,4 +172,67 @@ class ActionLinkTile extends StatelessWidget {
       return Icons.link_rounded;
     }
   }
+}
+
+class _ContactButtonContent extends StatelessWidget {
+  const _ContactButtonContent({
+    required this.label,
+    required this.icon,
+  });
+
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: AppLayout.actionLeadingIconSize,
+          child: Icon(
+            icon,
+            size: AppLayout.actionLeadingIconSize,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.size8),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
+}
+
+class _StickyContactButtonContent extends StatelessWidget {
+  const _StickyContactButtonContent({
+    required this.label,
+    required this.icon,
+  });
+
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: SizedBox(
+      width: AppLayout.homeProfileContactContentWidth,
+      child: Row(
+        children: [
+          SizedBox(
+            width: AppLayout.actionLeadingIconSize,
+            child: Icon(
+              icon,
+              size: AppLayout.actionLeadingIconSize,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.size8),
+          Expanded(
+            child: Text(label),
+          ),
+        ],
+      ),
+    ),
+  );
 }

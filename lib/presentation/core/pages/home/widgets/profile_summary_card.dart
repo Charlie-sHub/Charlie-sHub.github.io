@@ -5,7 +5,6 @@ import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_radii.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
@@ -79,29 +78,24 @@ class _ProfileSummaryContentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FittedBox(
-            alignment: Alignment.centerLeft,
-            fit: BoxFit.scaleDown,
-            child: ValidatedText(
-              field: resume.name,
-              style: AppTextStyles.authorName(context),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.size16),
-          ContactActionList(
-            links: resume.contactLinks,
-          ),
-          const SizedBox(height: AppSpacing.size16),
           ContentCard(
             key: _profileSummaryInnerCardKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: _ProfileSummaryImage(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ValidatedText(
+                        field: resume.name,
+                        style: AppTextStyles.authorName(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.size12),
+                    const _ProfileSummaryImage(),
+                  ],
                 ),
-                const SizedBox(height: AppSpacing.size16),
                 ValidatedText(
                   field: _summaryField,
                   style: textTheme.bodyLarge,
@@ -110,6 +104,10 @@ class _ProfileSummaryContentCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(height: AppSpacing.size16),
+          ContactActionList(
+            links: resume.contactLinks,
           ),
         ],
       ),
@@ -145,20 +143,12 @@ class _ProfileSummaryImage extends StatelessWidget {
   const _ProfileSummaryImage();
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
+  Widget build(BuildContext context) => SizedBox.square(
     key: _profileSummaryImageKey,
-    decoration: AppSurfaceStyles.previewFrameDecoration(
-      context,
-    ).copyWith(borderRadius: AppRadii.card),
-    child: ClipRRect(
-      borderRadius: AppRadii.card,
-      child: SizedBox.square(
-        dimension: AppLayout.homeProfileSummaryImageSize,
-        child: Image.asset(
-          _profileSummaryImageAsset,
-          fit: BoxFit.cover,
-        ),
-      ),
+    dimension: AppLayout.homeProfileSummaryImageSize,
+    child: Image.asset(
+      _profileSummaryImageAsset,
+      fit: BoxFit.cover,
     ),
   );
 }

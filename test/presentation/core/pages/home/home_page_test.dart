@@ -33,6 +33,19 @@ void main() {
       );
 
       testWidgets(
+        'centers the main section card stack on wide layouts',
+        (tester) async {
+          await _pumpHomePage(tester, size: const Size(1440, 1200));
+
+          final mainContentRect = tester.getRect(
+            find.byKey(const ValueKey<String>('home-main-content')),
+          );
+
+          expect(mainContentRect.center.dx, closeTo(720, 1));
+        },
+      );
+
+      testWidgets(
         'uses a full-width scroll viewport on wide layouts',
         (tester) async {
           await _pumpHomePage(tester, size: const Size(1440, 1200));

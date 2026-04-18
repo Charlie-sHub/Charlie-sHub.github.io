@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/contact_action_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
@@ -35,7 +36,7 @@ class ResumeOverviewCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: resume.location,
-            style: textTheme.bodyMedium,
+            style: AppTextStyles.subtitle(context),
           ),
           const SizedBox(height: AppSpacing.size12),
           ValidatedText(

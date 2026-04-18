@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 const _appShellWallpaperAsset = 'assets/media/background.jpg';
 const _profileSummaryKey = ValueKey<String>('home-profile-summary');
+const _mainContentKey = ValueKey<String>('home-main-content');
 
 /// Home page for the single-page public portfolio layout.
 class PortfolioHomePage extends StatelessWidget {
@@ -98,11 +99,20 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
 
   @override
   Widget build(BuildContext context) {
-    final frameWidth = math.min(
-      widget.maxWidth,
-      AppLayout.maxHomeContentWidth + AppSpacing.pagePadding.horizontal,
+    const contentSideInset =
+        AppSpacing.size24 +
+        AppLayout.homeProfileSummaryWidth +
+        AppLayout.homeProfileSummaryGap;
+    final centeredContentWidth = math.min(
+      AppLayout.maxContentWidth,
+      widget.maxWidth - (contentSideInset * 2),
     );
-    final frameLeftInset = (widget.maxWidth - frameWidth) / 2;
+    final centeredContentLeftInset =
+        (widget.maxWidth - centeredContentWidth) / 2;
+    final stickySummaryLeftInset =
+        centeredContentLeftInset -
+        AppLayout.homeProfileSummaryGap -
+        AppLayout.homeProfileSummaryWidth;
 
     return Align(
       alignment: Alignment.topCenter,
@@ -125,25 +135,17 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: SizedBox(
-                        width: frameWidth,
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                            left:
-                                AppSpacing.size24 +
-                                AppLayout.homeProfileSummaryWidth +
-                                AppLayout.homeProfileSummaryGap,
-                            right: AppSpacing.size24,
-                          ),
-                          child: _HomePageContent(
-                            includeInlineProfileSummary: false,
-                          ),
+                        key: _mainContentKey,
+                        width: centeredContentWidth,
+                        child: const _HomePageContent(
+                          includeInlineProfileSummary: false,
                         ),
                       ),
                     ),
                   ),
                 ),
                 Positioned(
-                  left: frameLeftInset + AppSpacing.size24,
+                  left: stickySummaryLeftInset,
                   top: AppSpacing.size24,
                   child: SizedBox(
                     key: _stickySummaryLaneKey,

@@ -33,7 +33,7 @@ final class AppColors {
   static const Color textOnWallpaper = chalk;
   static const Color textOnWallpaperShadow = Color(0xA61A2225);
 
-  static const Color warmAccent = ember;
+  static const Color warmAccent = Color(0xFFB85A2C);
   static const Color warmAccentSoft = Color(0xFFF1DDD2);
   static const Color coolAccent = deepTeal;
   static const Color coolAccentSoft = Color(0xFFD6E5E6);

@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_education_item.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
@@ -75,7 +76,7 @@ class _ResumeEducationCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: item.institution,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: AppTextStyles.subtitle(context),
           ),
           const SizedBox(height: AppSpacing.size12),
           MetadataRow(

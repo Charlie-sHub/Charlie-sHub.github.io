@@ -12,6 +12,7 @@ final class AppLayout {
   static const double homeProfileSummaryWidth = 300;
   static const double homeProfileSummaryGap = 24;
   static const double homeProfileSummaryImageSize = 96;
+  static const double homeProfileContactContentWidth = 144;
   static const double contactActionRowBreakpoint = 560;
   static const double entrySelectorCompactBreakpoint = 720;
   static const double entrySelectorWidth = 260;

@@ -1,5 +1,5 @@
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 /// Renders a small titled content block with consistent heading spacing.
@@ -9,6 +9,7 @@ class ContentBlock extends StatelessWidget {
     required this.title,
     required this.child,
     this.spacing = AppSpacing.size8,
+    this.titleStyle,
     super.key,
   });
 
@@ -21,11 +22,18 @@ class ContentBlock extends StatelessWidget {
   /// The vertical spacing between the heading and the child.
   final double spacing;
 
+  /// Optional heading style override for cases that should not use the
+  /// emphasized shared content-block title treatment.
+  final TextStyle? titleStyle;
+
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      HeadingText(text: title),
+      Text(
+        title,
+        style: titleStyle ?? AppTextStyles.contentBlockHeading(context),
+      ),
       SizedBox(height: spacing),
       child,
     ],

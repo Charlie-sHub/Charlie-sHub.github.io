@@ -13,11 +13,12 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/year_month.dart';
 import 'package:charlie_shub_portfolio/presentation/content/resume/resume_section.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart' show TextButton;
+import 'package:flutter/material.dart' show Text, TextButton, Theme;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../application/content/content_test_entity_builders.dart';
@@ -109,6 +110,35 @@ void main() {
       );
 
       testWidgets(
+        'renders resume subtitle lines with the warm accent color',
+        (tester) async {
+          final resume = buildResume().copyWith(
+            location: SingleLineText('Barcelona, Spain'),
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ResumeSection(),
+            state: _resumeState(right(resume)),
+          );
+
+          final locationText = tester.widget<Text>(
+            find.text('Barcelona, Spain'),
+          );
+          final organizationText = tester.widget<Text>(
+            find.text('Example Org'),
+          );
+          final institutionText = tester.widget<Text>(
+            find.text('Example University'),
+          );
+
+          expect(locationText.style?.color, AppColors.warmAccent);
+          expect(organizationText.style?.color, AppColors.warmAccent);
+          expect(institutionText.style?.color, AppColors.warmAccent);
+        },
+      );
+
+      testWidgets(
         'renders a failure widget for unsupported language proficiency',
         (tester) async {
           final resume = buildResume().copyWith(
@@ -188,6 +218,24 @@ void main() {
             find.text('Built maintainable application flows.'),
             findsOneWidget,
           );
+        },
+      );
+
+      testWidgets(
+        'renders work experience highlights without warm accent emphasis',
+        (tester) async {
+          await pumpWithContentState(
+            tester,
+            child: const ResumeSection(),
+            state: _resumeState(right(buildResume())),
+          );
+
+          final highlightsText = tester.widget<Text>(find.text('Highlights'));
+          final context = tester.element(find.text('Highlights'));
+          final titleMedium = Theme.of(context).textTheme.titleMedium;
+
+          expect(highlightsText.style?.color, isNot(AppColors.warmAccent));
+          expect(highlightsText.style?.fontSize, titleMedium?.fontSize);
         },
       );
 

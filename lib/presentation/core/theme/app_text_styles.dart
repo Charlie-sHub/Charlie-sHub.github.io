@@ -9,11 +9,20 @@ import 'package:flutter/material.dart';
 final class AppTextStyles {
   const AppTextStyles._();
 
+  static const List<Shadow> _sectionCardTextShadow = <Shadow>[
+    Shadow(
+      color: Color(0x261A2225),
+      blurRadius: 4,
+      offset: Offset(0, 1),
+    ),
+  ];
+
   static TextStyle? sectionHeading(BuildContext context) =>
       Theme.of(context).textTheme.headlineSmall?.copyWith(
         color: AppColors.warmAccent,
         fontSize:
             (Theme.of(context).textTheme.headlineSmall?.fontSize ?? 24) + 2,
+        shadows: _sectionCardTextShadow,
       );
 
   static TextStyle? sectionSupporting(BuildContext context) =>
@@ -21,13 +30,32 @@ final class AppTextStyles {
         color: AppColors.warmAccent,
         fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14) + 1,
         fontWeight: FontWeight.w500,
+        shadows: _sectionCardTextShadow,
       );
 
   static TextStyle? authorName(BuildContext context) =>
       Theme.of(context).textTheme.displayMedium?.copyWith(
         color: AppColors.warmAccent,
+        fontSize: 30,
         height: 0.9,
+        shadows: _sectionCardTextShadow,
       );
+
+  static TextStyle? subtitle(BuildContext context) =>
+      Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: AppColors.warmAccent,
+      );
+
+  static TextStyle? contentBlockHeading(BuildContext context) {
+    final base = Theme.of(context).textTheme.titleMedium;
+    final baseSize = base?.fontSize ?? 16;
+
+    return base?.copyWith(
+      color: AppColors.warmAccent,
+      fontSize: baseSize * 1.3,
+      fontWeight: FontWeight.w700,
+    );
+  }
 
   static TextStyle? heading(BuildContext context) =>
       Theme.of(context).textTheme.titleMedium;

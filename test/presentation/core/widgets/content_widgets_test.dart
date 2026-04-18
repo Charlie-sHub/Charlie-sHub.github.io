@@ -431,6 +431,36 @@ void main() {
       );
 
       testWidgets(
+        'centers contact button content with a consistent icon slot and gap',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const SizedBox(
+                width: 240,
+                child: ActionLinkTile(
+                  label: 'GitHub',
+                  url: 'https://example.com/github',
+                  variant: ActionLinkVariant.contactButton,
+                ),
+              ),
+            ),
+          );
+
+          final buttonRect = tester.getRect(find.byType(TextButton));
+          final iconRect = tester.getRect(find.byIcon(Icons.code_rounded));
+          final labelRect = tester.getRect(find.text('GitHub'));
+          final contentCenter = (iconRect.left + labelRect.right) / 2;
+
+          expect(
+            (contentCenter - buttonRect.center.dx).abs(),
+            lessThanOrEqualTo(1),
+          );
+          expect(labelRect.left - iconRect.right, AppSpacing.size8);
+          expect(iconRect.width, AppLayout.actionLeadingIconSize);
+        },
+      );
+
+      testWidgets(
         'shows the URL when explicitly requested',
         (tester) async {
           await tester.pumpWidget(

@@ -45,6 +45,8 @@ void main() {
             subtitle.style?.fontSize,
             greaterThan(bodyMedium?.fontSize ?? 0),
           );
+          expect(heading.style?.shadows, isNotEmpty);
+          expect(subtitle.style?.shadows, isNotEmpty);
         },
       );
     },
@@ -65,8 +67,17 @@ void main() {
             ),
           );
 
+          final heading = tester.widget<Text>(find.text('Implementation'));
+          final context = tester.element(find.text('Implementation'));
+          final titleMedium = Theme.of(context).textTheme.titleMedium;
+
           expect(find.text('Implementation'), findsOneWidget);
           expect(find.text('Shared content block body'), findsOneWidget);
+          expect(heading.style?.color, AppColors.warmAccent);
+          expect(
+            heading.style?.fontSize,
+            (titleMedium?.fontSize ?? 16) * 1.3,
+          );
         },
       );
     },

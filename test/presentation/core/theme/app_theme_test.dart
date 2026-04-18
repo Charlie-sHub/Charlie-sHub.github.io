@@ -37,6 +37,7 @@ void main() {
 
           expect(text.style?.fontFamily, 'Geometria');
           expect(text.style?.fontFamilyFallback, isNull);
+          expect(text.style?.shadows, isNotEmpty);
         },
       );
 

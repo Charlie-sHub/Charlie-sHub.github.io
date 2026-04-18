@@ -5,8 +5,9 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/widgets/profile_summary_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart' show TextButton, ValueKey;
+import 'package:flutter/material.dart' show Icons, Text, TextButton, ValueKey;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../application/content/content_test_entity_builders.dart';
@@ -65,6 +66,31 @@ void main() {
       );
 
       testWidgets(
+        'lays out the name and profile image in the same header row',
+        (tester) async {
+          await pumpWithContentState(
+            tester,
+            child: const ProfileSummaryCard(),
+            state: ContentState.initial().copyWith(
+              status: ContentStatus.loaded,
+              resumeOption: some(right(buildResume())),
+            ),
+            width: 320,
+          );
+
+          final nameText = tester.widget<Text>(find.text('Carlos Mendez'));
+          final nameRect = tester.getRect(find.text('Carlos Mendez'));
+          final imageRect = tester.getRect(
+            find.byKey(const ValueKey<String>('profile-summary-image')),
+          );
+
+          expect(nameText.maxLines, 2);
+          expect(imageRect.left, greaterThan(nameRect.left));
+          expect(imageRect.top, lessThan(nameRect.bottom));
+        },
+      );
+
+      testWidgets(
         'stretches sticky contact buttons to the available summary width',
         (tester) async {
           final resume = buildResume().copyWith(
@@ -102,6 +128,77 @@ void main() {
 
           expect(linkedInWidth, emailWidth);
           expect(gitHubWidth, emailWidth);
+        },
+      );
+
+      testWidgets(
+        'keeps sticky contact button content centered with aligned icon slots',
+        (tester) async {
+          final resume = buildResume().copyWith(
+            contactLinks: <LinkReference>[
+              LinkReference(
+                label: SingleLineText('LinkedIn'),
+                url: UrlValue('https://example.com/linkedin'),
+              ),
+              LinkReference(
+                label: SingleLineText('GitHub'),
+                url: UrlValue('https://example.com/github'),
+              ),
+            ],
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProfileSummaryCard(),
+            state: ContentState.initial().copyWith(
+              status: ContentStatus.loaded,
+              resumeOption: some(right(resume)),
+            ),
+            width: 320,
+          );
+
+          final emailButtonRect = tester.getRect(
+            find.widgetWithText(TextButton, 'Email'),
+          );
+          final linkedInButtonRect = tester.getRect(
+            find.widgetWithText(TextButton, 'LinkedIn'),
+          );
+          final gitHubButtonRect = tester.getRect(
+            find.widgetWithText(TextButton, 'GitHub'),
+          );
+          final emailIconRect = tester.getRect(
+            find.byIcon(Icons.mail_outline_rounded),
+          );
+          final linkedInIconRect = tester.getRect(
+            find.byIcon(Icons.badge_outlined),
+          );
+          final gitHubIconRect = tester.getRect(
+            find.byIcon(Icons.code_rounded),
+          );
+
+          expect(emailIconRect.left, linkedInIconRect.left);
+          expect(gitHubIconRect.left, linkedInIconRect.left);
+          expect(
+            (emailButtonRect.center.dx -
+                    (emailIconRect.left +
+                        AppLayout.homeProfileContactContentWidth / 2))
+                .abs(),
+            lessThanOrEqualTo(1),
+          );
+          expect(
+            (linkedInButtonRect.center.dx -
+                    (linkedInIconRect.left +
+                        AppLayout.homeProfileContactContentWidth / 2))
+                .abs(),
+            lessThanOrEqualTo(1),
+          );
+          expect(
+            (gitHubButtonRect.center.dx -
+                    (gitHubIconRect.left +
+                        AppLayout.homeProfileContactContentWidth / 2))
+                .abs(),
+            lessThanOrEqualTo(1),
+          );
         },
       );
 
