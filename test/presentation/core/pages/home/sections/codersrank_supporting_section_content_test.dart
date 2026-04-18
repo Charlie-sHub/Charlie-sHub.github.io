@@ -21,12 +21,12 @@ void main() {
 
           expect(find.text('CodersRank'), findsNothing);
           expect(find.text('Rank widgets'), findsNothing);
-          expect(find.text('GitHub activity matrix'), findsNothing);
+          expect(find.text('GitHub profile'), findsNothing);
         },
       );
 
       testWidgets(
-        'renders the supporting panels in a column on wider layouts',
+        'renders only the remaining rank panel on wider layouts',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
@@ -35,66 +35,22 @@ void main() {
                 rankWidget: SizedBox(
                   key: ValueKey<String>('codersrank-rank-widget'),
                   height: 140,
-                ),
-                activityWidget: SizedBox(
-                  key: ValueKey<String>('codersrank-activity-widget'),
-                  height: 180,
                 ),
               ),
             ),
           );
 
           expect(find.text('CodersRank'), findsOneWidget);
-          expect(find.text('Rank widgets'), findsOneWidget);
-          expect(find.text('GitHub activity matrix'), findsOneWidget);
+          expect(find.text('Rank widgets'), findsNothing);
+          expect(find.text('GitHub profile'), findsNothing);
           expect(
             find.byKey(const ValueKey<String>('codersrank-rank-widget')),
             findsOneWidget,
           );
           expect(
-            find.byKey(const ValueKey<String>('codersrank-activity-widget')),
-            findsOneWidget,
+            find.byKey(const ValueKey<String>('codersrank-github-panel')),
+            findsNothing,
           );
-
-          final rankRect = tester.getRect(
-            find.byKey(const ValueKey<String>('codersrank-rank-panel')),
-          );
-          final activityRect = tester.getRect(
-            find.byKey(const ValueKey<String>('codersrank-activity-panel')),
-          );
-
-          expect(activityRect.top, greaterThan(rankRect.bottom));
-        },
-      );
-
-      testWidgets(
-        'keeps the rank panel above the activity panel on narrower layouts',
-        (tester) async {
-          await tester.pumpWidget(
-            buildPresentationTestApp(
-              const CodersRankSupportingSectionContent(
-                isVisible: true,
-                rankWidget: SizedBox(
-                  key: ValueKey<String>('codersrank-rank-widget'),
-                  height: 140,
-                ),
-                activityWidget: SizedBox(
-                  key: ValueKey<String>('codersrank-activity-widget'),
-                  height: 180,
-                ),
-              ),
-              width: 720,
-            ),
-          );
-
-          final rankRect = tester.getRect(
-            find.byKey(const ValueKey<String>('codersrank-rank-panel')),
-          );
-          final activityRect = tester.getRect(
-            find.byKey(const ValueKey<String>('codersrank-activity-panel')),
-          );
-
-          expect(activityRect.top, greaterThan(rankRect.bottom));
         },
       );
     },

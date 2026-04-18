@@ -30,11 +30,6 @@ enum _CodersRankRenderStatus {
   hidden,
 }
 
-enum _CodersRankWidgetSlot {
-  rank,
-  activity,
-}
-
 class _CodersRankSupportingSectionWeb extends StatefulWidget {
   const _CodersRankSupportingSectionWeb();
 
@@ -46,7 +41,6 @@ class _CodersRankSupportingSectionWeb extends StatefulWidget {
 class _CodersRankSupportingSectionWebState
     extends State<_CodersRankSupportingSectionWeb> {
   late final _CodersRankEmbedHandle _rankHandle;
-  late final _CodersRankEmbedHandle _activityHandle;
 
   final List<StreamSubscription<html.Event>> _subscriptions =
       <StreamSubscription<html.Event>>[];
@@ -54,22 +48,18 @@ class _CodersRankSupportingSectionWebState
   Timer? _renderPollTimer;
   Timer? _renderTimeoutTimer;
   _CodersRankRenderStatus _status = _CodersRankRenderStatus.checking;
-  bool _rankReady = false;
-  bool _activityReady = false;
 
   @override
   void initState() {
     super.initState();
     _rankHandle = _createRankHandle();
-    _activityHandle = _createActivityHandle();
-    unawaited(_prepareEmbeds());
+    unawaited(_prepareEmbed());
   }
 
   @override
   void dispose() {
     _cancelReadinessTracking();
     _rankHandle.host.remove();
-    _activityHandle.host.remove();
     super.dispose();
   }
 
@@ -84,15 +74,10 @@ class _CodersRankSupportingSectionWebState
       _rankHandle.element,
       AppCodersRankTheme.summaryVariables(isCompact: isCompact),
     );
-    _applyCssVariables(
-      _activityHandle.element,
-      AppCodersRankTheme.activityVariables(isCompact: isCompact),
-    );
-    _syncOffstageWidths(isCompact: isCompact);
+    _syncOffstageWidth(isCompact: isCompact);
 
     if (isVisible) {
       _syncVisibleHostStyling(_rankHandle);
-      _syncVisibleHostStyling(_activityHandle);
 
       return CodersRankSupportingSectionContent(
         isVisible: true,
@@ -102,32 +87,27 @@ class _CodersRankSupportingSectionWebState
             isCompact: isCompact,
           ),
         ),
-        activityWidget: _buildWidgetView(
-          viewType: _activityHandle.viewType,
-          height: AppCodersRankTheme.activityWidgetHeightFor(
-            isCompact: isCompact,
-          ),
-        ),
       );
     } else {
       return const CodersRankSupportingSectionContent(isVisible: false);
     }
   }
 
-  Future<void> _prepareEmbeds() async {
-    final widgetsRegistered = await _waitForWidgetRegistration();
+  Future<void> _prepareEmbed() async {
+    final widgetRegistered = await _waitForWidgetRegistration();
 
     if (!mounted) {
       return;
     }
 
-    if (widgetsRegistered) {
-      _attachHostsOffstage();
-      _listenForWidgetLifecycle(_CodersRankWidgetSlot.rank, _rankHandle);
-      _listenForWidgetLifecycle(
-        _CodersRankWidgetSlot.activity,
-        _activityHandle,
+    if (widgetRegistered) {
+      _attachHostOffstage(
+        _rankHandle.host,
+        width: AppCodersRankTheme.offstageSummaryWidth(
+          isCompact: _isCompactViewport(),
+        ),
       );
+      _listenForWidgetLifecycle(_rankHandle);
       _renderPollTimer = Timer.periodic(
         _registrationPollInterval,
         (_) => _checkRenderHeuristics(),
@@ -137,29 +117,6 @@ class _CodersRankSupportingSectionWebState
     } else {
       _hideSection();
     }
-  }
-
-  _CodersRankEmbedHandle _createActivityHandle() {
-    final isCompact = _isCompactViewport();
-    final host = _createHostElement();
-    final element = html.document.createElement('codersrank-activity')
-      ..setAttribute('username', _codersRankUsername)
-      ..setAttribute('legend', 'false')
-      ..setAttribute('labels', '')
-      ..setAttribute('tooltip', '')
-      ..setAttribute('step', '5');
-
-    _applyCssVariables(
-      element,
-      AppCodersRankTheme.activityVariables(isCompact: isCompact),
-    );
-    host.append(element);
-
-    return _CodersRankEmbedHandle(
-      host: host,
-      element: element,
-      viewType: _registerHostView(host),
-    );
   }
 
   _CodersRankEmbedHandle _createRankHandle() {
@@ -187,21 +144,6 @@ class _CodersRankSupportingSectionWebState
     final definition = registry?.get(tagName);
 
     return definition != null;
-  }
-
-  void _attachHostsOffstage() {
-    _attachHostOffstage(
-      _rankHandle.host,
-      width: AppCodersRankTheme.offstageSummaryWidth(
-        isCompact: _isCompactViewport(),
-      ),
-    );
-    _attachHostOffstage(
-      _activityHandle.host,
-      width: AppCodersRankTheme.offstageActivityWidth(
-        isCompact: _isCompactViewport(),
-      ),
-    );
   }
 
   void _attachHostOffstage(
@@ -240,14 +182,9 @@ class _CodersRankSupportingSectionWebState
   );
 
   void _checkRenderHeuristics() {
-    if (_status == _CodersRankRenderStatus.checking) {
-      if (!_rankReady && _looksRendered(_rankHandle, minHeight: 56)) {
-        _markReady(_CodersRankWidgetSlot.rank);
-      }
-
-      if (!_activityReady && _looksRendered(_activityHandle, minHeight: 120)) {
-        _markReady(_CodersRankWidgetSlot.activity);
-      }
+    if (_status == _CodersRankRenderStatus.checking &&
+        _looksRendered(_rankHandle, minHeight: 56)) {
+      _showSection();
     }
   }
 
@@ -257,13 +194,10 @@ class _CodersRankSupportingSectionWebState
     }
   }
 
-  void _listenForWidgetLifecycle(
-    _CodersRankWidgetSlot slot,
-    _CodersRankEmbedHandle handle,
-  ) {
+  void _listenForWidgetLifecycle(_CodersRankEmbedHandle handle) {
     _subscriptions.addAll(<StreamSubscription<html.Event>>[
       _dataEventProvider.forTarget(handle.element).listen((_) {
-        _markReady(slot);
+        _showSection();
       }),
       _errorEventProvider.forTarget(handle.element).listen((_) {
         _hideSection();
@@ -276,29 +210,17 @@ class _CodersRankSupportingSectionWebState
     required double minHeight,
   }) {
     final rect = handle.host.getBoundingClientRect();
-    final hostHasSize = rect.height >= minHeight;
 
-    return hostHasSize;
-  }
-
-  void _markReady(_CodersRankWidgetSlot slot) {
-    if (_status == _CodersRankRenderStatus.checking) {
-      if (slot == _CodersRankWidgetSlot.rank) {
-        _rankReady = true;
-      } else {
-        _activityReady = true;
-      }
-
-      if (_rankReady && _activityReady) {
-        _showSection();
-      }
-    }
+    return rect.height >= minHeight;
   }
 
   void _showSection() {
+    if (_status != _CodersRankRenderStatus.checking) {
+      return;
+    }
+
     _cancelReadinessTracking();
     _rankHandle.host.remove();
-    _activityHandle.host.remove();
 
     if (mounted) {
       setState(() {
@@ -310,7 +232,6 @@ class _CodersRankSupportingSectionWebState
   void _hideSection() {
     _cancelReadinessTracking();
     _rankHandle.host.remove();
-    _activityHandle.host.remove();
 
     if (mounted) {
       setState(() {
@@ -355,14 +276,12 @@ class _CodersRankSupportingSectionWebState
     return viewportWidth < AppCodersRankTheme.widgetRowBreakpoint;
   }
 
-  void _syncOffstageWidths({
+  void _syncOffstageWidth({
     required bool isCompact,
   }) {
     if (_status == _CodersRankRenderStatus.checking) {
       _rankHandle.host.style.width =
           '${AppCodersRankTheme.offstageSummaryWidth(isCompact: isCompact)}px';
-      _activityHandle.host.style.width =
-          '${AppCodersRankTheme.offstageActivityWidth(isCompact: isCompact)}px';
     }
   }
 
@@ -380,19 +299,15 @@ class _CodersRankSupportingSectionWebState
 
   Future<bool> _waitForWidgetRegistration() async {
     final deadline = DateTime.now().add(_registrationTimeout);
-    var widgetsRegistered = _requiredWidgetsAreRegistered();
+    var widgetRegistered = _customElementIsRegistered('codersrank-summary');
 
-    while (!widgetsRegistered && DateTime.now().isBefore(deadline)) {
+    while (!widgetRegistered && DateTime.now().isBefore(deadline)) {
       await Future<void>.delayed(_registrationPollInterval);
-      widgetsRegistered = _requiredWidgetsAreRegistered();
+      widgetRegistered = _customElementIsRegistered('codersrank-summary');
     }
 
-    return widgetsRegistered;
+    return widgetRegistered;
   }
-
-  bool _requiredWidgetsAreRegistered() =>
-      _customElementIsRegistered('codersrank-summary') &&
-      _customElementIsRegistered('codersrank-activity');
 
   void _applyCssVariables(
     html.Element element,

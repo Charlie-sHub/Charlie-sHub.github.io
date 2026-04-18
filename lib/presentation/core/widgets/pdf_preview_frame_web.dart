@@ -71,6 +71,8 @@ String _registerPreviewView(String path) {
       ..style.border = '0'
       ..style.width = '100%'
       ..style.height = '100%'
+      ..style.pointerEvents = 'none'
+      ..tabIndex = -1
       ..setAttribute('loading', 'lazy'),
   );
 

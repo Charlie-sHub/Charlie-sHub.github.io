@@ -22,6 +22,7 @@ class CoursesSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Courses',
+        icon: Icons.school_outlined,
       ),
       children: _buildSectionChildren(state),
     ),
@@ -31,7 +32,7 @@ class CoursesSection extends StatelessWidget {
     ContentState state,
   ) => state.coursesOption.fold(
     () => <Widget>[
-      SupportingText(
+      SectionSupportingText(
         text: state.status == ContentStatus.failure
             ? 'Courses could not be requested because content loading '
                   'was interrupted.'
@@ -48,7 +49,7 @@ class CoursesSection extends StatelessWidget {
       (items) {
         if (items.isEmpty) {
           return const <Widget>[
-            SupportingText(
+            SectionSupportingText(
               text: 'No course entries are available yet.',
             ),
           ];

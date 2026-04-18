@@ -1,3 +1,4 @@
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
@@ -8,6 +9,47 @@ import 'package:flutter_test/flutter_test.dart';
 import '../presentation_test_helpers.dart';
 
 void main() {
+  group(
+    'Section Text',
+    () {
+      testWidgets(
+        'renders section titles and subtitles with warm accent styling',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SectionHeadingText(text: 'Projects'),
+                  SectionSupportingText(text: 'Loading project content...'),
+                ],
+              ),
+            ),
+          );
+
+          final heading = tester.widget<Text>(find.text('Projects'));
+          final subtitle = tester.widget<Text>(
+            find.text('Loading project content...'),
+          );
+          final context = tester.element(find.text('Projects'));
+          final headlineSmall = Theme.of(context).textTheme.headlineSmall;
+          final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+
+          expect(heading.style?.color, AppColors.warmAccent);
+          expect(
+            heading.style?.fontSize,
+            greaterThan(headlineSmall?.fontSize ?? 0),
+          );
+          expect(subtitle.style?.color, AppColors.warmAccent);
+          expect(
+            subtitle.style?.fontSize,
+            greaterThan(bodyMedium?.fontSize ?? 0),
+          );
+        },
+      );
+    },
+  );
+
   group(
     'ContentBlock',
     () {

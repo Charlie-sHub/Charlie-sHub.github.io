@@ -30,19 +30,23 @@ class CertificationCard extends StatelessWidget {
       MetadataItemData(
         label: 'Earned',
         value: certification.earnedDate,
+        icon: Icons.calendar_month_outlined,
       ),
       MetadataItemData(
         label: 'Issuer',
         value: certification.credentialDetails.issuer,
+        icon: Icons.business_outlined,
       ),
       MetadataItemData(
         label: 'Level',
         value: certification.credentialDetails.level,
+        icon: Icons.workspace_premium_outlined,
       ),
       if (certification.credentialDetails.platform != null)
         MetadataItemData(
           label: 'Platform',
           value: certification.credentialDetails.platform!,
+          icon: Icons.computer_outlined,
         ),
     ];
 

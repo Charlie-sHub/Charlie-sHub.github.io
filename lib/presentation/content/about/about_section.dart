@@ -2,10 +2,7 @@ import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/presentation/content/about/widgets/about_narrative_card.dart';
-import 'package:charlie_shub_portfolio/presentation/content/about/widgets/about_skill_groups.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +18,7 @@ class AboutSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'About',
+        icon: Icons.tune_rounded,
       ),
       children: _buildSectionChildren(state),
     ),
@@ -29,7 +27,7 @@ class AboutSection extends StatelessWidget {
   List<Widget> _buildSectionChildren(ContentState state) =>
       state.aboutOption.fold(
         () => <Widget>[
-          SupportingText(
+          SectionSupportingText(
             text: state.status == ContentStatus.failure
                 ? 'About content could not be requested because content '
                       'loading was interrupted.'
@@ -45,14 +43,6 @@ class AboutSection extends StatelessWidget {
           ],
           (about) => <Widget>[
             AboutNarrativeCard(about: about),
-            const SizedBox(height: AppSpacing.size16),
-            ContentBlock(
-              title: 'Selected skills and tools',
-              spacing: AppSpacing.size12,
-              child: AboutSkillGroups(
-                skillGroups: about.selectedSkillsAndTools,
-              ),
-            ),
           ],
         ),
       );

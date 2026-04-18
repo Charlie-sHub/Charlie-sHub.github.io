@@ -1,7 +1,6 @@
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
@@ -86,7 +85,7 @@ void main() {
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Case Studies'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNWidgets(3));
-          expect(find.text('Building maintainable software.'), findsOneWidget);
+          expect(find.text('Structured and pragmatic.'), findsOneWidget);
           expect(find.text('A portfolio proof project.'), findsNWidgets(2));
           expect(find.text('A security case study.'), findsNWidgets(2));
         },
@@ -169,18 +168,11 @@ void main() {
       );
 
       testWidgets(
-        'renders grouped skills consistently in about '
-        'and resume, including invalid entries',
+        'keeps grouped skills in resume only when '
+        'about still contains them in source',
         (tester) async {
           final about = buildAbout().copyWith(
-            selectedSkillsAndTools: <AboutSkillGroup>[
-              AboutSkillGroup(
-                label: SingleLineText('Core'),
-                items: <SingleLineText>[
-                  SingleLineText(''),
-                ],
-              ),
-            ],
+            selectedSkillsAndTools: buildAbout().selectedSkillsAndTools,
           );
           final resume = buildResume().copyWith(
             coreSkills: <ResumeSkillGroup>[
@@ -209,10 +201,10 @@ void main() {
             ),
           );
 
-          expect(find.text('Selected skills and tools'), findsOneWidget);
+          expect(find.text('Selected skills and tools'), findsNothing);
           expect(find.text('Core skills'), findsOneWidget);
           expect(find.text('Flutter'), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsNWidgets(2));
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
         },
       );
     },

@@ -17,6 +17,8 @@ class ValidatedAssetMediaCard extends StatelessWidget {
     this.height = AppLayout.mediaPlaceholderHeight,
     this.fit = BoxFit.cover,
     this.icon = Icons.image_outlined,
+    this.onTap,
+    this.tooltip,
     super.key,
   });
 
@@ -35,6 +37,12 @@ class ValidatedAssetMediaCard extends StatelessWidget {
   /// The fallback icon shown if the asset cannot be rendered.
   final IconData icon;
 
+  /// Optional tap handler for interactive media cards.
+  final VoidCallback? onTap;
+
+  /// Optional tooltip shown for interactive media cards.
+  final String? tooltip;
+
   @override
   Widget build(BuildContext context) => path.value.fold(
     (failure) => FieldFailureWidget(
@@ -46,6 +54,8 @@ class ValidatedAssetMediaCard extends StatelessWidget {
       height: height,
       fit: fit,
       icon: icon,
+      onTap: onTap,
+      tooltip: tooltip,
     ),
   );
 }
@@ -59,6 +69,8 @@ class AssetMediaCard extends StatelessWidget {
     this.height = AppLayout.mediaPlaceholderHeight,
     this.fit = BoxFit.cover,
     this.icon = Icons.image_outlined,
+    this.onTap,
+    this.tooltip,
     super.key,
   });
 
@@ -77,28 +89,47 @@ class AssetMediaCard extends StatelessWidget {
   /// The fallback icon shown if the asset cannot be rendered.
   final IconData icon;
 
+  /// Optional tap handler for interactive media cards.
+  final VoidCallback? onTap;
+
+  /// Optional tooltip shown for interactive media cards.
+  final String? tooltip;
+
   @override
-  Widget build(BuildContext context) => ContentCard(
-    padding: AppSpacing.zero,
-    child: ClipRRect(
-      borderRadius: AppRadii.card,
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-        child: ColoredBox(
-          color: AppColors.surfaceSecondary,
-          child: Image.asset(
-            path,
-            fit: fit,
-            errorBuilder: (context, error, stackTrace) => _MediaFallbackBody(
-              label: label,
-              icon: icon,
+  Widget build(BuildContext context) {
+    final card = ContentCard(
+      padding: AppSpacing.zero,
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: AppRadii.card,
+        child: SizedBox(
+          height: height,
+          width: double.infinity,
+          child: ColoredBox(
+            color: AppColors.surfaceSecondary,
+            child: Image.asset(
+              path,
+              fit: fit,
+              errorBuilder: (context, error, stackTrace) => _MediaFallbackBody(
+                label: label,
+                icon: icon,
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+
+    final tooltipMessage = tooltip;
+    if (tooltipMessage == null || tooltipMessage.isEmpty) {
+      return card;
+    }
+
+    return Tooltip(
+      message: tooltipMessage,
+      child: card,
+    );
+  }
 }
 
 class _MediaFallbackBody extends StatelessWidget {

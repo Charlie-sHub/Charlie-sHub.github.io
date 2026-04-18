@@ -1,7 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/project_image_carousel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
@@ -10,7 +10,6 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_l
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
@@ -53,11 +52,13 @@ class ProjectCard extends StatelessWidget {
               MetadataItemData(
                 label: 'Started',
                 value: project.startDate,
+                icon: Icons.calendar_month_outlined,
               ),
               if (project.endDate != null)
                 MetadataItemData(
                   label: 'Ended',
                   value: project.endDate!,
+                  icon: Icons.event_available_outlined,
                 ),
             ],
           ),
@@ -70,24 +71,10 @@ class ProjectCard extends StatelessWidget {
       details: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (project.heroImagePath != null) ...[
-            ValidatedAssetMediaCard(
-              path: project.heroImagePath!,
-              labelBuilder: _buildHeroLabel,
-              height: AppLayout.mediaHeroHeight,
-            ),
-            const SizedBox(height: AppSpacing.size20),
-          ],
-          if (project.galleryImagePaths.isNotEmpty) ...[
+          if (_projectImagePaths.isNotEmpty) ...[
             ContentBlock(
-              title: 'Selected screens',
-              child: _ProjectGallery(
-                galleryImagePaths: project.galleryImagePaths,
-                heroImagePathValue: project.heroImagePath?.value.fold(
-                  (_) => null,
-                  (value) => value,
-                ),
-              ),
+              title: 'Project images',
+              child: ProjectImageCarousel(imagePaths: _projectImagePaths),
             ),
             const SizedBox(height: AppSpacing.size16),
           ],
@@ -169,61 +156,34 @@ class ProjectCard extends StatelessWidget {
     );
   }
 
-  static String _buildHeroLabel(String value) =>
-      'Project media available: ${value.split('/').last}';
-}
+  List<AssetPath> get _projectImagePaths {
+    final imagePaths = <AssetPath>[];
+    final seenValues = <String>{};
 
-class _ProjectGallery extends StatelessWidget {
-  const _ProjectGallery({
-    required this.galleryImagePaths,
-    required this.heroImagePathValue,
-  });
-
-  final List<AssetPath> galleryImagePaths;
-  final String? heroImagePathValue;
-
-  @override
-  Widget build(BuildContext context) {
-    final galleryPaths = galleryImagePaths.where((path) {
-      final pathValue = path.value.fold(
+    void addImagePath(AssetPath path) {
+      final value = path.value.fold(
         (_) => null,
-        (value) => value,
+        (imagePathValue) => imagePathValue,
       );
 
-      return pathValue != heroImagePathValue;
-    }).toList();
+      if (value == null) {
+        imagePaths.add(path);
 
-    if (galleryPaths.isEmpty) {
-      return const SizedBox.shrink();
+        return;
+      }
+
+      if (seenValues.add(value)) {
+        imagePaths.add(path);
+      }
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isCompact =
-            constraints.maxWidth < AppLayout.entrySelectorCompactBreakpoint;
-        final itemWidth = isCompact
-            ? constraints.maxWidth
-            : (constraints.maxWidth - AppSpacing.size12) / 2;
+    final heroImagePath = project.heroImagePath;
+    if (heroImagePath != null) {
+      addImagePath(heroImagePath);
+    }
 
-        return Wrap(
-          spacing: AppSpacing.size12,
-          runSpacing: AppSpacing.size12,
-          children: [
-            for (final path in galleryPaths)
-              SizedBox(
-                width: itemWidth,
-                child: ValidatedAssetMediaCard(
-                  path: path,
-                  labelBuilder: _buildGalleryLabel,
-                  height: AppLayout.mediaGalleryItemHeight,
-                ),
-              ),
-          ],
-        );
-      },
-    );
+    project.galleryImagePaths.forEach(addImagePath);
+
+    return imagePaths;
   }
-
-  static String _buildGalleryLabel(String value) =>
-      'Project screen available: ${value.split('/').last}';
 }

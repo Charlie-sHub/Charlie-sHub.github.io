@@ -10,7 +10,6 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
   const CodersRankSupportingSectionContent({
     required this.isVisible,
     this.rankWidget = const SizedBox.shrink(),
-    this.activityWidget = const SizedBox.shrink(),
     super.key,
   });
 
@@ -19,9 +18,6 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
 
   /// Rendered rank widget surface.
   final Widget rankWidget;
-
-  /// Rendered GitHub activity widget surface.
-  final Widget activityWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -32,31 +28,12 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
           SectionContainer(
             heading: const SectionHeadingText(
               text: 'CodersRank',
+              icon: Icons.query_stats_outlined,
             ),
             children: [
-              const SupportingText(
-                text:
-                    'Optional external proof signals that stay secondary to '
-                    'the first-party portfolio content above.',
-              ),
-              const SizedBox(height: AppSpacing.size16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _CodersRankPanel(
-                    cardKey: const ValueKey<String>('codersrank-rank-panel'),
-                    title: 'Rank widgets',
-                    child: rankWidget,
-                  ),
-                  const SizedBox(height: AppSpacing.size16),
-                  _CodersRankPanel(
-                    cardKey: const ValueKey<String>(
-                      'codersrank-activity-panel',
-                    ),
-                    title: 'GitHub activity matrix',
-                    child: activityWidget,
-                  ),
-                ],
+              _CodersRankPanel(
+                cardKey: const ValueKey<String>('codersrank-rank-panel'),
+                child: rankWidget,
               ),
             ],
           ),
@@ -72,24 +49,15 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
 class _CodersRankPanel extends StatelessWidget {
   const _CodersRankPanel({
     required this.cardKey,
-    required this.title,
     required this.child,
   });
 
   final Key cardKey;
-  final String title;
   final Widget child;
 
   @override
   Widget build(BuildContext context) => ContentCard(
     key: cardKey,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        HeadingText(text: title),
-        const SizedBox(height: AppSpacing.size12),
-        child,
-      ],
-    ),
+    child: child,
   );
 }

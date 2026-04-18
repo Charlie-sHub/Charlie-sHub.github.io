@@ -22,6 +22,7 @@ class ProjectsSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Projects',
+        icon: Icons.folder_open_outlined,
       ),
       children: _buildSectionChildren(state),
     ),
@@ -31,7 +32,7 @@ class ProjectsSection extends StatelessWidget {
     ContentState state,
   ) => state.projectsOption.fold(
     () => <Widget>[
-      SupportingText(
+      SectionSupportingText(
         text: state.status == ContentStatus.failure
             ? 'Projects could not be requested because content '
                   'loading was interrupted.'
@@ -48,7 +49,7 @@ class ProjectsSection extends StatelessWidget {
       (items) {
         if (items.isEmpty) {
           return const <Widget>[
-            SupportingText(
+            SectionSupportingText(
               text: 'No project entries are available yet.',
             ),
           ];

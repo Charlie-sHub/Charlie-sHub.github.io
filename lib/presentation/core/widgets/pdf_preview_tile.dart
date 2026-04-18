@@ -66,6 +66,7 @@ class PdfPreviewTile extends StatelessWidget {
             label: title,
             subtitle: subtitle,
             actionLabel: actionLabel,
+            leadingIcon: Icons.picture_as_pdf_outlined,
           ),
         ],
       ),

@@ -32,23 +32,7 @@ class AboutNarrativeCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
-            title: 'Who I am professionally',
-            child: ValidatedText(
-              field: about.whoIAmProfessionally,
-              style: textTheme.bodyMedium,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.size16),
-          ContentBlock(
-            title: 'Current positioning',
-            child: ValidatedText(
-              field: about.currentPositioning,
-              style: textTheme.bodyMedium,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.size16),
-          ContentBlock(
-            title: 'Development background',
+            title: 'Engineering background',
             child: ValidatedText(
               field: about.developmentBackground,
               style: textTheme.bodyMedium,
@@ -56,15 +40,7 @@ class AboutNarrativeCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
-            title: 'Security direction',
-            child: ValidatedText(
-              field: about.securityDirection,
-              style: textTheme.bodyMedium,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.size16),
-          ContentBlock(
-            title: 'Strengths and working style',
+            title: 'Working style',
             child: ValidatedBulletList(
               items: about.strengthsAndWorkingStyle,
               collectionFailure: collectionFailureOrNull(

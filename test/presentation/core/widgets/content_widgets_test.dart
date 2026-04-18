@@ -7,12 +7,14 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_lin
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_frame.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
@@ -493,6 +495,10 @@ void main() {
           expect(find.text('Open PDF'), findsOneWidget);
           expect(find.text('PDF preview'), findsOneWidget);
           expect(find.byIcon(Icons.open_in_new), findsOneWidget);
+          expect(
+            tester.getSize(find.byType(PdfPreviewFrame)).height,
+            AppLayout.pdfPreviewHeight,
+          );
 
           await tester.tap(find.text('Resume PDF'));
           await tester.pump();

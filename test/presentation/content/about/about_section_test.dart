@@ -1,10 +1,8 @@
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
-import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
-import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/presentation/content/about/about_section.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
@@ -40,26 +38,21 @@ void main() {
 
           expect(find.text('Loading about content...'), findsNothing);
           expect(find.text('About Me'), findsOneWidget);
-          expect(find.text('Software engineer.'), findsOneWidget);
+          expect(find.text('Engineering background'), findsOneWidget);
           expect(find.text('Structured and pragmatic.'), findsOneWidget);
-          expect(find.text('Flutter'), findsOneWidget);
+          expect(find.text('How I build software'), findsOneWidget);
+          expect(find.text('Flutter'), findsNothing);
+          expect(find.text('Selected skills and tools'), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
 
       testWidgets(
-        'renders invalid narrative and grouped skill fields explicitly',
+        'renders invalid narrative fields explicitly '
+        'without showing hidden skills',
         (tester) async {
           final about = buildAbout().copyWith(
-            whoIAmProfessionally: NonEmptyText(''),
-            selectedSkillsAndTools: <AboutSkillGroup>[
-              AboutSkillGroup(
-                label: SingleLineText(''),
-                items: <SingleLineText>[
-                  SingleLineText('Flutter'),
-                ],
-              ),
-            ],
+            developmentBackground: NonEmptyText(''),
           );
 
           await pumpWithContentState(
@@ -70,17 +63,21 @@ void main() {
             ),
           );
 
-          expect(find.text('Flutter'), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsNWidgets(2));
-          expect(find.text('Building maintainable software.'), findsOneWidget);
+          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(
+            find.text('I build iteratively and document trade-offs.'),
+            findsOneWidget,
+          );
+          expect(find.text('Selected skills and tools'), findsNothing);
+          expect(find.text('Flutter'), findsNothing);
         },
       );
 
       testWidgets(
-        'renders a collection failure when selected skill groups are missing',
+        'does not render hidden skill groups when they are missing',
         (tester) async {
           final about = buildAbout().copyWith(
-            selectedSkillsAndTools: <AboutSkillGroup>[],
+            selectedSkillsAndTools: const [],
           );
 
           await pumpWithContentState(
@@ -91,9 +88,13 @@ void main() {
             ),
           );
 
-          expect(find.text('Selected skills and tools'), findsOneWidget);
-          expect(find.byType(FieldFailureWidget), findsOneWidget);
+          expect(find.text('Selected skills and tools'), findsNothing);
+          expect(find.byType(FieldFailureWidget), findsNothing);
           expect(find.text('Flutter'), findsNothing);
+          expect(
+            find.text('How development and security connect'),
+            findsOneWidget,
+          );
         },
       );
 

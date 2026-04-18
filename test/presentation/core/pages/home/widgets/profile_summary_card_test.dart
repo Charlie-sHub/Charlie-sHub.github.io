@@ -6,6 +6,7 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_lin
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/widgets/profile_summary_card.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart' show TextButton, ValueKey;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../application/content/content_test_entity_builders.dart';
@@ -16,7 +17,8 @@ void main() {
     'ProfileSummaryCard',
     () {
       testWidgets(
-        'shows label-only contact buttons and omits the portfolio self-link',
+        'shows the sticky image and contact actions without location or the '
+        'portfolio self-link',
         (tester) async {
           final resume = buildResume().copyWith(
             contactLinks: <LinkReference>[
@@ -43,9 +45,63 @@ void main() {
           expect(find.text('Email'), findsOneWidget);
           expect(find.text('LinkedIn'), findsOneWidget);
           expect(find.text('Portfolio'), findsNothing);
+          expect(find.text('Madrid, Spain'), findsNothing);
           expect(find.text('carlosrafael-mg@hotmail.com'), findsNothing);
           expect(find.text('Write'), findsNothing);
           expect(find.text('Open link'), findsNothing);
+          expect(
+            find.byKey(
+              const ValueKey<String>('profile-summary-inner-card'),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(
+              const ValueKey<String>('profile-summary-image'),
+            ),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets(
+        'stretches sticky contact buttons to the available summary width',
+        (tester) async {
+          final resume = buildResume().copyWith(
+            contactLinks: <LinkReference>[
+              LinkReference(
+                label: SingleLineText('LinkedIn'),
+                url: UrlValue('https://example.com/linkedin'),
+              ),
+              LinkReference(
+                label: SingleLineText('GitHub'),
+                url: UrlValue('https://example.com/github'),
+              ),
+            ],
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProfileSummaryCard(),
+            state: ContentState.initial().copyWith(
+              status: ContentStatus.loaded,
+              resumeOption: some(right(resume)),
+            ),
+            width: 320,
+          );
+
+          final emailWidth = tester
+              .getSize(find.widgetWithText(TextButton, 'Email'))
+              .width;
+          final linkedInWidth = tester
+              .getSize(find.widgetWithText(TextButton, 'LinkedIn'))
+              .width;
+          final gitHubWidth = tester
+              .getSize(find.widgetWithText(TextButton, 'GitHub'))
+              .width;
+
+          expect(linkedInWidth, emailWidth);
+          expect(gitHubWidth, emailWidth);
         },
       );
 

@@ -10,8 +10,8 @@ final class AppCodersRankTheme {
   const AppCodersRankTheme._();
 
   static const double widgetRowBreakpoint = 680;
-  static const double rankWidgetHeight = 176;
-  static const double rankWidgetCompactHeight = 248;
+  static const double rankWidgetHeight = 240;
+  static const double rankWidgetCompactHeight = 292;
   static const double activityWidgetHeight = 236;
   static const double activityWidgetCompactHeight = 208;
 

@@ -89,15 +89,18 @@ class _ResumeExperienceCard extends StatelessWidget {
               MetadataItemData(
                 label: 'Location',
                 value: item.location,
+                icon: Icons.place_outlined,
               ),
               MetadataItemData(
                 label: 'Started',
                 value: item.startDate,
+                icon: Icons.calendar_month_outlined,
               ),
               if (item.endDate != null)
                 MetadataItemData(
                   label: 'Ended',
                   value: item.endDate!,
+                  icon: Icons.event_available_outlined,
                 ),
             ],
           ),

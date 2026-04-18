@@ -5,12 +5,17 @@ import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/case_study.dart';
 import 'package:charlie_shub_portfolio/presentation/content/case_studies/widgets/case_study_entry_detail.dart';
 import 'package:charlie_shub_portfolio/presentation/content/case_studies/widgets/case_study_selector_label.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+const _caseStudiesDescription =
+    'Practice-based security and application security write-ups focused on '
+    'structured analysis and defensive thinking.';
 
 /// Renders the case studies section from loaded structured content.
 class CaseStudiesSection extends StatelessWidget {
@@ -22,8 +27,15 @@ class CaseStudiesSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Case Studies',
+        icon: Icons.find_in_page_outlined,
       ),
-      children: _buildSectionChildren(state),
+      children: [
+        const SectionSupportingText(
+          text: _caseStudiesDescription,
+        ),
+        const SizedBox(height: AppSpacing.size16),
+        ..._buildSectionChildren(state),
+      ],
     ),
   );
 
@@ -31,7 +43,7 @@ class CaseStudiesSection extends StatelessWidget {
     ContentState state,
   ) => state.caseStudiesOption.fold(
     () => <Widget>[
-      SupportingText(
+      SectionSupportingText(
         text: state.status == ContentStatus.failure
             ? 'Case studies could not be requested because content '
                   'loading was interrupted.'
@@ -48,7 +60,7 @@ class CaseStudiesSection extends StatelessWidget {
       (items) {
         if (items.isEmpty) {
           return const <Widget>[
-            SupportingText(
+            SectionSupportingText(
               text: 'No case studies are available yet.',
             ),
           ];

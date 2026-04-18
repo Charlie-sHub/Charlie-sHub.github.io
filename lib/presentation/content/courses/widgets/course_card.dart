@@ -30,23 +30,28 @@ class CourseCard extends StatelessWidget {
       MetadataItemData(
         label: 'Provider',
         value: course.courseDetails.provider,
+        icon: Icons.school_outlined,
       ),
       MetadataItemData(
         label: 'Platform',
         value: course.courseDetails.platform,
+        icon: Icons.computer_outlined,
       ),
       MetadataItemData(
         label: 'Format',
         value: course.courseDetails.format,
+        icon: Icons.view_agenda_outlined,
       ),
       MetadataItemData(
         label: 'Level',
         value: course.courseDetails.level,
+        icon: Icons.workspace_premium_outlined,
       ),
       if (course.courseDetails.programContext != null)
         MetadataItemData(
           label: 'Program context',
           value: course.courseDetails.programContext!,
+          icon: Icons.account_tree_outlined,
         ),
     ];
 

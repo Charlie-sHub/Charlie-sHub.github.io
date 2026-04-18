@@ -83,14 +83,17 @@ class _ResumeEducationCard extends StatelessWidget {
               MetadataItemData(
                 label: 'Location',
                 value: item.location,
+                icon: Icons.place_outlined,
               ),
               MetadataItemData(
                 label: 'Started',
                 value: item.startDate,
+                icon: Icons.calendar_month_outlined,
               ),
               MetadataItemData(
                 label: 'Ended',
                 value: item.endDate,
+                icon: Icons.event_available_outlined,
               ),
             ],
           ),

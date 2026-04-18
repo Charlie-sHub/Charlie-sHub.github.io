@@ -1,4 +1,5 @@
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/value_object.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
@@ -10,6 +11,7 @@ class MetadataItemData {
   const MetadataItemData({
     required this.label,
     required this.value,
+    this.icon,
   });
 
   /// The metadata label.
@@ -17,6 +19,9 @@ class MetadataItemData {
 
   /// The validated value for the metadata item.
   final ValueObject<String> value;
+
+  /// Optional icon used to improve metadata scanning.
+  final IconData? icon;
 }
 
 /// Renders repeated metadata label/value pairs in a responsive wrap layout.
@@ -39,9 +44,22 @@ class MetadataRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              item.label,
-              style: AppTextStyles.metadataLabel(context),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (item.icon case final iconData) ...[
+                  Icon(
+                    iconData,
+                    size: AppLayout.metadataIconSize,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  const SizedBox(width: AppSpacing.size6),
+                ],
+                Text(
+                  item.label,
+                  style: AppTextStyles.metadataLabel(context),
+                ),
+              ],
             ),
             const SizedBox(height: AppSpacing.size4),
             ValidatedText(

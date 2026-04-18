@@ -37,6 +37,7 @@ flutter:
     - assets/content/projects/
     - assets/content/resume/
     - assets/media/background.jpg
+    - assets/media/notion_icon.png
     - assets/media/content/projects/world_on/
     - assets/documents/certifications/
     - assets/documents/resume/

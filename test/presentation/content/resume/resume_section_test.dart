@@ -17,6 +17,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_car
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart' show TextButton;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../application/content/content_test_entity_builders.dart';
@@ -67,6 +68,43 @@ void main() {
           expect(find.text('C1'), findsOneWidget);
           expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'lays out resume contact links in a row on normal widths',
+        (tester) async {
+          final resume = buildResume().copyWith(
+            contactLinks: <LinkReference>[
+              LinkReference(
+                label: SingleLineText('LinkedIn'),
+                url: UrlValue('https://example.com/linkedin'),
+              ),
+              LinkReference(
+                label: SingleLineText('GitHub'),
+                url: UrlValue('https://example.com/github'),
+              ),
+            ],
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ResumeSection(),
+            state: _resumeState(right(resume)),
+          );
+
+          final emailTop = tester
+              .getTopLeft(find.widgetWithText(TextButton, 'Email'))
+              .dy;
+          final linkedInTop = tester
+              .getTopLeft(find.widgetWithText(TextButton, 'LinkedIn'))
+              .dy;
+          final gitHubTop = tester
+              .getTopLeft(find.widgetWithText(TextButton, 'GitHub'))
+              .dy;
+
+          expect(linkedInTop, emailTop);
+          expect(gitHubTop, emailTop);
         },
       );
 

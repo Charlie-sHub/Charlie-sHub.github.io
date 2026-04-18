@@ -27,6 +27,7 @@ class ExternalLinkTile extends StatelessWidget {
     this.onTap,
     this.showUrl = false,
     this.variant = ActionLinkVariant.card,
+    this.leadingIcon,
     super.key,
   });
 
@@ -41,6 +42,9 @@ class ExternalLinkTile extends StatelessWidget {
 
   /// The visual treatment used for the link affordance.
   final ActionLinkVariant variant;
+
+  /// Optional leading icon override used for quick recognition.
+  final IconData? leadingIcon;
 
   @override
   Widget build(BuildContext context) => linkReference.label.value.fold(
@@ -57,6 +61,7 @@ class ExternalLinkTile extends StatelessWidget {
         url: url,
         subtitle: showUrl ? url : null,
         variant: variant,
+        leadingIcon: leadingIcon,
       ),
     ),
   );
@@ -72,6 +77,7 @@ class ActionLinkTile extends StatelessWidget {
     this.actionLabel = 'Open link',
     this.onTap,
     this.variant = ActionLinkVariant.card,
+    this.leadingIcon,
     super.key,
   });
 
@@ -93,9 +99,13 @@ class ActionLinkTile extends StatelessWidget {
   /// The visual treatment used for the link affordance.
   final ActionLinkVariant variant;
 
+  /// Optional leading icon override used for quick recognition.
+  final IconData? leadingIcon;
+
   @override
   Widget build(BuildContext context) {
     final resolvedOnTap = resolveOpenExternalResource(url, onTap: onTap);
+    final resolvedLeadingIcon = leadingIcon ?? _inferLeadingIcon();
 
     if (variant == ActionLinkVariant.contactButton ||
         variant == ActionLinkVariant.contactButtonLarge) {
@@ -103,10 +113,11 @@ class ActionLinkTile extends StatelessWidget {
           ? AppButtonStyles.contactLinkLarge(context)
           : AppButtonStyles.contactLink(context);
 
-      return TextButton(
+      return TextButton.icon(
         onPressed: resolvedOnTap,
         style: style,
-        child: Text(label),
+        icon: Icon(resolvedLeadingIcon),
+        label: Text(label),
       );
     }
 
@@ -118,7 +129,39 @@ class ActionLinkTile extends StatelessWidget {
         label: label,
         subtitle: subtitle,
         actionLabel: actionLabel,
+        leadingIcon: resolvedLeadingIcon,
       ),
     );
+  }
+
+  IconData _inferLeadingIcon() {
+    final normalizedLabel = label.toLowerCase();
+    final normalizedUrl = url.toLowerCase();
+
+    if (normalizedUrl.startsWith('mailto:') || normalizedLabel == 'email') {
+      return Icons.mail_outline_rounded;
+    } else if (normalizedLabel.contains('github') ||
+        normalizedUrl.contains('github.com')) {
+      return Icons.code_rounded;
+    } else if (normalizedLabel.contains('linkedin') ||
+        normalizedUrl.contains('linkedin.com')) {
+      return Icons.badge_outlined;
+    } else if (normalizedLabel.contains('resume') ||
+        normalizedLabel.contains('cv')) {
+      return Icons.description_outlined;
+    } else if (normalizedLabel.contains('repository') ||
+        normalizedLabel.contains('repo')) {
+      return Icons.source_outlined;
+    } else if (normalizedLabel.contains('document') ||
+        normalizedLabel.contains('documentation') ||
+        normalizedLabel.contains('docs')) {
+      return Icons.menu_book_outlined;
+    } else if (normalizedLabel.contains('certificate') ||
+        normalizedLabel.contains('credential') ||
+        normalizedLabel.contains('proof')) {
+      return Icons.verified_outlined;
+    } else {
+      return Icons.link_rounded;
+    }
   }
 }

@@ -22,6 +22,7 @@ class CertificationsSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Certifications',
+        icon: Icons.verified_outlined,
       ),
       children: _buildSectionChildren(state),
     ),
@@ -31,7 +32,7 @@ class CertificationsSection extends StatelessWidget {
     ContentState state,
   ) => state.certificationsOption.fold(
     () => <Widget>[
-      SupportingText(
+      SectionSupportingText(
         text: state.status == ContentStatus.failure
             ? 'Certifications could not be requested because content '
                   'loading was interrupted.'
@@ -48,7 +49,7 @@ class CertificationsSection extends StatelessWidget {
       (items) {
         if (items.isEmpty) {
           return const <Widget>[
-            SupportingText(
+            SectionSupportingText(
               text: 'No certification entries are available yet.',
             ),
           ];

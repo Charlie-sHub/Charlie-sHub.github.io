@@ -1,11 +1,11 @@
 {
-    "name": "charlie_shub_portfolio",
-    "short_name": "charlie_shub_portfolio",
+    "name": "Carlos Mendez Portfolio",
+    "short_name": "Carlos Mendez",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F1EBE4",
+    "theme_color": "#1A2225",
+    "description": "Portfolio website presenting software development work, security-oriented engineering, certifications, and technical learning.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

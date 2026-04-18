@@ -59,6 +59,7 @@ class ResumeOverviewCard extends StatelessWidget {
                 minLength: 1,
               ),
               variant: ActionLinkVariant.contactButtonLarge,
+              layout: ContactActionLayout.row,
             ),
           ),
         ],

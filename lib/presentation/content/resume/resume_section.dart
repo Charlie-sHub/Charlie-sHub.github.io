@@ -24,6 +24,7 @@ class ResumeSection extends StatelessWidget {
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Resume',
+        icon: Icons.badge_outlined,
       ),
       children: _buildSectionChildren(state),
     ),
@@ -32,7 +33,7 @@ class ResumeSection extends StatelessWidget {
   List<Widget> _buildSectionChildren(ContentState state) =>
       state.resumeOption.fold(
         () => <Widget>[
-          SupportingText(
+          SectionSupportingText(
             text: state.status == ContentStatus.failure
                 ? 'Resume content could not be requested because content '
                       'loading was interrupted.'

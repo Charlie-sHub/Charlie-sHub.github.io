@@ -12,6 +12,15 @@ final class AppTextStyles {
   static TextStyle? sectionHeading(BuildContext context) =>
       Theme.of(context).textTheme.headlineSmall?.copyWith(
         color: AppColors.warmAccent,
+        fontSize:
+            (Theme.of(context).textTheme.headlineSmall?.fontSize ?? 24) + 2,
+      );
+
+  static TextStyle? sectionSupporting(BuildContext context) =>
+      Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: AppColors.warmAccent,
+        fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14) + 1,
+        fontWeight: FontWeight.w500,
       );
 
   static TextStyle? authorName(BuildContext context) =>

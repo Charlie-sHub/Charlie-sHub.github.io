@@ -50,6 +50,7 @@ class CaseStudyCard extends StatelessWidget {
                 MetadataItemData(
                   label: 'Incident code',
                   value: caseStudy.incidentCode!,
+                  icon: Icons.confirmation_number_outlined,
                 ),
               ],
             ),

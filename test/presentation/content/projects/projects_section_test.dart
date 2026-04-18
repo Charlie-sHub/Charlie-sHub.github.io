@@ -179,7 +179,7 @@ void main() {
       );
 
       testWidgets(
-        'renders gallery media for projects that provide multiple screens',
+        'renders project images in a carousel and opens a larger viewer',
         (tester) async {
           final worldOnProject = buildProject().copyWith(
             title: content_title.Title('World On'),
@@ -210,10 +210,37 @@ void main() {
           );
 
           await tester.tap(find.text('View project details'));
-          await tester.pump();
+          await tester.pumpAndSettle();
 
-          expect(find.text('Selected screens'), findsOneWidget);
-          expect(find.byType(AssetMediaCard), findsNWidgets(3));
+          expect(find.text('Project images'), findsOneWidget);
+          expect(
+            find.byKey(const ValueKey<String>('project-image-carousel')),
+            findsOneWidget,
+          );
+          expect(find.text('Image 1 of 3'), findsOneWidget);
+
+          final heroMediaCard = tester.widget<ValidatedAssetMediaCard>(
+            find.byType(ValidatedAssetMediaCard).first,
+          );
+          expect(heroMediaCard.height, 280);
+          expect(heroMediaCard.fit, BoxFit.contain);
+
+          await tester.tap(find.byTooltip('Next image'));
+          await tester.pumpAndSettle();
+
+          expect(find.text('Image 2 of 3'), findsOneWidget);
+
+          await tester.tap(find.byTooltip('Open image 2 of 3'));
+          await tester.pumpAndSettle();
+
+          expect(find.byType(Dialog), findsOneWidget);
+          expect(find.text('Image 2 of 3'), findsNWidgets(2));
+          expect(find.byType(InteractiveViewer), findsOneWidget);
+
+          await tester.tap(find.byTooltip('Close image viewer'));
+          await tester.pumpAndSettle();
+
+          expect(find.byType(Dialog), findsNothing);
         },
       );
 

@@ -12,6 +12,7 @@ class ActionCardFooter extends StatelessWidget {
     required this.label,
     required this.actionLabel,
     this.subtitle,
+    this.leadingIcon,
     this.actionIcon = Icons.open_in_new,
     super.key,
   });
@@ -21,6 +22,9 @@ class ActionCardFooter extends StatelessWidget {
 
   /// Optional supporting text shown under the label.
   final String? subtitle;
+
+  /// Optional leading icon used for quick recognition of the resource.
+  final IconData? leadingIcon;
 
   /// Short action hint shown beside the affordance icon.
   final String actionLabel;
@@ -36,14 +40,32 @@ class ActionCardFooter extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Column(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeadingText(text: label),
-              if (subtitle case final subtitle?) ...[
-                const SizedBox(height: AppSpacing.size4),
-                SupportingText(text: subtitle),
+              if (leadingIcon case final iconData) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.size4),
+                  child: Icon(
+                    iconData,
+                    color: colorScheme.secondary,
+                    size: AppLayout.actionLeadingIconSize,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.size10),
               ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HeadingText(text: label),
+                    if (subtitle case final subtitle?) ...[
+                      const SizedBox(height: AppSpacing.size4),
+                      SupportingText(text: subtitle),
+                    ],
+                  ],
+                ),
+              ),
             ],
           ),
         ),

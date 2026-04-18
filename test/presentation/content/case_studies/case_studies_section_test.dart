@@ -56,6 +56,13 @@ void main() {
             ),
           );
 
+          expect(
+            find.text(
+              'Practice-based security and application security write-ups '
+              'focused on structured analysis and defensive thinking.',
+            ),
+            findsOneWidget,
+          );
           expect(find.text('Cutting Edge'), findsNWidgets(2));
           expect(find.text('A security case study.'), findsOneWidget);
           expect(find.text('CE-2024-001'), findsNWidgets(2));
@@ -134,6 +141,8 @@ void main() {
           expect(find.text('View case study details'), findsOneWidget);
           expect(find.text('Hide case study details'), findsNothing);
 
+          await tester.ensureVisible(find.text('View case study details'));
+          await tester.pumpAndSettle();
           await tester.tap(find.text('View case study details'));
           await tester.pump();
 

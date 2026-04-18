@@ -51,10 +51,10 @@ class PortfolioHomePage extends StatelessWidget {
                 );
               }
 
-              return Align(
-                alignment: Alignment.topCenter,
-                child: SingleChildScrollView(
-                  padding: AppSpacing.pagePadding,
+              return SingleChildScrollView(
+                padding: AppSpacing.pagePadding,
+                child: Align(
+                  alignment: Alignment.topCenter,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       maxWidth: AppLayout.maxContentWidth,
@@ -88,7 +88,7 @@ class _WideHomePageFrame extends StatefulWidget {
 
 class _WideHomePageFrameState extends State<_WideHomePageFrame> {
   final ScrollController _scrollController = ScrollController();
-  final GlobalKey _scrollViewportKey = GlobalKey();
+  final GlobalKey _stickySummaryLaneKey = GlobalKey();
 
   @override
   void dispose() {
@@ -102,11 +102,12 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
       widget.maxWidth,
       AppLayout.maxHomeContentWidth + AppSpacing.pagePadding.horizontal,
     );
+    final frameLeftInset = (widget.maxWidth - frameWidth) / 2;
 
     return Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
-        width: frameWidth,
+        width: widget.maxWidth,
         height: widget.maxHeight,
         child: Listener(
           behavior: HitTestBehavior.translucent,
@@ -116,33 +117,42 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left:
-                          AppSpacing.size24 +
-                          AppLayout.homeProfileSummaryWidth +
-                          AppLayout.homeProfileSummaryGap,
-                      right: AppSpacing.size24,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.size24,
                     ),
-                    child: SingleChildScrollView(
-                      key: _scrollViewportKey,
-                      controller: _scrollController,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.size24,
-                      ),
-                      child: const _HomePageContent(
-                        includeInlineProfileSummary: false,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: frameWidth,
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            left:
+                                AppSpacing.size24 +
+                                AppLayout.homeProfileSummaryWidth +
+                                AppLayout.homeProfileSummaryGap,
+                            right: AppSpacing.size24,
+                          ),
+                          child: _HomePageContent(
+                            includeInlineProfileSummary: false,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const Positioned(
-                  left: AppSpacing.size24,
+                Positioned(
+                  left: frameLeftInset + AppSpacing.size24,
                   top: AppSpacing.size24,
                   child: SizedBox(
-                    key: _profileSummaryKey,
+                    key: _stickySummaryLaneKey,
                     width: AppLayout.homeProfileSummaryWidth,
-                    child: ProfileSummaryCard(),
+                    child: const SizedBox(
+                      key: _profileSummaryKey,
+                      width: AppLayout.homeProfileSummaryWidth,
+                      child: ProfileSummaryCard(),
+                    ),
                   ),
                 ),
               ],
@@ -158,7 +168,7 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
       return;
     }
 
-    if (_pointerIsInsideScrollViewport(event.position)) {
+    if (!_pointerIsInsideStickySummaryLane(event.position)) {
       return;
     }
 
@@ -169,8 +179,8 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
     _scrollController.position.pointerScroll(event.scrollDelta.dy);
   }
 
-  bool _pointerIsInsideScrollViewport(Offset globalPosition) {
-    final viewportContext = _scrollViewportKey.currentContext;
+  bool _pointerIsInsideStickySummaryLane(Offset globalPosition) {
+    final viewportContext = _stickySummaryLaneKey.currentContext;
 
     if (viewportContext == null) {
       return false;
@@ -203,15 +213,15 @@ class _HomePageContent extends StatelessWidget {
         const ProfileSummaryCard(key: _profileSummaryKey),
         const SizedBox(height: AppSpacing.size24),
       ],
-      const ProjectsSection(),
+      const AboutSection(),
       const SizedBox(height: AppSpacing.size24),
-      const CaseStudiesSection(),
+      const ProjectsSection(),
       const SizedBox(height: AppSpacing.size24),
       const CertificationsSection(),
       const SizedBox(height: AppSpacing.size24),
-      const CoursesSection(),
+      const CaseStudiesSection(),
       const SizedBox(height: AppSpacing.size24),
-      const AboutSection(),
+      const CoursesSection(),
       const SizedBox(height: AppSpacing.size24),
       const ResumeSection(),
       const SizedBox(height: AppSpacing.size24),

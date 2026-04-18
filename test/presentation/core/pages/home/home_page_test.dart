@@ -33,6 +33,30 @@ void main() {
       );
 
       testWidgets(
+        'uses a full-width scroll viewport on wide layouts',
+        (tester) async {
+          await _pumpHomePage(tester, size: const Size(1440, 1200));
+
+          final scrollRect = tester.getRect(find.byType(SingleChildScrollView));
+
+          expect(scrollRect.left, 0);
+          expect(scrollRect.right, 1440);
+        },
+      );
+
+      testWidgets(
+        'uses a full-width scroll viewport on compact layouts',
+        (tester) async {
+          await _pumpHomePage(tester, size: const Size(800, 1200));
+
+          final scrollRect = tester.getRect(find.byType(SingleChildScrollView));
+
+          expect(scrollRect.left, 0);
+          expect(scrollRect.right, 800);
+        },
+      );
+
+      testWidgets(
         'stacks the profile summary above the main content '
         'on compact layouts',
         (tester) async {
@@ -62,26 +86,26 @@ void main() {
       );
 
       testWidgets(
-        'orders core sections from flagship proof to supporting content',
+        'places About first and keeps certifications above case studies',
         (tester) async {
           await _pumpHomePage(tester, size: const Size(1280, 2800));
 
+          final aboutTop = tester.getTopLeft(find.text('About')).dy;
           final projectsTop = tester.getTopLeft(find.text('Projects')).dy;
-          final caseStudiesTop = tester
-              .getTopLeft(find.text('Case Studies'))
-              .dy;
           final certificationsTop = tester
               .getTopLeft(find.text('Certifications'))
               .dy;
+          final caseStudiesTop = tester
+              .getTopLeft(find.text('Case Studies'))
+              .dy;
           final coursesTop = tester.getTopLeft(find.text('Courses')).dy;
-          final aboutTop = tester.getTopLeft(find.text('About')).dy;
           final resumeTop = tester.getTopLeft(find.text('Resume')).dy;
 
-          expect(projectsTop, lessThan(caseStudiesTop));
-          expect(caseStudiesTop, lessThan(certificationsTop));
+          expect(aboutTop, lessThan(projectsTop));
+          expect(projectsTop, lessThan(certificationsTop));
+          expect(certificationsTop, lessThan(caseStudiesTop));
           expect(certificationsTop, lessThan(coursesTop));
-          expect(coursesTop, lessThan(aboutTop));
-          expect(aboutTop, lessThan(resumeTop));
+          expect(coursesTop, lessThan(resumeTop));
         },
       );
 
