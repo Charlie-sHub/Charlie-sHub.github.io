@@ -127,7 +127,7 @@ final class AppSurfaceStyles {
             ? colorScheme.primary.withValues(alpha: 0.26)
             : colorScheme.outlineVariant,
       ),
-      borderRadius: AppRadii.selectorItem,
+      borderRadius: AppRadii.control,
       color: isSelected
           ? AppColors.coolAccentSoft
           : pressed
@@ -154,13 +154,6 @@ final class AppSurfaceStyles {
     borderRadius: AppRadii.pill,
     color: AppColors.coolAccentMuted,
   );
-
-  static BoxDecoration previewFrameDecoration(BuildContext context) =>
-      BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-        borderRadius: AppRadii.selectorItem,
-        color: AppColors.surfaceSecondary,
-      );
 
   static Color stateLayerFor(Color color) => color.withValues(alpha: 0.08);
 }

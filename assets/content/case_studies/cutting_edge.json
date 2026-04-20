@@ -22,14 +22,14 @@
         "Command and Control [TA0011]"
       ],
       "techniques": [
-        "**Initial Access**: Exploit Public-Facing Application [T1190]",
-        "**Execution**: Command and Scripting Interpreter [T1059]",
-        "**Persistence**: Web Shell [T1505.003], Compromise Host Software Binary [T1554]",
-        "**Defense Evasion**: Disable or Modify Tools [T1562.001], File Deletion [T1070.004], Timestomp [T1070.006], Encrypted/Encoded File [T1027.013]",
-        "**Credential Access**: Keylogging [T1056.001], Web Portal Capture [T1056.003], LSASS Memory [T1003.001], NTDS [T1003.003]",
-        "**Discovery**: System Information Discovery [T1082], Search Victim-Owned Websites [T1594]",
-        "**Lateral Movement**: Remote Desktop Protocol [T1021.001], SMB / Windows Admin Shares [T1021.002], SSH [T1021.004], Domain Accounts [T1078.002]",
-        "**Command and Control**: DNS [T1071.004], Protocol Tunneling [T1572], Non-Application Layer Protocol [T1095], Traffic Signaling [T1205]"
+        "Initial Access: Exploit Public-Facing Application [T1190]",
+        "Execution: Command and Scripting Interpreter [T1059]",
+        "Persistence: Web Shell [T1505.003], Compromise Host Software Binary [T1554]",
+        "Defense Evasion: Disable or Modify Tools [T1562.001], File Deletion [T1070.004], Timestomp [T1070.006], Encrypted/Encoded File [T1027.013]",
+        "Credential Access: Keylogging [T1056.001], Web Portal Capture [T1056.003], LSASS Memory [T1003.001], NTDS [T1003.003]",
+        "Discovery: System Information Discovery [T1082], Search Victim-Owned Websites [T1594]",
+        "Lateral Movement: Remote Desktop Protocol [T1021.001], SMB / Windows Admin Shares [T1021.002], SSH [T1021.004], Domain Accounts [T1078.002]",
+        "Command and Control: DNS [T1071.004], Protocol Tunneling [T1572], Non-Application Layer Protocol [T1095], Traffic Signaling [T1205]"
       ],
       "procedure_examples": [
         "Cutting Edge began with Vulnerability Scanning [T1595.002], where threat actors identified appliances vulnerable to CVE-2023-46805, CVE-2024-21887, and later CVE-2024-21893 which were then exploited using Exploit Public-Facing Application [T1190].",
@@ -104,12 +104,12 @@
     },
     "indicators": {
       "items": [
-        "Modified **compcheckresult.cgi** to act as a web shell, enabling remote command execution",
-        "Modified **lastauthserverused.js** to harvest VPN credentials entered on the login page",
-        "**WIREFIRE** / **CHAINLINE** / **LIGHTWIRE** / **WARPWIRE** artifacts",
-        "**sessionserver.pl** and **sessionserver.sh** were used to bypass integrity checks and hide malicious modifications",
-        "VPN configuration and cache data were disguised as **.gif** / **.css** files",
-        "**symantke.com** associated with credential exfiltration and command-and-control activity"
+        "Modified compcheckresult.cgi to act as a web shell, enabling remote command execution",
+        "Modified lastauthserverused.js to harvest VPN credentials entered on the login page",
+        "WIREFIRE / CHAINLINE / LIGHTWIRE / WARPWIRE artifacts",
+        "sessionserver.pl and sessionserver.sh were used to bypass integrity checks and hide malicious modifications",
+        "VPN configuration and cache data were disguised as .gif / .css files",
+        "symantke.com associated with credential exfiltration and command-and-control activity"
       ]
     }
   }

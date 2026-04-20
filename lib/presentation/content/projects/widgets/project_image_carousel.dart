@@ -287,7 +287,7 @@ class _ProjectImageViewerDialog extends StatelessWidget {
     insetPadding: const EdgeInsets.all(AppSpacing.size24),
     child: ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: AppLayout.mediaViewerMaxWidth,
+        maxWidth: AppLayout.maxContentWidth,
         maxHeight: AppLayout.mediaViewerMaxHeight,
       ),
       child: ContentCard(

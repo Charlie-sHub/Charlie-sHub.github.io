@@ -131,10 +131,16 @@ void main() {
           final institutionText = tester.widget<Text>(
             find.text('Example University'),
           );
+          final context = tester.element(find.text('Barcelona, Spain'));
+          final bodyMedium = Theme.of(context).textTheme.bodyMedium;
 
           expect(locationText.style?.color, AppColors.warmAccent);
           expect(organizationText.style?.color, AppColors.warmAccent);
           expect(institutionText.style?.color, AppColors.warmAccent);
+          expect(
+            locationText.style?.fontSize,
+            lessThan(bodyMedium?.fontSize ?? double.infinity),
+          );
         },
       );
 

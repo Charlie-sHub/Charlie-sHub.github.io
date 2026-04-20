@@ -29,6 +29,7 @@ class ExternalLinkTile extends StatelessWidget {
     this.showUrl = false,
     this.variant = ActionLinkVariant.card,
     this.leadingIcon,
+    this.accentColor,
     super.key,
   });
 
@@ -47,6 +48,9 @@ class ExternalLinkTile extends StatelessWidget {
   /// Optional leading icon override used for quick recognition.
   final IconData? leadingIcon;
 
+  /// Optional accent color override for card-style link affordances.
+  final Color? accentColor;
+
   @override
   Widget build(BuildContext context) => linkReference.label.value.fold(
     (failure) => FieldFailureWidget(
@@ -63,6 +67,7 @@ class ExternalLinkTile extends StatelessWidget {
         subtitle: showUrl ? url : null,
         variant: variant,
         leadingIcon: leadingIcon,
+        accentColor: accentColor,
       ),
     ),
   );
@@ -79,6 +84,7 @@ class ActionLinkTile extends StatelessWidget {
     this.onTap,
     this.variant = ActionLinkVariant.card,
     this.leadingIcon,
+    this.accentColor,
     super.key,
   });
 
@@ -103,6 +109,9 @@ class ActionLinkTile extends StatelessWidget {
   /// Optional leading icon override used for quick recognition.
   final IconData? leadingIcon;
 
+  /// Optional accent color override for card-style link affordances.
+  final Color? accentColor;
+
   @override
   Widget build(BuildContext context) {
     final resolvedOnTap = resolveOpenExternalResource(url, onTap: onTap);
@@ -110,34 +119,41 @@ class ActionLinkTile extends StatelessWidget {
 
     if (variant == ActionLinkVariant.contactButton ||
         variant == ActionLinkVariant.contactButtonLarge) {
-      final style = variant == ActionLinkVariant.contactButtonLarge
-          ? AppButtonStyles.contactLinkLarge(context)
-          : AppButtonStyles.contactLink(context);
+      final buttonSize = variant == ActionLinkVariant.contactButtonLarge
+          ? ContactButtonSize.large
+          : ContactButtonSize.compact;
 
       return TextButton(
         onPressed: resolvedOnTap,
-        style: style,
-        child: variant == ActionLinkVariant.contactButton
-            ? _StickyContactButtonContent(
-                label: label,
-                icon: resolvedLeadingIcon,
-              )
-            : _ContactButtonContent(
-                label: label,
-                icon: resolvedLeadingIcon,
-              ),
+        style: AppButtonStyles.contactLink(
+          context,
+          size: buttonSize,
+        ),
+        child: _ContactButtonContent(
+          label: label,
+          icon: resolvedLeadingIcon,
+          contentWidth: buttonSize == ContactButtonSize.compact
+              ? AppLayout.homeProfileContactContentWidth
+              : null,
+          expandLabel: buttonSize == ContactButtonSize.compact,
+          textAlign: buttonSize == ContactButtonSize.compact
+              ? TextAlign.start
+              : TextAlign.center,
+        ),
       );
     }
 
     return ContentCard(
       onTap: resolvedOnTap,
       isLink: true,
+      accentColor: accentColor,
       padding: AppSpacing.externalLinkTilePadding,
       child: ActionCardFooter(
         label: label,
         subtitle: subtitle,
         actionLabel: actionLabel,
         leadingIcon: resolvedLeadingIcon,
+        accentColor: accentColor,
       ),
     );
   }
@@ -178,47 +194,25 @@ class _ContactButtonContent extends StatelessWidget {
   const _ContactButtonContent({
     required this.label,
     required this.icon,
+    required this.expandLabel,
+    required this.textAlign,
+    this.contentWidth,
   });
 
   final String label;
   final IconData icon;
-
-  @override
-  Widget build(BuildContext context) => Center(
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          width: AppLayout.actionLeadingIconSize,
-          child: Icon(
-            icon,
-            size: AppLayout.actionLeadingIconSize,
-          ),
-        ),
-        const SizedBox(width: AppSpacing.size8),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ),
-  );
-}
-
-class _StickyContactButtonContent extends StatelessWidget {
-  const _StickyContactButtonContent({
-    required this.label,
-    required this.icon,
-  });
-
-  final String label;
-  final IconData icon;
+  final bool expandLabel;
+  final TextAlign textAlign;
+  final double? contentWidth;
 
   @override
   Widget build(BuildContext context) => Center(
     child: SizedBox(
-      width: AppLayout.homeProfileContactContentWidth,
+      width: contentWidth,
       child: Row(
+        mainAxisSize: contentWidth == null
+            ? MainAxisSize.min
+            : MainAxisSize.max,
         children: [
           SizedBox(
             width: AppLayout.actionLeadingIconSize,
@@ -228,9 +222,18 @@ class _StickyContactButtonContent extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.size8),
-          Expanded(
-            child: Text(label),
-          ),
+          if (expandLabel)
+            Expanded(
+              child: Text(
+                label,
+                textAlign: textAlign,
+              ),
+            )
+          else
+            Text(
+              label,
+              textAlign: textAlign,
+            ),
         ],
       ),
     ),

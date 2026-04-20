@@ -20,7 +20,6 @@ final class AppLayout {
   static const double mediaHeroHeight = 280;
   static const double mediaGalleryItemHeight = 156;
   static const double mediaViewerMaxHeight = 720;
-  static const double mediaViewerMaxWidth = 960;
   static const double pdfPreviewHeight = 320;
   static const double bulletMarkerSize = 6;
   static const double sectionHeadingIconSize = 18;

@@ -61,7 +61,7 @@ class _TagChip extends StatelessWidget {
       padding: AppSpacing.tagChipPadding,
       child: Text(
         label,
-        style: AppTextStyles.tag(context),
+        style: AppTextStyles.label(context),
       ),
     ),
   );

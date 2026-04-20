@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
@@ -25,7 +26,6 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final metadataItems = <MetadataItemData>[
       MetadataItemData(
         label: 'Provider',
@@ -63,12 +63,12 @@ class CourseCard extends StatelessWidget {
         children: [
           ValidatedText(
             field: course.title,
-            style: textTheme.titleLarge,
+            style: AppTextStyles.contentTitle(context),
           ),
           const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: course.summary,
-            style: textTheme.bodyLarge,
+            style: AppTextStyles.body(context),
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),
@@ -83,7 +83,7 @@ class CourseCard extends StatelessWidget {
             title: 'Overview',
             child: ExpandableValueTextBlock(
               field: course.summary,
-              style: textTheme.bodyMedium,
+              style: AppTextStyles.bodyCompact(context),
             ),
           ),
           if (course.badgeImagePath != null) ...[
@@ -111,7 +111,7 @@ class CourseCard extends StatelessWidget {
                 course.topicsCovered,
                 minLength: 1,
               ),
-              style: textTheme.bodyMedium,
+              style: AppTextStyles.bodyCompact(context),
             ),
           ),
           const SizedBox(height: AppSpacing.size16),
@@ -123,7 +123,7 @@ class CourseCard extends StatelessWidget {
                 course.relevance,
                 minLength: 1,
               ),
-              style: textTheme.bodyMedium,
+              style: AppTextStyles.bodyCompact(context),
             ),
           ),
           if (course.keyTakeaways.isNotEmpty) ...[
@@ -132,7 +132,7 @@ class CourseCard extends StatelessWidget {
               title: 'Key takeaways',
               child: ValidatedBulletList(
                 items: course.keyTakeaways,
-                style: textTheme.bodyMedium,
+                style: AppTextStyles.bodyCompact(context),
               ),
             ),
           ],

@@ -71,12 +71,12 @@ class _ResumeEducationCard extends StatelessWidget {
         children: [
           ValidatedText(
             field: item.title,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: AppTextStyles.contentTitleCompact(context),
           ),
           const SizedBox(height: AppSpacing.size8),
           ValidatedText(
             field: item.institution,
-            style: AppTextStyles.subtitle(context),
+            style: AppTextStyles.contentSubtitle(context),
           ),
           const SizedBox(height: AppSpacing.size12),
           MetadataRow(

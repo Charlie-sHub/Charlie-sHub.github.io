@@ -224,7 +224,7 @@ class _SelectorButtonState extends State<_SelectorButton> {
         onHover: _handleHoverChanged,
         onFocusChange: _handleFocusChanged,
         onHighlightChanged: _handlePressedChanged,
-        borderRadius: AppRadii.selectorItem,
+        borderRadius: AppRadii.control,
         overlayColor: WidgetStatePropertyAll(
           AppSurfaceStyles.stateLayerFor(
             Theme.of(context).colorScheme.primary,

@@ -13,6 +13,7 @@ class ContentCard extends StatefulWidget {
     this.onTap,
     this.isLink = false,
     this.variant = AppSurfaceVariant.solid,
+    this.accentColor,
     super.key,
   });
 
@@ -30,6 +31,9 @@ class ContentCard extends StatefulWidget {
 
   /// The shared surface treatment for this card.
   final AppSurfaceVariant variant;
+
+  /// Optional accent color override for interactive emphasis and state styling.
+  final Color? accentColor;
 
   @override
   State<ContentCard> createState() => _ContentCardState();
@@ -65,9 +69,10 @@ class _ContentCardState extends State<ContentCard> {
           borderRadius: radius,
           overlayColor: WidgetStatePropertyAll(
             AppSurfaceStyles.stateLayerFor(
-              widget.isLink
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.primary,
+              widget.accentColor ??
+                  (widget.isLink
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.primary),
             ),
           ),
           child: content,
@@ -79,9 +84,10 @@ class _ContentCardState extends State<ContentCard> {
   Widget _buildSurface(BuildContext context) {
     final accentColor = widget.onTap == null
         ? null
-        : widget.isLink
-        ? Theme.of(context).colorScheme.secondary
-        : Theme.of(context).colorScheme.primary;
+        : widget.accentColor ??
+              (widget.isLink
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.primary);
     final surface = AnimatedContainer(
       duration: AppSurfaceStyles.transitionDuration,
       curve: Curves.easeOutCubic,

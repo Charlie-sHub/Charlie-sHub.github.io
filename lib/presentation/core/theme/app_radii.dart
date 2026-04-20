@@ -10,10 +10,7 @@ final class AppRadii {
 
   static const BorderRadius section = BorderRadius.all(Radius.circular(14));
   static const BorderRadius card = BorderRadius.all(Radius.circular(10));
-  static const BorderRadius selectorItem = BorderRadius.all(
-    Radius.circular(8),
-  );
-  static const BorderRadius feedback = BorderRadius.all(Radius.circular(7));
   static const BorderRadius control = BorderRadius.all(Radius.circular(8));
+  static const BorderRadius feedback = control;
   static const BorderRadius pill = BorderRadius.all(Radius.circular(14));
 }

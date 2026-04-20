@@ -39,7 +39,7 @@ class AppFailureCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyles.heading(context)?.copyWith(
+                  style: AppTextStyles.contentTitleCompact(context)?.copyWith(
                     color: colorScheme.error,
                   ),
                 ),

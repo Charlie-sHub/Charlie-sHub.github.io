@@ -57,7 +57,7 @@ class MetadataRow extends StatelessWidget {
                 ],
                 Text(
                   item.label,
-                  style: AppTextStyles.metadataLabel(context),
+                  style: AppTextStyles.metaLabel(context),
                 ),
               ],
             ),

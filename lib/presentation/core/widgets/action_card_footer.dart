@@ -14,6 +14,7 @@ class ActionCardFooter extends StatelessWidget {
     this.subtitle,
     this.leadingIcon,
     this.actionIcon = Icons.open_in_new,
+    this.accentColor,
     super.key,
   });
 
@@ -32,9 +33,13 @@ class ActionCardFooter extends StatelessWidget {
   /// The trailing action icon.
   final IconData actionIcon;
 
+  /// Optional accent color override used for external-link affordances.
+  final Color? accentColor;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final resolvedAccentColor = accentColor ?? colorScheme.secondary;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +53,7 @@ class ActionCardFooter extends StatelessWidget {
                   padding: const EdgeInsets.only(top: AppSpacing.size4),
                   child: Icon(
                     iconData,
-                    color: colorScheme.secondary,
+                    color: resolvedAccentColor,
                     size: AppLayout.actionLeadingIconSize,
                   ),
                 ),
@@ -80,7 +85,7 @@ class ActionCardFooter extends StatelessWidget {
             const SizedBox(height: AppSpacing.size4),
             Icon(
               actionIcon,
-              color: colorScheme.secondary,
+              color: resolvedAccentColor,
               size: AppLayout.externalLinkIndicatorIconSize,
             ),
           ],

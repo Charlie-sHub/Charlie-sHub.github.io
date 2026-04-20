@@ -22,14 +22,14 @@
         "Initial Access [TA0001]"
       ],
       "techniques": [
-        "**Initial Access**: Supply Chain Compromise [T1195]",
-        "**Execution**: Scheduled Task [T1053.005], Service Execution [T1569.002], Windows Management Instrumentation [T1047]",
-        "**Privilege Escalation**: Scheduled Task [T1053.005]",
-        "**Defense Evasion**: Clear Windows Event Logs [T1070.001], Masquerading [T1036], System Binary Proxy Execution: Rundll32 [T1218.011]",
-        "**Credential Access**: LSASS Memory [T1003.001]",
-        "**Discovery**: File and Directory Discovery [T1083], Security Software Discovery [T1518.001]",
-        "**Lateral Movement**: Exploitation of Remote Services [T1210], SMB/Windows Admin Shares [T1021.002]",
-        "**Impact**: Data Encrypted for Impact [T1486], System Shutdown / Reboot [T1529], Loss of Productivity and Revenue [T0828]"
+        "Initial Access: Supply Chain Compromise [T1195]",
+        "Execution: Scheduled Task [T1053.005], Service Execution [T1569.002], Windows Management Instrumentation [T1047]",
+        "Privilege Escalation: Scheduled Task [T1053.005]",
+        "Defense Evasion: Clear Windows Event Logs [T1070.001], Masquerading [T1036], System Binary Proxy Execution: Rundll32 [T1218.011]",
+        "Credential Access: LSASS Memory [T1003.001]",
+        "Discovery: File and Directory Discovery [T1083], Security Software Discovery [T1518.001]",
+        "Lateral Movement: Exploitation of Remote Services [T1210], SMB/Windows Admin Shares [T1021.002]",
+        "Impact: Data Encrypted for Impact [T1486], System Shutdown / Reboot [T1529], Loss of Productivity and Revenue [T0828]"
       ],
       "procedure_examples": [
         "NotPetya used Valid Accounts [T1078.003] gathered via a modified version of Mimikatz (OS Credential Dumping: LSASS Memory [T1003.001]) to use later for Lateral Movement and Initial Access. In addition, lateral movement was achieved with two exploits in SMBv1, EternalBlue (CVE-2017-0144) and EternalRomance (CVE-2017-0145) (Exploitation of Remote Services [T1210])",
@@ -76,8 +76,8 @@
     },
     "indicators": {
       "items": [
-        "The file **C:\\windows\\perfc.dat** contains the malware itself",
-        "NotPetya would also decompresses its resource named 0x3 of type RT_RCDATA, and writes the contents to **C:\\Windows\\dllhost.dat**",
+        "The file C:\\windows\\perfc.dat contains the malware itself",
+        "NotPetya would also decompresses its resource named 0x3 of type RT_RCDATA, and writes the contents to C:\\Windows\\dllhost.dat",
         "Remote command execution through network share (SMB)",
         "Scheduled Task to reboot the system",
         "Disk encryption and the fake ransom note clearly indicate compromise, though by that stage the system is already unrecoverable"

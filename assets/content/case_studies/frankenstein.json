@@ -24,16 +24,16 @@
         "Persistence [TA0003]"
       ],
       "techniques": [
-        "**Command & Control**: Web Protocols [T1071.001], Symmetric Cryptography [T1573.001], Ingress Tool Transfer [T1105]",
-        "**Collection**: Automated Collection [T1119], Data from Local System [T1005], Exfiltration Over C2 Channel [T1041]",
-        "**Exfiltration**: Automated Exfiltration [T1020]",
-        "**Execution**: PowerShell [T1059.001], Windows Command Shell [T1059.003], Visual Basic [T1059.005], Exploitation for Client Execution [T1203], Scheduled Task [T1053.005], Malicious File [T1204.002], Windows Management Instrumentation [T1047]",
-        "**Defense Evasion**: Deobfuscate/Decode Files or Information [T1140], Masquerade Task or Service [T1036.004], Command Obfuscation [T1027.010], Template Injection [T1221], MSBuild [T1127.001]",
-        "**Resource Development**: Tool [T1588.002], System Checks [T1497.001]",
-        "**Initial Access**: Spearphishing Attachment [T1566.001]",
-        "**Discovery**: Process Discovery [T1057], Security Software Discovery [T1518.001], System Information Discovery [T1082], System Network Configuration Discovery [T1016], System Owner/User Discovery [T1033], System Checks [T1497.001]",
-        "**Privilege Escalation**: Scheduled Task [T1053.005]",
-        "**Persistence**: Scheduled Task [T1053.005]"
+        "Command & Control: Web Protocols [T1071.001], Symmetric Cryptography [T1573.001], Ingress Tool Transfer [T1105]",
+        "Collection: Automated Collection [T1119], Data from Local System [T1005], Exfiltration Over C2 Channel [T1041]",
+        "Exfiltration: Automated Exfiltration [T1020]",
+        "Execution: PowerShell [T1059.001], Windows Command Shell [T1059.003], Visual Basic [T1059.005], Exploitation for Client Execution [T1203], Scheduled Task [T1053.005], Malicious File [T1204.002], Windows Management Instrumentation [T1047]",
+        "Defense Evasion: Deobfuscate/Decode Files or Information [T1140], Masquerade Task or Service [T1036.004], Command Obfuscation [T1027.010], Template Injection [T1221], MSBuild [T1127.001]",
+        "Resource Development: Tool [T1588.002], System Checks [T1497.001]",
+        "Initial Access: Spearphishing Attachment [T1566.001]",
+        "Discovery: Process Discovery [T1057], Security Software Discovery [T1518.001], System Information Discovery [T1082], System Network Configuration Discovery [T1016], System Owner/User Discovery [T1033], System Checks [T1497.001]",
+        "Privilege Escalation: Scheduled Task [T1053.005]",
+        "Persistence: Scheduled Task [T1053.005]"
       ],
       "procedure_examples": [
         "The campaign used Command and Scripting Interpreter: Visual Basic [T1059.005] and Template Injection [T1221] via a trojanized Word document likely delivered via a Spearphishing Attachment [T1566.001].",

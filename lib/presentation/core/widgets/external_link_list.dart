@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
@@ -14,6 +15,7 @@ class ExternalLinkList extends StatelessWidget {
     this.collectionFailure,
     this.onLinkTap,
     this.showUrls = false,
+    this.accentColor,
     super.key,
   });
 
@@ -28,6 +30,9 @@ class ExternalLinkList extends StatelessWidget {
 
   /// Whether each tile should display its URL.
   final bool showUrls;
+
+  /// Optional accent color override for the rendered link tiles.
+  final Color? accentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class ExternalLinkList extends StatelessWidget {
           linkReference: link,
           onTap: onLinkTap == null ? null : () => onLinkTap!(link),
           showUrl: showUrls,
+          accentColor: accentColor ?? AppColors.warmAccent,
         ),
       );
 

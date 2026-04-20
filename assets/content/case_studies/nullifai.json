@@ -19,11 +19,11 @@
         "Command and Control [TA0011]"
       ],
       "techniques": [
-        "**Resource Development**: Malware [T1587.001]",
-        "**Initial Access**: Compromise Software Supply Chain [T1195.002]",
-        "**Execution**: Python [T1059.006], Indirect Command Execution [T1202], User Execution [T1204]",
-        "**Defense Evasion**: Obfuscated/Compressed Files and Information [T1027], Masquerading [T1036]",
-        "**Command and Control**: Application Layer Protocol [T1071]"
+        "Resource Development: Malware [T1587.001]",
+        "Initial Access: Compromise Software Supply Chain [T1195.002]",
+        "Execution: Python [T1059.006], Indirect Command Execution [T1202], User Execution [T1204]",
+        "Defense Evasion: Obfuscated/Compressed Files and Information [T1027], Masquerading [T1036]",
+        "Command and Control: Application Layer Protocol [T1071]"
       ],
       "procedure_examples": [
         "The threat actors crafted Malware [T1587.001] in the form of Pickle/PyTorch model artifacts with embedded Python payloads.",

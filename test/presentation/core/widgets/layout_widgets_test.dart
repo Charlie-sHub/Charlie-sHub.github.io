@@ -76,7 +76,7 @@ void main() {
           expect(heading.style?.color, AppColors.warmAccent);
           expect(
             heading.style?.fontSize,
-            (titleMedium?.fontSize ?? 16) * 1.3,
+            (titleMedium?.fontSize ?? 16) * 1.2,
           );
         },
       );

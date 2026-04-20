@@ -25,6 +25,7 @@ import 'package:flutter/material.dart'
         Column,
         CrossAxisAlignment,
         EdgeInsets,
+        Icon,
         Icons,
         SizedBox,
         TextButton,
@@ -368,6 +369,31 @@ void main() {
       );
 
       testWidgets(
+        'uses an accent override for card-style link affordances',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const ActionLinkTile(
+                label: 'Credential proof',
+                url: 'https://example.com/certification',
+                accentColor: AppColors.warmAccent,
+              ),
+            ),
+          );
+
+          final leadingIcon = tester.widget<Icon>(
+            find.byIcon(Icons.verified_outlined),
+          );
+          final trailingIcon = tester.widget<Icon>(
+            find.byIcon(Icons.open_in_new),
+          );
+
+          expect(leadingIcon.color, AppColors.warmAccent);
+          expect(trailingIcon.color, AppColors.warmAccent);
+        },
+      );
+
+      testWidgets(
         'renders the large contact-button variant with larger padding',
         (tester) async {
           await tester.pumpWidget(
@@ -408,6 +434,11 @@ void main() {
           final largeTextStyle = buttons.last.style?.textStyle?.resolve(
             const <WidgetState>{},
           );
+          final compactBackground = buttons.first.style?.backgroundColor
+              ?.resolve(const <WidgetState>{});
+          final largeBackground = buttons.last.style?.backgroundColor?.resolve(
+            const <WidgetState>{},
+          );
 
           expect(
             compactPadding,
@@ -427,6 +458,8 @@ void main() {
             largeTextStyle?.fontSize,
             greaterThan(compactTextStyle?.fontSize ?? 0),
           );
+          expect(compactBackground, AppColors.warmAccent);
+          expect(largeBackground, AppColors.warmAccent);
         },
       );
 
@@ -593,6 +626,34 @@ void main() {
           expect(find.text('Repository'), findsOneWidget);
           expect(find.text('Documentation'), findsOneWidget);
           expect(tappedLabels, ['Repository', 'Documentation']);
+        },
+      );
+
+      testWidgets(
+        'uses the warm accent by default for card-style external links',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ExternalLinkList(
+                links: [
+                  LinkReference(
+                    label: SingleLineText('Repository'),
+                    url: UrlValue('https://example.com/project'),
+                  ),
+                ],
+              ),
+            ),
+          );
+
+          final leadingIcon = tester.widget<Icon>(
+            find.byIcon(Icons.source_outlined),
+          );
+          final trailingIcon = tester.widget<Icon>(
+            find.byIcon(Icons.open_in_new),
+          );
+
+          expect(leadingIcon.color, AppColors.warmAccent);
+          expect(trailingIcon.color, AppColors.warmAccent);
         },
       );
 

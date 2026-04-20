@@ -20,13 +20,13 @@
         "Exfiltration [TA0010]"
       ],
       "techniques": [
-        "**Initial Access**: Exploit Public-Facing Application [T1190]",
-        "**Execution**: Malicious File / Content [T1204.002]",
-        "**Defense Evasion**: Obfuscated/Encrypted Content [T1027]",
-        "**Discovery**: System Information Discovery [T1082], Permission Group Discovery [T1069]",
-        "**Command and Control**: Email [T1071.003]",
-        "**Exfiltration**: Exfiltration Over Application Layer Protocol [T1041], Automated Exfiltration [T1020]",
-        "**Impact**: Data from Information Repositories [T1213], Data Manipulation / Exposure [T1530]"
+        "Initial Access: Exploit Public-Facing Application [T1190]",
+        "Execution: Malicious File / Content [T1204.002]",
+        "Defense Evasion: Obfuscated/Encrypted Content [T1027]",
+        "Discovery: System Information Discovery [T1082], Permission Group Discovery [T1069]",
+        "Command and Control: Email [T1071.003]",
+        "Exfiltration: Exfiltration Over Application Layer Protocol [T1041], Automated Exfiltration [T1020]",
+        "Impact: Data from Information Repositories [T1213], Data Manipulation / Exposure [T1530]"
       ],
       "procedure_examples": [
         "A potential attacker could abuse an AI agent trigger by leveraging Exploit Public-Facing Application [T1190] and by supplying maliciously crafted prompts, Execution: Malicious Content [T1204.002] took place.",

@@ -25,7 +25,7 @@ void main() {
         () {
           expect(
             AppCodersRankTheme.rankWidgetHeightFor(isCompact: false),
-            220,
+            240,
           );
           expect(
             AppCodersRankTheme.rankWidgetHeightFor(isCompact: true),

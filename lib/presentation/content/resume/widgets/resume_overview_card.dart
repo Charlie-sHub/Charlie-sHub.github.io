@@ -22,49 +22,45 @@ class ResumeOverviewCard extends StatelessWidget {
   final Resume resume;
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return ContentCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ValidatedText(
-            field: resume.name,
-            style: textTheme.titleLarge,
-          ),
-          const SizedBox(height: AppSpacing.size8),
-          ValidatedText(
-            field: resume.location,
-            style: AppTextStyles.subtitle(context),
-          ),
-          const SizedBox(height: AppSpacing.size12),
-          ValidatedText(
-            field: resume.summary,
-            style: textTheme.bodyLarge,
-          ),
-          if (resume.resumePdfPath != null) ...[
-            const SizedBox(height: AppSpacing.size16),
-            ValidatedPdfPreviewTile(
-              path: resume.resumePdfPath!,
-              title: 'Resume PDF',
-            ),
-          ],
+  Widget build(BuildContext context) => ContentCard(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ValidatedText(
+          field: resume.name,
+          style: AppTextStyles.contentTitle(context),
+        ),
+        const SizedBox(height: AppSpacing.size8),
+        ValidatedText(
+          field: resume.location,
+          style: AppTextStyles.contentSubtitle(context),
+        ),
+        const SizedBox(height: AppSpacing.size12),
+        ValidatedText(
+          field: resume.summary,
+          style: AppTextStyles.body(context),
+        ),
+        if (resume.resumePdfPath != null) ...[
           const SizedBox(height: AppSpacing.size16),
-          ContentBlock(
-            title: 'Contact links',
-            child: ContactActionList(
-              links: resume.contactLinks,
-              collectionFailure: collectionFailureOrNull(
-                resume.contactLinks,
-                minLength: 1,
-              ),
-              variant: ActionLinkVariant.contactButtonLarge,
-              layout: ContactActionLayout.row,
-            ),
+          ValidatedPdfPreviewTile(
+            path: resume.resumePdfPath!,
+            title: 'Resume PDF',
           ),
         ],
-      ),
-    );
-  }
+        const SizedBox(height: AppSpacing.size16),
+        ContentBlock(
+          title: 'Contact links',
+          child: ContactActionList(
+            links: resume.contactLinks,
+            collectionFailure: collectionFailureOrNull(
+              resume.contactLinks,
+              minLength: 1,
+            ),
+            variant: ActionLinkVariant.contactButtonLarge,
+            layout: ContactActionLayout.row,
+          ),
+        ),
+      ],
+    ),
+  );
 }

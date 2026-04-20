@@ -22,7 +22,7 @@
       "The transport and application layers: TCP vs. UDP, ports, sockets, and common protocols such as HTTP, HTTPS, DNS, SMTP, and FTP.",
       "Networking services: DNS, DHCP, NAT, VPNs, and proxies.",
       "Connecting to the internet: ISP architecture, gateways, wireless, fiber, and cellular connectivity.",
-      "Troubleshooting and future directions: `ping`, `traceroute`, `ipconfig`/`ifconfig`, `netstat`, SDN, and IPv6 adoption."
+      "Troubleshooting and future directions: ping, traceroute, ipconfig/ifconfig, netstat, SDN, and IPv6 adoption."
     ],
     "relevance": [
       "Provides the baseline needed to interpret logs, network behavior, and protocol-level attack paths.",

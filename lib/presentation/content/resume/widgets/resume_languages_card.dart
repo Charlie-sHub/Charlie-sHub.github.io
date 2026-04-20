@@ -75,7 +75,7 @@ class _ResumeLanguageChip extends StatelessWidget {
           children: [
             Text(
               item.language.getOrCrash(),
-              style: AppTextStyles.heading(context),
+              style: AppTextStyles.contentTitleCompact(context),
             ),
             const SizedBox(width: AppSpacing.size8),
             SupportingText(text: item.proficiency.jsonValue),

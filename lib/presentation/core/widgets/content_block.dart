@@ -32,7 +32,7 @@ class ContentBlock extends StatelessWidget {
     children: [
       Text(
         title,
-        style: titleStyle ?? AppTextStyles.contentBlockHeading(context),
+        style: titleStyle ?? AppTextStyles.contentBlockTitle(context),
       ),
       SizedBox(height: spacing),
       child,

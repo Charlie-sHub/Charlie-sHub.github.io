@@ -10,7 +10,6 @@ final class AppColors {
 
   static const Color graphite = Color(0xFF1A2225);
   static const Color deepTeal = Color(0xFF0D4449);
-  static const Color ember = Color(0xFFA64C23);
   static const Color chalk = Color(0xFFE6E6E4);
 
   static const Color canvas = Color(0xFFF1EBE4);
@@ -30,8 +29,6 @@ final class AppColors {
   static const Color textPrimary = graphite;
   static const Color textSecondary = Color(0xFF435356);
   static const Color textMuted = Color(0xFF66767A);
-  static const Color textOnWallpaper = chalk;
-  static const Color textOnWallpaperShadow = Color(0xA61A2225);
 
   static const Color warmAccent = Color(0xFFB85A2C);
   static const Color warmAccentSoft = Color(0xFFF1DDD2);

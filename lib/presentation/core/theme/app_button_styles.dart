@@ -3,29 +3,40 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart'
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:flutter/material.dart';
 
+/// Shared sizing variants for warm-accent contact buttons.
+enum ContactButtonSize {
+  /// Compact sticky-profile contact button.
+  compact,
+
+  /// Larger resume contact button.
+  large,
+}
+
 /// Centralizes button styles for reusable presentation controls.
 final class AppButtonStyles {
   const AppButtonStyles._();
 
-  /// Small warm-accent button treatment used by sticky-profile contact links.
-  static ButtonStyle contactLink(BuildContext context) {
+  /// Warm-accent button treatment used by shared contact-link actions.
+  static ButtonStyle contactLink(
+    BuildContext context, {
+    required ContactButtonSize size,
+  }) {
     final textTheme = Theme.of(context).textTheme;
 
     return _contactLink(
       context,
-      padding: AppSpacing.contactButtonPadding,
-      textStyle: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
-    );
-  }
-
-  /// Larger warm-accent button treatment used by resume contact links.
-  static ButtonStyle contactLinkLarge(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return _contactLink(
-      context,
-      padding: AppSpacing.contactButtonLargePadding,
-      textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+      padding: switch (size) {
+        ContactButtonSize.compact => AppSpacing.contactButtonPadding,
+        ContactButtonSize.large => AppSpacing.contactButtonLargePadding,
+      },
+      textStyle: switch (size) {
+        ContactButtonSize.compact => textTheme.labelMedium?.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+        ContactButtonSize.large => textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+      },
     );
   }
 

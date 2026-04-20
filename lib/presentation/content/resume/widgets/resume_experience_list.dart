@@ -75,13 +75,13 @@ class _ResumeExperienceCard extends StatelessWidget {
         children: [
           ValidatedText(
             field: item.title,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: AppTextStyles.contentTitleCompact(context),
           ),
           if (item.organization != null) ...[
             const SizedBox(height: AppSpacing.size8),
             ValidatedText(
               field: item.organization!,
-              style: AppTextStyles.subtitle(context),
+              style: AppTextStyles.contentSubtitle(context),
             ),
           ],
           const SizedBox(height: AppSpacing.size12),
@@ -116,14 +116,14 @@ class _ResumeExperienceCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Highlights',
-            titleStyle: AppTextStyles.heading(context),
+            titleStyle: AppTextStyles.contentTitleCompact(context),
             child: ValidatedBulletList(
               items: item.highlights,
               collectionFailure: collectionFailureOrNull(
                 item.highlights,
                 minLength: 1,
               ),
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: AppTextStyles.bodyCompact(context),
             ),
           ),
         ],

@@ -23,7 +23,7 @@ class SectionHeadingText extends StatelessWidget {
     final iconData = icon;
     final headingText = Text(
       text,
-      style: AppTextStyles.sectionHeading(context),
+      style: AppTextStyles.sectionTitle(context),
     );
 
     if (iconData == null) {
@@ -59,7 +59,7 @@ class SectionSupportingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: AppTextStyles.sectionSupporting(context),
+    style: AppTextStyles.sectionSubtitle(context),
   );
 }
 
@@ -77,25 +77,7 @@ class HeadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: AppTextStyles.heading(context),
-  );
-}
-
-/// Renders reusable body copy.
-class BodyText extends StatelessWidget {
-  /// Creates a body text widget.
-  const BodyText({
-    required this.text,
-    super.key,
-  });
-
-  /// The body text to display.
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Text(
-    text,
-    style: AppTextStyles.body(context),
+    style: AppTextStyles.contentTitleCompact(context),
   );
 }
 
@@ -113,6 +95,6 @@ class SupportingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: AppTextStyles.supporting(context),
+    style: AppTextStyles.bodySupporting(context),
   );
 }

@@ -42,7 +42,7 @@ class FieldFailureWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 'Invalid content: ${failure.message}',
-                style: AppTextStyles.supporting(context)?.copyWith(
+                style: AppTextStyles.bodySupporting(context)?.copyWith(
                   color: colorScheme.onErrorContainer,
                 ),
               ),

@@ -33,7 +33,7 @@ class LabeledTagGroupCard extends StatelessWidget {
       children: [
         ValidatedText(
           field: label,
-          style: AppTextStyles.heading(context),
+          style: AppTextStyles.contentTitleCompact(context),
         ),
         const SizedBox(height: AppSpacing.size12),
         TagChipList(

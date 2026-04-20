@@ -17,7 +17,7 @@ final class AppTextStyles {
     ),
   ];
 
-  static TextStyle? sectionHeading(BuildContext context) =>
+  static TextStyle? sectionTitle(BuildContext context) =>
       Theme.of(context).textTheme.headlineSmall?.copyWith(
         color: AppColors.warmAccent,
         fontSize:
@@ -25,7 +25,7 @@ final class AppTextStyles {
         shadows: _sectionCardTextShadow,
       );
 
-  static TextStyle? sectionSupporting(BuildContext context) =>
+  static TextStyle? sectionSubtitle(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium?.copyWith(
         color: AppColors.warmAccent,
         fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14) + 1,
@@ -41,32 +41,33 @@ final class AppTextStyles {
         shadows: _sectionCardTextShadow,
       );
 
-  static TextStyle? subtitle(BuildContext context) =>
-      Theme.of(context).textTheme.bodyMedium?.copyWith(
+  static TextStyle? contentSubtitle(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall?.copyWith(
         color: AppColors.warmAccent,
+        fontWeight: FontWeight.w600,
       );
 
-  static TextStyle? contentBlockHeading(BuildContext context) {
+  static TextStyle? contentBlockTitle(BuildContext context) {
     final base = Theme.of(context).textTheme.titleMedium;
     final baseSize = base?.fontSize ?? 16;
 
     return base?.copyWith(
       color: AppColors.warmAccent,
-      fontSize: baseSize * 1.3,
+      fontSize: baseSize * 1.2,
       fontWeight: FontWeight.w700,
     );
   }
 
-  static TextStyle? heading(BuildContext context) =>
-      Theme.of(context).textTheme.titleMedium;
+  static TextStyle? contentTitle(BuildContext context) =>
+      Theme.of(context).textTheme.titleLarge;
 
-  static TextStyle? selectorTitle(BuildContext context) =>
-      Theme.of(context).textTheme.titleSmall;
+  static TextStyle? contentTitleCompact(BuildContext context) =>
+      Theme.of(context).textTheme.titleMedium;
 
   static TextStyle? selectorTitleState(
     BuildContext context, {
     required bool isSelected,
-  }) => selectorTitle(context)?.copyWith(
+  }) => Theme.of(context).textTheme.titleSmall?.copyWith(
     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
   );
 
@@ -76,20 +77,21 @@ final class AppTextStyles {
   static TextStyle? bodyCompact(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium;
 
-  static TextStyle? supporting(BuildContext context) =>
+  static TextStyle? bodySupporting(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall;
 
   static TextStyle? selectorSupporting(BuildContext context) =>
-      supporting(context);
+      bodySupporting(context);
 
-  static TextStyle? metadataLabel(BuildContext context) =>
+  static TextStyle? metaLabel(BuildContext context) =>
       Theme.of(context).textTheme.labelMedium;
 
-  static TextStyle? tag(BuildContext context) =>
+  static TextStyle? label(BuildContext context) =>
       Theme.of(context).textTheme.labelLarge;
 
   static TextStyle? actionLabel(BuildContext context) =>
-      Theme.of(context).textTheme.labelLarge?.copyWith(
+      Theme.of(context).textTheme.labelMedium?.copyWith(
         color: AppColors.warmAccent,
+        fontWeight: FontWeight.w700,
       );
 }
