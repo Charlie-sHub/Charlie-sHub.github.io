@@ -24,13 +24,17 @@ final class AppSpacing {
   static const EdgeInsets contentCardPadding = EdgeInsets.all(size20);
   static const EdgeInsets selectorPanelPadding = EdgeInsets.all(size12);
   static const EdgeInsets selectorButtonPadding = EdgeInsets.all(size12);
-  static const EdgeInsets contactButtonPadding = EdgeInsets.symmetric(
+  static const EdgeInsets linkButtonCompactPadding = EdgeInsets.symmetric(
     horizontal: size16,
-    vertical: size10,
+    vertical: size12,
   );
-  static const EdgeInsets contactButtonLargePadding = EdgeInsets.symmetric(
+  static const EdgeInsets linkButtonPadding = EdgeInsets.symmetric(
+    horizontal: size16,
+    vertical: size12,
+  );
+  static const EdgeInsets linkButtonLargePadding = EdgeInsets.symmetric(
     horizontal: size20,
-    vertical: size14,
+    vertical: size16,
   );
   static const EdgeInsets externalLinkTilePadding = EdgeInsets.symmetric(
     horizontal: size14,

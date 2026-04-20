@@ -5,7 +5,7 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/widgets/profile_summary_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart' show Icons, Text, TextButton, ValueKey;
 import 'package:flutter_test/flutter_test.dart';
@@ -132,7 +132,7 @@ void main() {
       );
 
       testWidgets(
-        'keeps sticky contact button content centered with aligned icon slots',
+        'keeps sticky contact button content aligned with shared icon slots',
         (tester) async {
           final resume = buildResume().copyWith(
             contactLinks: <LinkReference>[
@@ -178,26 +178,20 @@ void main() {
 
           expect(emailIconRect.left, linkedInIconRect.left);
           expect(gitHubIconRect.left, linkedInIconRect.left);
+          expect(emailIconRect.left, greaterThan(emailButtonRect.left));
+          expect(linkedInIconRect.left, greaterThan(linkedInButtonRect.left));
+          expect(gitHubIconRect.left, greaterThan(gitHubButtonRect.left));
           expect(
-            (emailButtonRect.center.dx -
-                    (emailIconRect.left +
-                        AppLayout.homeProfileContactContentWidth / 2))
-                .abs(),
-            lessThanOrEqualTo(1),
+            tester.getRect(find.text('Email')).left - emailIconRect.right,
+            AppSpacing.size8,
           );
           expect(
-            (linkedInButtonRect.center.dx -
-                    (linkedInIconRect.left +
-                        AppLayout.homeProfileContactContentWidth / 2))
-                .abs(),
-            lessThanOrEqualTo(1),
+            tester.getRect(find.text('LinkedIn')).left - linkedInIconRect.right,
+            AppSpacing.size8,
           );
           expect(
-            (gitHubButtonRect.center.dx -
-                    (gitHubIconRect.left +
-                        AppLayout.homeProfileContactContentWidth / 2))
-                .abs(),
-            lessThanOrEqualTo(1),
+            tester.getRect(find.text('GitHub')).left - gitHubIconRect.right,
+            AppSpacing.size8,
           );
         },
       );

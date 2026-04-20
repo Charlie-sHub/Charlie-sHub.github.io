@@ -3,12 +3,15 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart'
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:flutter/material.dart';
 
-/// Shared sizing variants for warm-accent contact buttons.
-enum ContactButtonSize {
-  /// Compact sticky-profile contact button.
+/// Shared sizing variants for link-opening buttons.
+enum LinkButtonSize {
+  /// Compact sticky-profile link button.
   compact,
 
-  /// Larger resume contact button.
+  /// Default full-width link button for external reference lists.
+  standard,
+
+  /// Larger resume link button.
   large,
 }
 
@@ -16,31 +19,35 @@ enum ContactButtonSize {
 final class AppButtonStyles {
   const AppButtonStyles._();
 
-  /// Warm-accent button treatment used by shared contact-link actions.
-  static ButtonStyle contactLink(
+  /// Warm-accent button treatment used by shared link-opening buttons.
+  static ButtonStyle linkButton(
     BuildContext context, {
-    required ContactButtonSize size,
+    required LinkButtonSize size,
   }) {
     final textTheme = Theme.of(context).textTheme;
 
-    return _contactLink(
+    return _linkButton(
       context,
       padding: switch (size) {
-        ContactButtonSize.compact => AppSpacing.contactButtonPadding,
-        ContactButtonSize.large => AppSpacing.contactButtonLargePadding,
+        LinkButtonSize.compact => AppSpacing.linkButtonCompactPadding,
+        LinkButtonSize.standard => AppSpacing.linkButtonPadding,
+        LinkButtonSize.large => AppSpacing.linkButtonLargePadding,
       },
       textStyle: switch (size) {
-        ContactButtonSize.compact => textTheme.labelMedium?.copyWith(
+        LinkButtonSize.compact => textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.w700,
         ),
-        ContactButtonSize.large => textTheme.labelLarge?.copyWith(
+        LinkButtonSize.standard => textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+        LinkButtonSize.large => textTheme.labelLarge?.copyWith(
           fontWeight: FontWeight.w700,
         ),
       },
     );
   }
 
-  static ButtonStyle _contactLink(
+  static ButtonStyle _linkButton(
     BuildContext context, {
     required EdgeInsetsGeometry padding,
     required TextStyle? textStyle,

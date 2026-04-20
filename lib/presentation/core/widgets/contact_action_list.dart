@@ -1,9 +1,10 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button.dart';
 import 'package:flutter/material.dart';
 
 const _directEmailAddress = 'carlosrafael-mg@hotmail.com';
@@ -17,13 +18,22 @@ enum ContactActionLayout {
   row,
 }
 
+/// Shared size treatments for curated contact action groups.
+enum ContactActionSize {
+  /// Compact sticky-profile contact button.
+  compact,
+
+  /// Larger resume contact button.
+  large,
+}
+
 /// Renders the shared portfolio contact actions used by profile surfaces.
 class ContactActionList extends StatelessWidget {
   /// Creates a contact action list.
   const ContactActionList({
     required this.links,
     this.collectionFailure,
-    this.variant = ActionLinkVariant.contactButton,
+    this.size = ContactActionSize.compact,
     this.layout = ContactActionLayout.stacked,
     super.key,
   });
@@ -34,8 +44,8 @@ class ContactActionList extends StatelessWidget {
   /// The collection-level validation failure to render, if any.
   final ValueFailure<dynamic>? collectionFailure;
 
-  /// The button treatment used for the rendered contact actions.
-  final ActionLinkVariant variant;
+  /// The size treatment used for the rendered contact actions.
+  final ContactActionSize size;
 
   /// The preferred layout arrangement for the rendered contact actions.
   final ContactActionLayout layout;
@@ -50,20 +60,19 @@ class ContactActionList extends StatelessWidget {
 
     final visibleLinks = links.where(_shouldKeepContactLink).toList();
     final actions = <Widget>[
-      ActionLinkTile(
+      LinkButton(
         label: 'Email',
         url: 'mailto:$_directEmailAddress',
-        actionLabel: 'Write',
-        leadingIcon: Icons.mail_outline_rounded,
-        variant: variant,
+        icon: Icons.mail_outline_rounded,
+        size: _resolvedButtonSize,
       ),
     ];
 
     for (final link in visibleLinks) {
       actions.add(
-        ExternalLinkTile(
+        ValidatedLinkButton(
           linkReference: link,
-          variant: variant,
+          size: _resolvedButtonSize,
         ),
       );
     }
@@ -98,6 +107,11 @@ class ContactActionList extends StatelessWidget {
     (_) => true,
     (label) => label.toLowerCase() != 'portfolio',
   );
+
+  LinkButtonSize get _resolvedButtonSize => switch (size) {
+    ContactActionSize.compact => LinkButtonSize.compact,
+    ContactActionSize.large => LinkButtonSize.large,
+  };
 
   Widget _buildStackedActions(List<Widget> actions) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,

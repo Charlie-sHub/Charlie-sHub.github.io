@@ -7,7 +7,7 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.d
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
@@ -146,7 +146,7 @@ class ProjectCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.size16),
           ContentBlock(
             title: 'Links',
-            child: ExternalLinkList(links: project.links),
+            child: LinkButtonList(links: project.links),
           ),
         ],
       ],

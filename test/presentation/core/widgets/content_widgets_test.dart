@@ -6,13 +6,14 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_tile.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_frame.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';
@@ -275,20 +276,19 @@ void main() {
   );
 
   group(
-    'ExternalLinkTile',
+    'LinkButton',
     () {
       testWidgets(
-        'renders a generic action link tile with subtitle text',
+        'renders a shared link button and triggers the tap callback',
         (tester) async {
           var tapped = false;
 
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ActionLinkTile(
+              LinkButton(
                 label: 'Email',
-                subtitle: 'carlosrafael-mg@hotmail.com',
                 url: 'mailto:carlosrafael-mg@hotmail.com',
-                actionLabel: 'Write',
+                icon: Icons.mail_outline_rounded,
                 onTap: () => tapped = true,
               ),
             ),
@@ -298,20 +298,19 @@ void main() {
           await tester.pump();
 
           expect(find.text('Email'), findsOneWidget);
-          expect(find.text('carlosrafael-mg@hotmail.com'), findsOneWidget);
-          expect(find.text('Write'), findsOneWidget);
+          expect(find.text('Open link'), findsNothing);
           expect(tapped, isTrue);
         },
       );
 
       testWidgets(
-        'renders label and triggers onTap callback',
+        'renders a validated link button and triggers the tap callback',
         (tester) async {
           var tapped = false;
 
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ExternalLinkTile(
+              ValidatedLinkButton(
                 linkReference: LinkReference(
                   label: SingleLineText('Repository'),
                   url: UrlValue('https://example.com/project'),
@@ -325,24 +324,22 @@ void main() {
           await tester.pump();
 
           expect(find.text('Repository'), findsOneWidget);
-          expect(find.text('Open link'), findsOneWidget);
-          expect(find.byIcon(Icons.open_in_new), findsOneWidget);
           expect(find.text('https://example.com/project'), findsNothing);
           expect(tapped, isTrue);
         },
       );
 
       testWidgets(
-        'renders the contact-button variant as a label-only warm button',
+        'renders the canonical link button as a label-only warm button',
         (tester) async {
           var tapped = false;
 
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ActionLinkTile(
+              LinkButton(
                 label: 'GitHub',
                 url: 'https://example.com/github',
-                variant: ActionLinkVariant.contactButton,
+                icon: Icons.code_rounded,
                 onTap: () => tapped = true,
               ),
             ),
@@ -369,48 +366,52 @@ void main() {
       );
 
       testWidgets(
-        'uses an accent override for card-style link affordances',
+        'uses the shared warm accent styling',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
-              const ActionLinkTile(
+              const LinkButton(
                 label: 'Credential proof',
                 url: 'https://example.com/certification',
-                accentColor: AppColors.warmAccent,
+                icon: Icons.verified_outlined,
               ),
             ),
           );
 
-          final leadingIcon = tester.widget<Icon>(
+          final icon = tester.widget<Icon>(
             find.byIcon(Icons.verified_outlined),
           );
-          final trailingIcon = tester.widget<Icon>(
-            find.byIcon(Icons.open_in_new),
-          );
 
-          expect(leadingIcon.color, AppColors.warmAccent);
-          expect(trailingIcon.color, AppColors.warmAccent);
+          expect(icon.color, isNull);
         },
       );
 
       testWidgets(
-        'renders the large contact-button variant with larger padding',
+        'uses distinct compact, standard, and large link-button sizing',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ActionLinkTile(
+                  LinkButton(
                     label: 'Sticky',
                     url: 'https://example.com/sticky',
-                    variant: ActionLinkVariant.contactButton,
+                    icon: Icons.link_rounded,
+                    size: LinkButtonSize.compact,
                   ),
                   SizedBox(height: 12),
-                  ActionLinkTile(
+                  LinkButton(
+                    label: 'Reference',
+                    url: 'https://example.com/reference',
+                    icon: Icons.link_rounded,
+                  ),
+                  SizedBox(height: 12),
+                  LinkButton(
                     label: 'Resume',
                     url: 'https://example.com/resume',
-                    variant: ActionLinkVariant.contactButtonLarge,
+                    icon: Icons.description_outlined,
+                    size: LinkButtonSize.large,
                   ),
                 ],
               ),
@@ -425,10 +426,16 @@ void main() {
           final compactPadding = buttons.first.style?.padding?.resolve(
             const <WidgetState>{},
           );
+          final standardPadding = buttons[1].style?.padding?.resolve(
+            const <WidgetState>{},
+          );
           final largePadding = buttons.last.style?.padding?.resolve(
             const <WidgetState>{},
           );
           final compactTextStyle = buttons.first.style?.textStyle?.resolve(
+            const <WidgetState>{},
+          );
+          final standardTextStyle = buttons[1].style?.textStyle?.resolve(
             const <WidgetState>{},
           );
           final largeTextStyle = buttons.last.style?.textStyle?.resolve(
@@ -436,6 +443,9 @@ void main() {
           );
           final compactBackground = buttons.first.style?.backgroundColor
               ?.resolve(const <WidgetState>{});
+          final standardBackground = buttons[1].style?.backgroundColor?.resolve(
+            const <WidgetState>{},
+          );
           final largeBackground = buttons.last.style?.backgroundColor?.resolve(
             const <WidgetState>{},
           );
@@ -444,36 +454,48 @@ void main() {
             compactPadding,
             const EdgeInsets.symmetric(
               horizontal: AppSpacing.size16,
-              vertical: AppSpacing.size10,
+              vertical: AppSpacing.size12,
+            ),
+          );
+          expect(
+            standardPadding,
+            const EdgeInsets.symmetric(
+              horizontal: AppSpacing.size16,
+              vertical: AppSpacing.size12,
             ),
           );
           expect(
             largePadding,
             const EdgeInsets.symmetric(
               horizontal: AppSpacing.size20,
-              vertical: AppSpacing.size14,
+              vertical: AppSpacing.size16,
             ),
           );
           expect(
-            largeTextStyle?.fontSize,
+            standardTextStyle?.fontSize,
             greaterThan(compactTextStyle?.fontSize ?? 0),
           );
+          expect(
+            largeTextStyle?.fontSize,
+            greaterThanOrEqualTo(standardTextStyle?.fontSize ?? 0),
+          );
           expect(compactBackground, AppColors.warmAccent);
+          expect(standardBackground, AppColors.warmAccent);
           expect(largeBackground, AppColors.warmAccent);
         },
       );
 
       testWidgets(
-        'centers contact button content with a consistent icon slot and gap',
+        'uses full-width button content with a consistent icon slot and gap',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
               const SizedBox(
                 width: 240,
-                child: ActionLinkTile(
+                child: LinkButton(
                   label: 'GitHub',
                   url: 'https://example.com/github',
-                  variant: ActionLinkVariant.contactButton,
+                  icon: Icons.code_rounded,
                 ),
               ),
             ),
@@ -482,43 +504,20 @@ void main() {
           final buttonRect = tester.getRect(find.byType(TextButton));
           final iconRect = tester.getRect(find.byIcon(Icons.code_rounded));
           final labelRect = tester.getRect(find.text('GitHub'));
-          final contentCenter = (iconRect.left + labelRect.right) / 2;
 
-          expect(
-            (contentCenter - buttonRect.center.dx).abs(),
-            lessThanOrEqualTo(1),
-          );
           expect(labelRect.left - iconRect.right, AppSpacing.size8);
           expect(iconRect.width, AppLayout.actionLeadingIconSize);
+          expect(iconRect.left, greaterThan(buttonRect.left));
+          expect(labelRect.right, lessThan(buttonRect.right));
         },
       );
 
       testWidgets(
-        'shows the URL when explicitly requested',
+        'renders a failure widget when the validated label is invalid',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ExternalLinkTile(
-                linkReference: LinkReference(
-                  label: SingleLineText('Repository'),
-                  url: UrlValue('https://example.com/project'),
-                ),
-                showUrl: true,
-              ),
-            ),
-          );
-
-          expect(find.text('Repository'), findsOneWidget);
-          expect(find.text('https://example.com/project'), findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        'renders a failure widget when the label is invalid',
-        (tester) async {
-          await tester.pumpWidget(
-            buildPresentationTestApp(
-              ExternalLinkTile(
+              ValidatedLinkButton(
                 linkReference: LinkReference(
                   label: SingleLineText(''),
                   url: UrlValue('https://example.com/project'),
@@ -590,7 +589,7 @@ void main() {
   );
 
   group(
-    'ExternalLinkList',
+    'LinkButtonList',
     () {
       testWidgets(
         'renders multiple links and triggers callbacks for each item',
@@ -599,7 +598,7 @@ void main() {
 
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ExternalLinkList(
+              LinkButtonList(
                 links: [
                   LinkReference(
                     label: SingleLineText('Repository'),
@@ -630,11 +629,11 @@ void main() {
       );
 
       testWidgets(
-        'uses the warm accent by default for card-style external links',
+        'uses the shared family accent by default for link buttons',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
-              ExternalLinkList(
+              LinkButtonList(
                 links: [
                   LinkReference(
                     label: SingleLineText('Repository'),
@@ -648,12 +647,8 @@ void main() {
           final leadingIcon = tester.widget<Icon>(
             find.byIcon(Icons.source_outlined),
           );
-          final trailingIcon = tester.widget<Icon>(
-            find.byIcon(Icons.open_in_new),
-          );
 
-          expect(leadingIcon.color, AppColors.warmAccent);
-          expect(trailingIcon.color, AppColors.warmAccent);
+          expect(leadingIcon.color, isNull);
         },
       );
 
@@ -662,11 +657,11 @@ void main() {
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
-              const ExternalLinkList(links: []),
+              const LinkButtonList(links: []),
             ),
           );
 
-          expect(find.byType(ExternalLinkTile), findsNothing);
+          expect(find.byType(ValidatedLinkButton), findsNothing);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
@@ -676,7 +671,7 @@ void main() {
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
-              const ExternalLinkList(
+              const LinkButtonList(
                 links: [],
                 collectionFailure:
                     ValueFailure<List<String>>.collectionTooShort(
@@ -688,7 +683,7 @@ void main() {
           );
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
-          expect(find.byType(ExternalLinkTile), findsNothing);
+          expect(find.byType(ValidatedLinkButton), findsNothing);
         },
       );
     },

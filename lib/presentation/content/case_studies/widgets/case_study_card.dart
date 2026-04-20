@@ -5,7 +5,7 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.d
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/external_link_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
@@ -217,7 +217,7 @@ class CaseStudyCard extends StatelessWidget {
         const SizedBox(height: AppSpacing.size16),
         ContentBlock(
           title: 'References',
-          child: ExternalLinkList(
+          child: LinkButtonList(
             links: caseStudy.references,
             collectionFailure: collectionFailureOrNull(
               caseStudy.references,
