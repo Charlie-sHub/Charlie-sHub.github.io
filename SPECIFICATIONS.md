@@ -2,7 +2,7 @@
 
 > Working public-safe specification for the portfolio website repository.  
 > Defines the current direction, constraints, and implementation principles for the project.  
-> It will evolve as the project becomes more concrete.
+> It will evolve through deliberate specification updates as the project matures.
 
 ---
 
@@ -26,7 +26,7 @@ The portfolio should also reflect:
 
 ## 2. Project status
 
-This is an early working specification.
+This is a working specification for the current first-deployment baseline.
 
 Some parts of the project are already established:
 - the website can be rebuilt fully within this repository, including replacement of the current implementation
@@ -37,9 +37,10 @@ Some parts of the project are already established:
 - the codebase should remain simple, maintainable, and understandable
 
 Some parts are intentionally still open:
-- detailed UX behavior and interaction decisions
-- detailed UI specification
+- motion and animation refinement within the approved restrained direction
 - the exact content schema and normalization rules for all sections
+- selected post-launch UX or UI refinements once the first deployment is in use
+- whether later navigation, filtering, or routing changes are justified
 - whether any template or external baseline is worth reusing
 
 This document should evolve as those decisions become concrete.
@@ -101,10 +102,10 @@ The site should remain understandable to readers with different levels of techni
 - repository-visible documentation required to maintain the project
 - secure and maintainable implementation decisions
 - clear presentation of technical work
-- future UX/UI design decisions once properly defined
+- deliberate later UX/UI refinements made through specification updates
 
 ### Out of scope for now
-- final visual design system
+- major redesign of the established first-deployment UI or UX baseline
 - broader or more dramatic motion language beyond the approved restrained baseline
 - detailed copy for every section
 - search and filtering in the initial implementation
@@ -494,11 +495,11 @@ Avoid:
 
 ## 12. UX direction
 
-> Current UX direction is provisional and subject to refinement during implementation.
+> Current UX direction is established for the first deployment and should guide implementation unless this specification is deliberately updated.
 
 The intended experience should feel calm, structured, deliberate, technically credible, and easy to trust: minimal without becoming sparse, elegant through restraint rather than decoration, and technical without feeling mechanical.
 
-The current UX direction favors structural simplicity, evidence-first hierarchy, and clear section-based navigation.
+The current UX baseline favors structural simplicity, evidence-first hierarchy, and clear section-based navigation.
 
 The site should support two levels of use:
 - a quick pass for understanding who the author is, what kind of work is being presented, and where the strongest proof appears
@@ -506,9 +507,9 @@ The site should support two levels of use:
 
 Preferred direction:
 - desktop-first layout that remains fully responsive and mobile-friendly
-- v1 should favor a single-page structure if it remains clean, usable, and easy to navigate
-- section-based navigation as the default interaction model
-- anchor or hash-based navigation is the preferred low-complexity direction for the initial implementation
+- the first deployment should use a single-page structure so long as it remains clean, usable, and easy to navigate
+- section-based navigation is the default interaction model
+- anchor or hash-based navigation is the approved low-complexity direction for the initial implementation
 - major projects, supporting credentials, and technical depth surfaced early without unnecessary interaction overhead
 - top-level content easy to scan at a high level, with deeper detail available without making the first view dense
 - straightforward movement through content before introducing more state-driven patterns
@@ -528,7 +529,7 @@ Preferred direction:
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity and used to support hierarchy and orientation rather than decoration
 
-A cleaner path-style routing model can wait unless later needs justify the extra complexity.
+A cleaner path-style routing model can wait unless later needs justify the extra complexity after the first deployment baseline is proven.
 
 Interaction should improve clarity, not compete with content.
 
@@ -542,24 +543,24 @@ Avoid:
 - generic landing-page interaction patterns that weaken credibility
 - over-designed interaction patterns that obscure structure or proof
 
-Start with a clean structural base, then refine interaction patterns where the benefits are clear.
+Later interaction refinements should be deliberate follow-up decisions, not silent drift away from this baseline.
 
 ---
 
 ## 13. UI direction
 
-> Current UI direction is provisional and subject to refinement during implementation.
+> Current UI direction is established for the first deployment and should guide implementation unless this specification is deliberately updated.
 
 ### 13.1 Visual direction
 
-The intended visual direction is minimalist, elegant, and deliberate.
+The current visual baseline is minimalist, elegant, warm, and deliberate.
 
 Preferred characteristics:
 - a warm overall identity rather than generic tech styling
 - selective use of high-resolution landscape imagery as atmospheric texture where it supports mood and identity without adding visual noise
 - rounded corners that feel disciplined and a little sharper than the current softer direction across the system, including chips and tags
 
-The current first-pass theme direction is now established enough to guide implementation:
+The current first-deployment theme direction should guide implementation:
 - the first pass is light-theme only
 - do not add dark mode, `darkTheme`, or theme switching in this pass
 - the app shell should use `assets/media/background.jpg` as its first-pass wallpaper image
@@ -581,7 +582,7 @@ Current first-pass font direction:
 - no separate accent font is required for the current site pass; consistency should take priority over decorative contrast
 - monospace used selectively for technical accents, labels, metadata, or comparable supporting roles rather than as the default reading font
 
-These choices are settled enough to guide first-pass implementation. Exact scale, weight tuning, fallback behavior, and later refinement remain subject to availability, usability, and iteration.
+These choices should be treated as the current baseline. Exact scale, weight tuning, fallback behavior, and later refinement remain subject to availability, usability, and deliberate iteration.
 
 Animation and visual effects should be restrained and purposeful.
 
@@ -592,7 +593,7 @@ Avoid:
 - animation or visual effects that distract from content
 - wallpaper treatment, tinting, imagery, or later effects that reduce readability or scannability
 
-The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Longer-term palette expansion, typography settings, and any later effect intensity remain subject to refinement.
+The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Later palette expansion, typography tuning, and effect-intensity refinement remain possible, but they should build on this baseline rather than reopen it implicitly.
 
 ### 13.2 Motion direction
 
@@ -721,7 +722,7 @@ Compact metadata-like subsections such as language items should prefer a horizon
 
 A temporary widget showcase may remain as a quick theme-verification surface during the first pass. During active theme iteration it may temporarily sit at the top of the page for faster visual checking, but it should be clearly segregated from the real portfolio hierarchy, not treated as the intended deployed hierarchy or section priority, and removed before deployment.
 
-Current width, spacing, and breakpoint defaults remain provisional pending manual mobile review.
+Current width, spacing, and breakpoint defaults may still be refined after manual mobile review, but they should be treated as part of the current baseline in the meantime.
 
 ---
 
@@ -799,8 +800,6 @@ The finished project should aim for:
 
 The following areas are expected to change as the project evolves:
 
-- detailed UX behavior and interaction decisions outside the approved progressive disclosure and dense-section selector patterns
-- detailed UI specification
 - section ordering
 - exact content schema and normalization rules
 - exact presentation rules for invalid optional fields, including when a field
@@ -812,6 +811,7 @@ The following areas are expected to change as the project evolves:
 - whether search and filtering become worthwhile later
 - the exact small-screen fallback variant for the approved entry selector pattern, so long as it remains a simple responsive adaptation rather than a forced left rail
 - the exact width, spacing rhythm, and breakpoint defaults after manual mobile review
+- whether motion timing, reveal intensity, or decorative background treatment need later refinement within the approved restrained scope
 - whether additional supporting sections later justify the same selector pattern without weakening scanability
 - whether courses and case studies deserve separate navigation priority
 - whether any later theme variants, including dark mode, become worthwhile after the first-pass light theme is proven
@@ -829,7 +829,7 @@ Open items should be resolved progressively rather than guessed too early.
 Update this specification when:
 - major direction changes are made
 - scope changes materially
-- UX or UI decisions become concrete
+- the established first-deployment UX or UI baseline is deliberately changed
 - architecture rules are clarified
 - repository-visible documentation policy changes
 - content structure becomes more defined
@@ -843,6 +843,6 @@ For now, the safest implementation stance is:
 - keep the architecture simple and explicit
 - keep content and rendering reasonably separated
 - treat new implementation work as durable project code
-- defer UX/UI precision until it is defined
+- treat the documented first-deployment UX/UI baseline as established unless this specification is deliberately updated
 - favor clarity over cleverness
 - treat the site as both a portfolio and a real software project

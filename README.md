@@ -32,7 +32,7 @@ The current implementation direction is:
 - **snake_case naming** for content slugs and slug-derived asset directories
 - **public-safe documentation** that explains the project without exposing internal planning material
 
-This repository is expected to evolve, but the direction is to keep the codebase understandable, durable, and easy to review.
+This repository is expected to evolve, but the first-deployment direction is now established enough to keep the codebase understandable, durable, and easy to review.
 
 It is also more engineered than a simple static portfolio strictly needs to be. That is intentional: part of the project is to show architecture, maintainability, validation, engineering habits, and the way I normally structure software.
 
@@ -193,17 +193,18 @@ The repository uses FVM, with `.fvmrc` as the expected Flutter SDK version.
 
 ## Design and UX Direction
 
-The current design direction is intentionally restrained.
+The first-deployment design direction is now established and intentionally restrained.
 
 High-level goals:
 
 - calm and structured
 - technically credible
+- warm and evidence-first
 - easy to scan
 - minimalist without feeling empty
 - deliberate rather than decorative
 
-The current preference is to start from a strong clean base and refine visual treatment gradually, rather than overdesigning the first implementation.
+The site uses a restrained, warm, evidence-first visual language with selective atmospheric imagery, controlled transparency and blur, and interaction kept secondary to clarity. Later refinements may still happen, but they should be deliberate follow-up updates rather than open-ended uncertainty about the baseline.
 
 ---
 
@@ -217,12 +218,11 @@ Using AI responsibly is part of current software development practice, but respo
 
 ## Status
 
-This project is still in an early but deliberate stage.
+This project is still evolving, but the first-deployment UX and visual direction are now established enough to guide implementation and review.
 
-Other parts remain intentionally open and will be refined as the project becomes more concrete, especially:
+Some follow-up areas remain intentionally open and may still be refined later, especially:
 
-- detailed UX behavior
-- final UI system
+- motion refinement within the approved restrained direction
 - content schemas
 - deeper project breakdown formats
 - whether more advanced navigation or filtering is worth adding later

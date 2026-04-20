@@ -41,7 +41,7 @@ Before editing:
 
 1. Read the relevant `SPECIFICATIONS.md` sections for the touched area.
 2. Check the request, spec, and current implementation for agreement.
-3. Identify whether the task is implementing established direction or would settle an open or provisional decision.
+3. Identify whether the task is implementing established direction or would settle an open decision or deliberately change an established baseline.
 
 Proceed with the smallest coherent change when the direction is already established. Pause and ask when the task would materially change project direction, architecture, schema rules, UX/UI behavior, public positioning, or documentation policy.
 
@@ -87,8 +87,9 @@ For reusable documentation:
 
 For presentation, layout, navigation, interaction, or styling work:
 - re-read the relevant UX, UI, styling, and AI-assisted sections in `SPECIFICATIONS.md`
+- treat the documented first-deployment UX/UI baseline in `SPECIFICATIONS.md` as the source of truth for current implementation work
 - reuse existing widgets and tokens before creating new reusable patterns
-- do not silently turn a provisional or open UI preference into a settled project rule
+- do not silently drift away from that baseline or turn still-open follow-up questions into settled project rules
 
 For architecture, schema, or content-model work:
 - keep changes aligned with the layered structure and content flow documented in `SPECIFICATIONS.md`
