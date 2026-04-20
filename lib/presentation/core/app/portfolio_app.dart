@@ -29,7 +29,9 @@ class PortfolioApp extends StatelessWidget {
           },
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: const PortfolioHomePage(),
+            home: PortfolioHomePage(
+              initialSectionId: Uri.base.fragment,
+            ),
             theme: buildAppTheme(),
             themeMode: ThemeMode.light,
             title: 'Carlos Mendez Portfolio',

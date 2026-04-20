@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_motion.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_radii.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
@@ -180,13 +181,7 @@ class _ProjectImageCarouselState extends State<ProjectImageCarousel> {
     }
 
     final nextIndex = (_selectedIndex + 1) % widget.imagePaths.length;
-    unawaited(
-      _pageController.animateToPage(
-        nextIndex,
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    _moveToPage(nextIndex);
   }
 
   void _showPreviousImage() {
@@ -197,13 +192,25 @@ class _ProjectImageCarouselState extends State<ProjectImageCarousel> {
     final previousIndex =
         (_selectedIndex - 1 + widget.imagePaths.length) %
         widget.imagePaths.length;
-    unawaited(
-      _pageController.animateToPage(
-        previousIndex,
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    _moveToPage(previousIndex);
+  }
+
+  void _moveToPage(int index) {
+    if (!_pageController.hasClients) {
+      return;
+    }
+
+    if (context.prefersReducedMotion) {
+      _pageController.jumpToPage(index);
+    } else {
+      unawaited(
+        _pageController.animateToPage(
+          index,
+          duration: AppMotion.durationStandard,
+          curve: AppMotion.curveStandard,
+        ),
+      );
+    }
   }
 }
 
@@ -249,13 +256,18 @@ class _CarouselPageIndicators extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final indicatorDuration = context.resolveMotionDuration(
+      AppMotion.durationFast,
+    );
+    final indicatorCurve = context.resolveMotionCurve(AppMotion.curveStandard);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List<Widget>.generate(
         itemCount,
         (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
+          duration: indicatorDuration,
+          curve: indicatorCurve,
           margin: EdgeInsets.only(
             left: index == 0 ? AppSpacing.zero.left : AppSpacing.size6,
           ),

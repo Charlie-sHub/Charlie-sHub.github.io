@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_motion.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:flutter/material.dart';
@@ -89,8 +90,8 @@ class _ContentCardState extends State<ContentCard> {
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.primary);
     final surface = AnimatedContainer(
-      duration: AppSurfaceStyles.transitionDuration,
-      curve: Curves.easeOutCubic,
+      duration: context.resolveMotionDuration(AppMotion.durationFast),
+      curve: context.resolveMotionCurve(AppMotion.curveStandard),
       decoration: AppSurfaceStyles.cardDecoration(
         context,
         variant: widget.variant,

@@ -320,6 +320,30 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
+          await tester.pumpAndSettle();
+
+          expect(find.text('Detail Alpha'), findsNothing);
+          expect(find.text('Detail Beta'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'switches detail content immediately when reduced motion is requested',
+        (tester) async {
+          await tester.pumpWidget(
+            _buildSizedTestApp(
+              width: 960,
+              disableAnimations: true,
+              child: _buildSelectorPanel(),
+            ),
+          );
+
+          expect(find.text('Detail Alpha'), findsOneWidget);
+          expect(find.text('Detail Beta'), findsNothing);
+
+          await tester.tap(
+            find.byKey(const ValueKey<String>('entry-selector-item-1')),
+          );
           await tester.pump();
 
           expect(find.text('Detail Alpha'), findsNothing);
@@ -377,17 +401,21 @@ void main() {
 }
 
 Widget _buildSizedTestApp({
-  required double width,
   required Widget child,
+  required double width,
+  bool disableAnimations = false,
 }) => MaterialApp(
   theme: buildAppTheme(),
   home: Scaffold(
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: SizedBox(
-          width: width,
-          child: child,
+    body: MediaQuery(
+      data: MediaQueryData(disableAnimations: disableAnimations),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: SizedBox(
+            width: width,
+            child: child,
+          ),
         ),
       ),
     ),

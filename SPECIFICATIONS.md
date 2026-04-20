@@ -105,7 +105,7 @@ The site should remain understandable to readers with different levels of techni
 
 ### Out of scope for now
 - final visual design system
-- final animation and motion rules
+- broader or more dramatic motion language beyond the approved restrained baseline
 - detailed copy for every section
 - search and filtering in the initial implementation
 - speculative features with unclear value
@@ -526,7 +526,7 @@ Preferred direction:
 - PDF-backed assets may show a small in-page preview, while full viewing or downloading should open in a new tab
 - PDF previews should frame the full first page, even at small display sizes, rather than showing only a cropped subsection
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
-- scrolling, hover, and reveal effects kept secondary to content clarity
+- scrolling, hover, and reveal effects kept secondary to content clarity and used to support hierarchy and orientation rather than decoration
 
 A cleaner path-style routing model can wait unless later needs justify the extra complexity.
 
@@ -594,7 +594,48 @@ Avoid:
 
 The site should feel professional, deliberate, and clearly authored rather than generic or hastily assembled. Longer-term palette expansion, typography settings, and any later effect intensity remain subject to refinement.
 
-### 13.2 AI-generated UI constraints
+### 13.2 Motion direction
+
+Motion should support hierarchy, clarity, orientation, and polish. It must remain secondary to content and should reinforce the same calm, technically credible feel established by the current visual direction.
+
+Preferred motion direction:
+- restrained, elegant motion with a subtle glass or warm-premium feel
+- smooth, soft, and deliberate transitions rather than attention-seeking effects
+- motion used to support readability, state changes, and navigation confidence
+- no flashy, playful, bouncy, or distracting movement
+
+Approved initial motion scope:
+- initial page or first-load reveal animation
+- selector, tab, or entry-switch transition animation
+- smooth anchor scrolling for section navigation
+- one-time section reveal on first viewport entry
+- optional subtle background motion only after the rest of the motion baseline is stable
+
+Intended behavior within that scope:
+- initial load should use a short fade with a slight upward drift and light stagger for key content
+- selector, tab, or entry-switch transitions should use active-state movement or highlight transition plus a subtle content fade or slide
+- anchor scrolling should feel smooth but not exaggerated
+- section reveals should be soft, one-time reveals for major sections only
+- background motion, if added later, should be extremely subtle and must never compete with readability
+
+Motion constraints:
+- no splash screen
+- no long intro animation
+- no large sliding panels
+- no springy or mobile-app-style exaggerated motion
+- no repeated reveal every time a section re-enters the viewport
+- no motion that meaningfully delays access to content
+- no motion-heavy baseline experience
+- no animation patterns that materially decide broader open UX questions beyond this approved scope
+
+Implementation guidance:
+- motion should use centralized tokens or shared configuration where practical
+- prefer a small shared duration and easing vocabulary
+- reduced-motion accessibility support is expected
+- motion should degrade gracefully when effects are unavailable or disabled
+- initial implementation should favor the smallest reusable abstractions that keep behavior consistent
+
+### 13.3 AI-generated UI constraints
 
 AI may generate Flutter UI code for this project under the same review and maintainability expectations described in the AI-assisted development policy.
 
@@ -605,19 +646,21 @@ AI may:
 - assemble pages from approved patterns
 - refactor UI code toward existing patterns
 - build simple placeholder implementations where the structure is already clear
+- implement motion only within the approved restrained scope defined in this specification
 
 AI must not, without explicit approval:
 - invent a new visual language
 - introduce a new navigation model
 - introduce a major interaction pattern
 - make animation-heavy behavior part of the baseline experience
+- invent a more dramatic, decorative, or expansive motion language
 - add convenience dependencies with low structural value
 - spread styling decisions across scattered ad hoc values where shared patterns should exist
 - resolve still-open design questions implicitly through implementation
 
 When direction is clear enough to implement, the default should be the smallest clean, centralized, easy-to-revise solution.
 
-### 13.3 Clarification before deciding open UI questions
+### 13.4 Clarification before deciding open UI questions
 
 Clarification is required before implementation when a UI change would materially decide a still-open question such as:
 
@@ -625,7 +668,7 @@ Clarification is required before implementation when a UI change would materiall
 - navigation model
 - layout hierarchy
 - visual identity
-- motion behavior
+- motion behavior outside the approved restrained scope
 - filtering or search behavior
 - disclosure or card-detail behavior
 - reusable component families
@@ -641,10 +684,11 @@ The following interaction directions are now approved and do not require separat
 - desktop and tablet placement with the selector on the left and the active content on the right
 - a simple responsive fallback on smaller screens rather than a forced left-rail layout
 - current approved target sections of projects, certifications, courses, and case studies
+- the restrained motion direction and initial animation scope defined in section 13.2
 
 Outside that scope, clarification is still required before turning the selector pattern into a site-wide default or extending it to additional flagship proof areas.
 
-### 13.4 Initial UI composition baseline
+### 13.5 Initial UI composition baseline
 
 Initial UI implementation should start from a small reusable UI vocabulary rather than page-specific bespoke layouts.
 

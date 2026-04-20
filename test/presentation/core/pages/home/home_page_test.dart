@@ -145,6 +145,25 @@ void main() {
           expect(aboutRectAfter.top, lessThan(aboutRectBefore.top));
         },
       );
+
+      testWidgets(
+        'scrolls to an initial anchored section on first load',
+        (tester) async {
+          await _pumpHomePage(
+            tester,
+            size: const Size(1280, 700),
+            initialSectionId: 'resume',
+          );
+
+          await tester.pumpAndSettle();
+
+          final aboutRect = tester.getRect(find.text('About'));
+          final resumeRect = tester.getRect(find.text('Resume'));
+
+          expect(aboutRect.top, lessThan(0));
+          expect(resumeRect.top, lessThan(700));
+        },
+      );
     },
   );
 }
@@ -152,6 +171,7 @@ void main() {
 Future<void> _pumpHomePage(
   WidgetTester tester, {
   required Size size,
+  String? initialSectionId,
 }) async {
   final cubit = TestContentCubit()
     ..emitState(
@@ -175,7 +195,9 @@ Future<void> _pumpHomePage(
       theme: buildAppTheme(),
       home: BlocProvider<ContentCubit>.value(
         value: cubit,
-        child: const PortfolioHomePage(),
+        child: PortfolioHomePage(
+          initialSectionId: initialSectionId,
+        ),
       ),
     ),
   );

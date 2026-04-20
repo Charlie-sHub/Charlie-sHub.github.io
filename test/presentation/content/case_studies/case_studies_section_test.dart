@@ -112,7 +112,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('A security case study.'), findsNothing);
           expect(find.text('A second security case study.'), findsOneWidget);
@@ -259,7 +259,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('Cutting Edge'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);

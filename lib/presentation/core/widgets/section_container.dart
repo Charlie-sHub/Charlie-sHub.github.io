@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/viewport_entry_reveal.dart';
 import 'package:flutter/material.dart';
 
 /// Wraps a section in a shared container with optional heading content.
@@ -36,12 +37,14 @@ class SectionContainer extends StatelessWidget {
 
     sectionChildren.addAll(children);
 
-    return ContentCard(
-      variant: AppSurfaceVariant.section,
-      padding: AppSpacing.sectionPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: sectionChildren,
+    return ViewportEntryReveal(
+      child: ContentCard(
+        variant: AppSurfaceVariant.section,
+        padding: AppSpacing.sectionPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: sectionChildren,
+        ),
       ),
     );
   }

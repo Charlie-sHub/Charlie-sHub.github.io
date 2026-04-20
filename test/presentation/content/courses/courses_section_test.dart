@@ -104,7 +104,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('A networking course.'), findsNothing);
           expect(find.text('A second course summary.'), findsOneWidget);
@@ -252,7 +252,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('Google Networking'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);

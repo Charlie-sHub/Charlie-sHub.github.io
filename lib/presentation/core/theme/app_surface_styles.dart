@@ -22,7 +22,6 @@ enum AppSurfaceVariant {
 final class AppSurfaceStyles {
   const AppSurfaceStyles._();
 
-  static const Duration transitionDuration = Duration(milliseconds: 180);
   static const double sectionBlurSigma = 16;
 
   static BorderRadius radiusFor(AppSurfaceVariant variant) => switch (variant) {
@@ -122,14 +121,14 @@ final class AppSurfaceStyles {
     return BoxDecoration(
       border: Border.all(
         color: isSelected
-            ? colorScheme.primary
+            ? colorScheme.secondary.withValues(alpha: 0.7)
             : hasEmphasis
             ? colorScheme.primary.withValues(alpha: 0.26)
             : colorScheme.outlineVariant,
       ),
       borderRadius: AppRadii.control,
       color: isSelected
-          ? AppColors.coolAccentSoft
+          ? colorScheme.secondaryContainer.withValues(alpha: 0.82)
           : pressed
           ? AppColors.surfaceSecondary
           : hasEmphasis

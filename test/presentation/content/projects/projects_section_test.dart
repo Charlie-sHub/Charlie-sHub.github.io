@@ -95,7 +95,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('A portfolio proof project.'), findsOneWidget);
           expect(find.text('A second portfolio project.'), findsNWidgets(2));
@@ -269,7 +269,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('PAMi'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);

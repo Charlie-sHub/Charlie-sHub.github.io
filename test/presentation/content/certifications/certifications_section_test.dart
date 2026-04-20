@@ -100,7 +100,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('A certification summary.'), findsNothing);
           expect(
@@ -321,7 +321,7 @@ void main() {
           await tester.tap(
             find.byKey(const ValueKey<String>('entry-selector-item-1')),
           );
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           expect(find.text('Security+'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);
