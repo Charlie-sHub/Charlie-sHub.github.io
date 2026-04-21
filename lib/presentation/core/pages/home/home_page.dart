@@ -31,16 +31,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     caseStudiesSectionId: GlobalKey(),
     coursesSectionId: GlobalKey(),
     resumeSectionId: GlobalKey(),
-    codersRankSectionId: GlobalKey(),
   };
-  final ValueNotifier<bool> _codersRankShouldPrepare = ValueNotifier(false);
   bool _hasHandledInitialSectionScroll = false;
-
-  @override
-  void dispose() {
-    _codersRankShouldPrepare.dispose();
-    super.dispose();
-  }
 
   @override
   void didChangeDependencies() {
@@ -108,27 +100,21 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 return WideHomePageFrame(
                   maxWidth: constraints.maxWidth,
                   maxHeight: constraints.maxHeight,
-                  onLowerPageScrollStarted: _requestCodersRankPreparation,
                   sectionKeys: _sectionKeys,
-                  shouldPrepareCodersRank: _codersRankShouldPrepare,
                 );
               }
 
-              return NotificationListener<ScrollNotification>(
-                onNotification: _handleHomeScrollNotification,
-                child: SingleChildScrollView(
-                  padding: AppSpacing.pagePadding,
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: AppLayout.maxContentWidth,
-                      ),
-                      child: HomePageContent(
-                        includeInlineProfileSummary: true,
-                        sectionKeys: _sectionKeys,
-                        shouldPrepareCodersRank: _codersRankShouldPrepare,
-                      ),
+              return SingleChildScrollView(
+                padding: AppSpacing.pagePadding,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: AppLayout.maxContentWidth,
+                    ),
+                    child: HomePageContent(
+                      includeInlineProfileSummary: true,
+                      sectionKeys: _sectionKeys,
                     ),
                   ),
                 ),
@@ -157,28 +143,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       'case-studies' || 'case_studies' || 'casestudies' => caseStudiesSectionId,
       'courses' => coursesSectionId,
       'resume' => resumeSectionId,
-      'codersrank' || 'coders-rank' || 'coders_rank' => codersRankSectionId,
       _ => null,
     };
-  }
-
-  bool _handleHomeScrollNotification(ScrollNotification notification) {
-    if (notification.metrics.axis != Axis.vertical) {
-      return false;
-    }
-
-    if (notification.metrics.pixels > 0) {
-      _requestCodersRankPreparation();
-    }
-
-    return false;
-  }
-
-  void _requestCodersRankPreparation() {
-    if (_codersRankShouldPrepare.value) {
-      return;
-    }
-
-    _codersRankShouldPrepare.value = true;
   }
 }

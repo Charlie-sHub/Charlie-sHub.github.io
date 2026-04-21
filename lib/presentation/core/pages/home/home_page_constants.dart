@@ -32,6 +32,3 @@ const coursesSectionId = 'courses';
 
 /// Canonical anchor identifier for the resume section.
 const resumeSectionId = 'resume';
-
-/// Canonical anchor identifier for the optional CodersRank section.
-const codersRankSectionId = 'codersrank';

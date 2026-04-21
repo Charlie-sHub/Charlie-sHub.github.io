@@ -319,6 +319,23 @@ The implementation should consider:
 - keeping the site simple enough to reduce avoidable risk
 - documenting relevant protective decisions when that adds value
 
+### 10.1 Deployment-time browser hardening baseline
+
+The current launch direction is to keep the Flutter website first-party and self-contained.
+
+Browser hardening should therefore be treated as a hosting and deployment contract rather than a speculative app-shell experiment.
+
+Current deployment-time direction:
+- serve the public site over HTTPS only
+- prefer a first-party-only `Content-Security-Policy` baseline for the launch surface, with exact allowances validated against the final host and the real deployed asset graph
+- keep third-party script origins out of the launch CSP unless a later deliberate product decision reintroduces them
+- set a restrained `Referrer-Policy` baseline for launch, with `strict-origin-when-cross-origin` as the expected default unless the chosen host requires a stricter setting
+- restrict framing through `frame-ancestors` so the portfolio is not embeddable by arbitrary origins
+- set `X-Content-Type-Options: nosniff`
+- use a deny-by-default `Permissions-Policy` and only allow browser capabilities that the deployed site explicitly needs
+
+If same-origin PDF previews remain in the deployed surface, any final CSP or frame-related allowances should be scoped only to the first-party asset paths needed for that behavior.
+
 ---
 
 ## 11. Technical direction
@@ -457,39 +474,22 @@ Avoid:
 - dependencies that complicate maintenance without clear benefit
 - services that make the site feel dependent on external uptime for core value
 
-### 11.9 Optional CodersRank widgets
+### 11.9 CodersRank status
 
-CodersRank widgets may be used as optional supporting proof signals in the Flutter website, but they are not part of the site's core content model.
+CodersRank is not part of the current launch baseline.
 
-Current approved widget scope:
-- CodersRank rank widgets
-- CodersRank GitHub activity matrix
+The chosen launch direction is to keep the active Flutter website first-party and self-contained rather than carrying a low-priority remote widget dependency in the browser runtime.
 
-These widgets are intentionally low-priority and should only be considered after the main first-party website implementation is complete.
+If CodersRank is reconsidered after launch, it should be treated as a new decision rather than an assumed part of the baseline.
 
-Rules:
+Any later reintroduction must still follow these rules:
 - first-party structured content under `assets/content/` remains authoritative for portfolio content
 - CodersRank must not be required for the site's core value, first impression, navigation, or understanding of the author's work
 - CodersRank widgets must not replace first-party sections such as projects, experience, education, certifications, case studies, or about content
-- any CodersRank integration must degrade gracefully if the provider, script, or widget fails
+- any integration must degrade gracefully if the provider, script, or widget fails
 - omission is preferred over a broken or unstable embed
-- if a widget fails to load, initialize, or render correctly, it should be omitted entirely from the rendered UI rather than showing broken placeholders, visible fallback errors, or provider-facing failure states
 - implementation should remain isolated and easy to remove without affecting surrounding page structure
 - any Flutter integration should remain web-only presentation behavior rather than part of the structured content-loading architecture or shared domain or application layers
-- styling and layout around the widgets should stay consistent with the site's own design system; the widgets should be themed to fit the site rather than dictating page structure or appearance
-- the approved rank-widget surface should prefer a row presentation rather than a vertically stacked treatment where layout allows
-- if the widgets prove visually weak, operationally brittle, or redundant, they may be removed without replacement
-
-Preferred placement direction:
-- supporting proof section
-- secondary home-page area
-- lower-priority section surfaced after first-party content
-
-Avoid:
-- placing CodersRank widgets above the main project and portfolio proof
-- treating CodersRank as a source of truth for portfolio content
-- widening the approved widget scope beyond rank widgets and the GitHub activity matrix without updating this specification
-- leaving visible broken placeholders, error copy, or unstable empty shells when the integration fails
 
 ---
 

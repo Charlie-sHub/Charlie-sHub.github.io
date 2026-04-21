@@ -30,6 +30,7 @@ The current implementation direction is:
 - **content-first structure**, with structured public JSON under `assets/content/`, supporting images under `assets/media/`, and downloadable documents under `assets/documents/`
 - **horizontal layered architecture** rather than feature slices
 - **snake_case naming** for content slugs and slug-derived asset directories
+- **first-party launch surface**, avoiding low-value third-party runtime widgets in the active Flutter site
 - **public-safe documentation** that explains the project without exposing internal planning material
 
 This repository is expected to evolve, but the first-deployment direction is now established enough to keep the codebase understandable, durable, and easy to review.

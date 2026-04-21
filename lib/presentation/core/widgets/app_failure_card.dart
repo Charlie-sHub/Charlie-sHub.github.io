@@ -48,7 +48,7 @@ class AppFailureCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.size8),
           Text(
-            failure.message,
+            _buildPublicMessage(),
             style: AppTextStyles.bodyCompact(context)?.copyWith(
               color: colorScheme.onErrorContainer,
             ),
@@ -57,4 +57,12 @@ class AppFailureCard extends StatelessWidget {
       ),
     );
   }
+
+  String _buildPublicMessage() => switch (failure) {
+    AssetNotFound() => 'A required site asset could not be loaded.',
+    ContentLoadError() => 'This content is temporarily unavailable.',
+    MediaLoadError() => 'This media could not be displayed right now.',
+    DocumentOpenError() => 'This document could not be opened right now.',
+    UnexpectedError() => 'Something went wrong while loading this section.',
+  };
 }

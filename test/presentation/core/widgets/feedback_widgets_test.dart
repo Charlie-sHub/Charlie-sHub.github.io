@@ -78,7 +78,7 @@ void main() {
     'AppFailureCard',
     () {
       testWidgets(
-        'renders the failure message and not unrelated content',
+        'renders neutral public copy instead of low-level failure details',
         (tester) async {
           await tester.pumpWidget(
             buildPresentationTestApp(
@@ -97,12 +97,45 @@ void main() {
           );
           expect(
             find.text(
-              'Asset was not found at assets/content/projects/index.json.',
+              'A required site asset could not be loaded.',
             ),
             findsOneWidget,
           );
+          expect(
+            find.text(
+              'Asset was not found at assets/content/projects/index.json.',
+            ),
+            findsNothing,
+          );
           expect(find.byIcon(Icons.error_outline_rounded), findsOneWidget);
           expect(find.text('Unrelated content'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'omits parser and runtime detail from public failure copy',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              const AppFailureCard(
+                failure: AppFailure.contentLoadError(
+                  path: 'assets/content/projects/index.json',
+                  errorString: 'Unsupported JSON shape',
+                ),
+                title: 'Projects section unavailable',
+              ),
+            ),
+          );
+
+          expect(
+            find.text('This content is temporarily unavailable.'),
+            findsOneWidget,
+          );
+          expect(find.text('Unsupported JSON shape'), findsNothing);
+          expect(
+            find.text('assets/content/projects/index.json'),
+            findsNothing,
+          );
         },
       );
     },
