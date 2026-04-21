@@ -6,6 +6,8 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.d
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:flutter/material.dart';
 
+part 'tag_chip_list/tag_chip.dart';
+
 /// Renders a wrap-based list of validated tag or chip values.
 class TagChipList extends StatelessWidget {
   /// Creates a tag chip list.
@@ -45,24 +47,4 @@ class TagChipList extends StatelessWidget {
       ],
     );
   }
-}
-
-class _TagChip extends StatelessWidget {
-  const _TagChip({
-    required this.label,
-  });
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: AppSurfaceStyles.tagDecoration(context),
-    child: Padding(
-      padding: AppSpacing.tagChipPadding,
-      child: Text(
-        label,
-        style: AppTextStyles.label(context),
-      ),
-    ),
-  );
 }

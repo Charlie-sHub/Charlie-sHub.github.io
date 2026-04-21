@@ -5,8 +5,9 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/email_addr
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/validated_email_link_button.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/validated_link_button.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button.dart';
 import 'package:flutter/material.dart';
 
 /// Shared layout arrangements for contact action groups.

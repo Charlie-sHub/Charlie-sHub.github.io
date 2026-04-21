@@ -11,10 +11,11 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/link_button.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/link_button_list.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/validated_link_button.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/labeled_tag_group_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_frame.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_tile.dart';

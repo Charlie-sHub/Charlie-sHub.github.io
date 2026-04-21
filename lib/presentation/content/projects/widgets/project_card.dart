@@ -4,10 +4,10 @@ import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path
 import 'package:charlie_shub_portfolio/presentation/content/projects/widgets/project_image_carousel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entity_disclosure_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/expandable_value_text_block.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/metadata_row.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';

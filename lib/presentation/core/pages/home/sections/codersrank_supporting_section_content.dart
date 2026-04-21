@@ -4,6 +4,8 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/section_contain
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 
+part 'codersrank_supporting_section_content/codersrank_panel.dart';
+
 /// Shared presentation surface for the optional CodersRank section.
 class CodersRankSupportingSectionContent extends StatelessWidget {
   /// Creates the shared CodersRank section content.
@@ -44,20 +46,4 @@ class CodersRankSupportingSectionContent extends StatelessWidget {
       return const SizedBox.shrink();
     }
   }
-}
-
-class _CodersRankPanel extends StatelessWidget {
-  const _CodersRankPanel({
-    required this.cardKey,
-    required this.child,
-  });
-
-  final Key cardKey;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => ContentCard(
-    key: cardKey,
-    child: child,
-  );
 }
