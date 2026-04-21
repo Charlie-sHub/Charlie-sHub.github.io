@@ -1,11 +1,10 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
-import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
 import 'package:charlie_shub_portfolio/presentation/content/courses/widgets/course_entry_detail.dart';
 import 'package:charlie_shub_portfolio/presentation/content/courses/widgets/course_selector_label.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/content/section_state_builders.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
@@ -27,62 +26,28 @@ class CoursesSection extends StatelessWidget {
         text: 'Courses',
         icon: Icons.school_outlined,
       ),
-      children: _buildSectionChildren(state),
-    ),
-  );
-
-  List<Widget> _buildSectionChildren(
-    ContentState state,
-  ) => state.coursesOption.fold(
-    () => <Widget>[
-      SectionSupportingText(
-        text: state.status == ContentStatus.failure
-            ? 'Courses could not be requested because content loading '
-                  'was interrupted.'
-            : 'Loading course content...',
-      ),
-    ],
-    (sectionLoad) => sectionLoad.fold(
-      (failure) => <Widget>[
-        AppFailureCard(
-          failure: failure,
-          title: 'Courses section unavailable',
-        ),
-      ],
-      (items) {
-        if (items.isEmpty) {
-          return const <Widget>[
-            SectionSupportingText(
-              text: 'No course entries are available yet.',
-            ),
-          ];
-        } else {
-          return <Widget>[
-            EntrySelectorPanel<SectionItemLoad<Course>>(
-              entries: items,
-              initialSelectedIndex: _preferredSelectedIndex(items),
-              labelBuilder: (context, item, {required isSelected}) =>
-                  CourseSelectorLabel(
-                    item: item,
-                    isSelected: isSelected,
-                  ),
-              detailBuilder: (context, item) => CourseEntryDetail(
+      children: buildSelectorSectionChildren(
+        overallStatus: state.status,
+        sectionOption: state.coursesOption,
+        loadingMessage: 'Loading course content...',
+        interruptedLoadingMessage:
+            'Courses could not be requested because content loading was '
+            'interrupted.',
+        unavailableTitle: 'Courses section unavailable',
+        emptyMessage: 'No course entries are available yet.',
+        selectorBuilder: (items) => EntrySelectorPanel<SectionItemLoad<Course>>(
+          entries: items,
+          initialSelectedIndex: preferredSuccessfulSectionItemIndex(items),
+          labelBuilder: (context, item, {required isSelected}) =>
+              CourseSelectorLabel(
                 item: item,
+                isSelected: isSelected,
               ),
-            ),
-          ];
-        }
-      },
+          detailBuilder: (context, item) => CourseEntryDetail(
+            item: item,
+          ),
+        ),
+      ),
     ),
   );
-
-  int _preferredSelectedIndex(List<SectionItemLoad<Course>> items) {
-    final successfulIndex = items.indexWhere((item) => item.isRight());
-
-    if (successfulIndex == -1) {
-      return 0;
-    }
-
-    return successfulIndex;
-  }
 }

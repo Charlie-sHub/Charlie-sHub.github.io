@@ -7,6 +7,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/title.dart';
@@ -44,6 +45,7 @@ void main() {
               LinkReference(
                 label: SingleLineText('Portfolio'),
                 url: UrlValue('https://example.com/portfolio'),
+                kind: LinkReferenceKind.portfolio,
               ),
             ],
           );

@@ -51,6 +51,7 @@ class CertificationCard extends StatelessWidget {
     ];
 
     return EntityDisclosureCard(
+      entityLabel: 'certification',
       preview: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

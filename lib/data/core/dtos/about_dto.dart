@@ -4,6 +4,7 @@
 
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -40,6 +41,9 @@ abstract class AboutDto with _$AboutDto {
     professionalSummaryShort: content.professionalSummaryShort == null
         ? null
         : NonEmptyText(content.professionalSummaryShort!),
+    profileImagePath: content.profileImagePath == null
+        ? null
+        : AssetPath(content.profileImagePath!),
     whoIAmProfessionally: NonEmptyText(content.whoIAmProfessionally),
     currentPositioning: NonEmptyText(content.currentPositioning),
     developmentBackground: NonEmptyText(content.developmentBackground),
@@ -100,6 +104,7 @@ abstract class AboutContentJson with _$AboutContentJson {
     required String howIBuildSoftware,
     required String howDevelopmentAndSecurityConnect,
     String? professionalSummaryShort,
+    @JsonKey(name: 'profile_image_path') String? profileImagePath,
   }) = _AboutContentJson;
 
   /// Creates about content fields from raw JSON.

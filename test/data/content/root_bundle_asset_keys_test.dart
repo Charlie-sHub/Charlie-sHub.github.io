@@ -14,6 +14,9 @@ void main() {
           final aboutIndex = await rootBundle.loadString(
             'assets/content/about/index.json',
           );
+          final profileImage = await rootBundle.load(
+            'assets/media/content/about/about_me/profile_summary.png',
+          );
           final projectImage = await rootBundle.load(
             'assets/media/content/projects/world_on/world_on_login.png',
           );
@@ -22,6 +25,7 @@ void main() {
           );
 
           expect(aboutIndex, contains('"file": "about_me.json"'));
+          expect(profileImage.lengthInBytes, greaterThan(0));
           expect(projectImage.lengthInBytes, greaterThan(0));
           expect(resumePdf.lengthInBytes, greaterThan(0));
         },

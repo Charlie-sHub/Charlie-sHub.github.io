@@ -34,6 +34,10 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
     required T failedValue,
   }) = InvalidUrl<T>;
 
+  const factory ValueFailure.invalidEmailAddress({
+    required T failedValue,
+  }) = InvalidEmailAddress<T>;
+
   const factory ValueFailure.invalidAssetPath({
     required T failedValue,
   }) = InvalidAssetPath<T>;
@@ -74,6 +78,7 @@ sealed class ValueFailure<T> extends Failure with _$ValueFailure<T> {
     InvalidSlug() =>
       'Slug must use snake_case with lowercase letters and numbers only.',
     InvalidUrl() => 'URL must be a valid absolute https URL.',
+    InvalidEmailAddress() => 'Email address must be a valid single-line email.',
     InvalidAssetPath() => 'Asset path must start with assets/media/.',
     InvalidDocumentPath() => 'Document path must start with assets/documents/.',
     InvalidYearMonth() => 'Date must use the YYYY-MM format.',

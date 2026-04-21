@@ -95,6 +95,20 @@ void main() {
       );
 
       test(
+        'describes invalid email addresses clearly',
+        () {
+          const failure = ValueFailure<String>.invalidEmailAddress(
+            failedValue: 'not-an-email',
+          );
+
+          expect(
+            failure.message,
+            'Email address must be a valid single-line email.',
+          );
+        },
+      );
+
+      test(
         'describes invalid resume language proficiency clearly',
         () {
           const failure = ValueFailure<String>.invalidResumeLanguageProficiency(

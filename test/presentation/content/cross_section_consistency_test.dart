@@ -7,6 +7,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/course.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/project.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
@@ -106,6 +107,7 @@ void main() {
               LinkReference(
                 label: SingleLineText('Credential proof'),
                 url: UrlValue('https://example.com/certification'),
+                kind: LinkReferenceKind.credential,
               ),
             ],
           );
@@ -148,8 +150,8 @@ void main() {
             ),
           );
 
-          await tester.ensureVisible(find.text('View details'));
-          await tester.tap(find.text('View details'));
+          await tester.ensureVisible(find.text('View certification details'));
+          await tester.tap(find.text('View certification details'));
           await tester.pump();
           await tester.ensureVisible(find.text('View course details'));
           await tester.tap(find.text('View course details'));

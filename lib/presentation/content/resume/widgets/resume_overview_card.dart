@@ -50,6 +50,7 @@ class ResumeOverviewCard extends StatelessWidget {
         ContentBlock(
           title: 'Contact links',
           child: ContactActionList(
+            directEmailAddress: resume.directEmailAddress,
             links: resume.contactLinks,
             collectionFailure: collectionFailureOrNull(
               resume.contactLinks,

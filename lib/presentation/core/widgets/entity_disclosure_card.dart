@@ -10,11 +10,17 @@ class EntityDisclosureCard extends StatefulWidget {
   const EntityDisclosureCard({
     required this.preview,
     required this.details,
-    this.expandLabel = 'View details',
-    this.collapseLabel = 'Hide details',
+    String? entityLabel,
+    String? expandLabel,
+    String? collapseLabel,
     this.initiallyExpanded = false,
     super.key,
-  });
+  }) : expandLabel =
+           expandLabel ??
+           (entityLabel == null ? 'View details' : 'View $entityLabel details'),
+       collapseLabel =
+           collapseLabel ??
+           (entityLabel == null ? 'Hide details' : 'Hide $entityLabel details');
 
   /// Content always visible on first scan.
   final Widget preview;

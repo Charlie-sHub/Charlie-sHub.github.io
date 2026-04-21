@@ -43,7 +43,8 @@
     "links": [
       {
         "label": "GitHub",
-        "url": "https://github.com/Charlie-sHub/pami"
+        "url": "https://github.com/Charlie-sHub/pami",
+        "kind": "github"
       }
     ],
     "security_and_quality": "Security and privacy are treated as explicit design concerns rather than afterthoughts. The source material calls for:\n\n- Firestore rules that enforce authentication, ownership, schema validation, scoped access, and denial of privilege escalation\n- PII minimization and privacy disclosures\n- secrets never being committed to the repository\n- structured observability without sensitive data\n- minimal analytics that avoid PII\n- anti-replay protection for QR verification when Cloud Functions are used\n\nThe repository audit also shows functional error handling, environment-aware repository implementations, and CI practices that avoid exposing real secrets. Some release-hardening work still remained at the time of the audit, including final production signing and app-ID setup.",

@@ -716,6 +716,13 @@ On wide layouts, a profile or about summary widget may sit near the top-left of 
 
 That sticky profile widget should prioritize direct contact by using email rather than a self-link back to the portfolio site, and the displayed name should be larger than the current implementation.
 
+The compact profile-summary contract should stay explicit rather than relying on hidden widget heuristics:
+- `about.professional_summary_short` remains the preferred short summary source
+- optional `about.profile_image_path` may define the profile image shown in that summary surface
+- optional `resume.direct_email_address` defines the direct email CTA used in shared contact blocks
+- external links may include an optional `kind` hint when icon treatment or contact-link curation matters; links marked `portfolio` may be omitted from direct-contact groups so those groups stay focused on contact rather than a self-link
+- when a link does not declare a `kind`, it should use neutral external-link treatment rather than label- or URL-based guessing
+
 On smaller screens, that summary should fall back to a normal top block rather than a sticky side treatment.
 
 Compact metadata-like subsections such as language items should prefer a horizontal row when layout allows, with a simple stacked fallback on smaller screens.

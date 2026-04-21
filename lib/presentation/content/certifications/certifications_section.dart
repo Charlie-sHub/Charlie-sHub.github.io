@@ -1,11 +1,10 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
-import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/presentation/content/certifications/widgets/certification_entry_detail.dart';
 import 'package:charlie_shub_portfolio/presentation/content/certifications/widgets/certification_selector_label.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/content/section_state_builders.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/entry_selector_panel.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
@@ -27,40 +26,19 @@ class CertificationsSection extends StatelessWidget {
         text: 'Certifications',
         icon: Icons.verified_outlined,
       ),
-      children: _buildSectionChildren(state),
-    ),
-  );
-
-  List<Widget> _buildSectionChildren(
-    ContentState state,
-  ) => state.certificationsOption.fold(
-    () => <Widget>[
-      SectionSupportingText(
-        text: state.status == ContentStatus.failure
-            ? 'Certifications could not be requested because content '
-                  'loading was interrupted.'
-            : 'Loading certification content...',
-      ),
-    ],
-    (sectionLoad) => sectionLoad.fold(
-      (failure) => <Widget>[
-        AppFailureCard(
-          failure: failure,
-          title: 'Certifications section unavailable',
-        ),
-      ],
-      (items) {
-        if (items.isEmpty) {
-          return const <Widget>[
-            SectionSupportingText(
-              text: 'No certification entries are available yet.',
-            ),
-          ];
-        } else {
-          return <Widget>[
+      children: buildSelectorSectionChildren(
+        overallStatus: state.status,
+        sectionOption: state.certificationsOption,
+        loadingMessage: 'Loading certification content...',
+        interruptedLoadingMessage:
+            'Certifications could not be requested because content loading '
+            'was interrupted.',
+        unavailableTitle: 'Certifications section unavailable',
+        emptyMessage: 'No certification entries are available yet.',
+        selectorBuilder: (items) =>
             EntrySelectorPanel<SectionItemLoad<Certification>>(
               entries: items,
-              initialSelectedIndex: _preferredSelectedIndex(items),
+              initialSelectedIndex: preferredSuccessfulSectionItemIndex(items),
               labelBuilder: (context, item, {required isSelected}) =>
                   CertificationSelectorLabel(
                     item: item,
@@ -70,19 +48,7 @@ class CertificationsSection extends StatelessWidget {
                 item: item,
               ),
             ),
-          ];
-        }
-      },
+      ),
     ),
   );
-
-  int _preferredSelectedIndex(List<SectionItemLoad<Certification>> items) {
-    final successfulIndex = items.indexWhere((item) => item.isRight());
-
-    if (successfulIndex == -1) {
-      return 0;
-    }
-
-    return successfulIndex;
-  }
 }

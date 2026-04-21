@@ -8,15 +8,18 @@
     "name": "Carlos Mendez",
     "location": "Bilbao, Spain",
     "summary": "Flutter software developer with 5+ years of experience building cross-platform applications for mobile and web. Strong in structured planning, clean implementation, automated testing, and building maintainable systems from the ground up. Recently added formal cybersecurity training and certifications, and now targeting roles where software development and security reinforce each other.",
+    "direct_email_address": "carlosrafael-mg@hotmail.com",
     "resumePdfPath": "assets/documents/resume/carlos_mendez_dev.pdf",
     "contact_links": [
       {
         "label": "LinkedIn",
-        "url": "https://linkedin.com/in/carlos-mendez-gonzalez"
+        "url": "https://linkedin.com/in/carlos-mendez-gonzalez",
+        "kind": "linkedin"
       },
       {
         "label": "GitHub",
-        "url": "https://github.com/Charlie-sHub"
+        "url": "https://github.com/Charlie-sHub",
+        "kind": "github"
       }
     ],
     "core_skills": [

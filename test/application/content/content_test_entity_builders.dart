@@ -14,8 +14,10 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_experience_it
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/email_address.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -51,6 +53,9 @@ About buildAbout() => About(
   howDevelopmentAndSecurityConnect: NonEmptyText(
     'Security is part of implementation quality.',
   ),
+  profileImagePath: AssetPath(
+    'assets/media/content/about/about_me/profile_summary.png',
+  ),
 );
 
 About buildInvalidAbout() => About(
@@ -81,6 +86,9 @@ About buildInvalidAbout() => About(
   howDevelopmentAndSecurityConnect: NonEmptyText(
     'Security is part of implementation quality.',
   ),
+  profileImagePath: AssetPath(
+    'assets/media/content/about/about_me/profile_summary.png',
+  ),
 );
 
 Project buildProject() => Project(
@@ -106,6 +114,7 @@ Project buildProject() => Project(
     LinkReference(
       label: SingleLineText('Repository'),
       url: UrlValue('https://example.com/project'),
+      kind: LinkReferenceKind.repository,
     ),
   ],
 );
@@ -187,10 +196,12 @@ Resume buildResume() => Resume(
   name: SingleLineText('Carlos Mendez'),
   location: SingleLineText('Madrid, Spain'),
   summary: NonEmptyText('Software engineer with structured delivery habits.'),
+  directEmailAddress: EmailAddress('carlosrafael-mg@hotmail.com'),
   contactLinks: <LinkReference>[
     LinkReference(
       label: SingleLineText('LinkedIn'),
       url: UrlValue('https://example.com/linkedin'),
+      kind: LinkReferenceKind.linkedin,
     ),
   ],
   coreSkills: <ResumeSkillGroup>[

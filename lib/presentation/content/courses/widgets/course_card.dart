@@ -56,8 +56,7 @@ class CourseCard extends StatelessWidget {
     ];
 
     return EntityDisclosureCard(
-      expandLabel: 'View course details',
-      collapseLabel: 'Hide course details',
+      entityLabel: 'course',
       preview: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

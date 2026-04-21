@@ -25,6 +25,10 @@ void main() {
             professionalSummaryShort!.getOrCrash(),
             contains('Flutter developer with 5+ years'),
           );
+          expect(
+            about.profileImagePath?.getOrCrash(),
+            'assets/media/content/about/about_me/profile_summary.png',
+          );
           expect(about.selectedSkillsAndTools, hasLength(5));
         },
       );

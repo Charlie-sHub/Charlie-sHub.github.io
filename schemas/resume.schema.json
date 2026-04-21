@@ -34,6 +34,11 @@
       "maxLength": 160,
       "pattern": "^[^\r\n]+$"
     },
+    "email_address_string": {
+      "type": "string",
+      "maxLength": 160,
+      "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
     "long_text": {
       "type": "string",
       "minLength": 1,
@@ -72,6 +77,19 @@
       "required": ["label", "url"],
       "properties": {
         "label": { "$ref": "#/$defs/line_text" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "external",
+            "github",
+            "linkedin",
+            "portfolio",
+            "repository",
+            "documentation",
+            "credential",
+            "resume"
+          ]
+        },
         "url": { "$ref": "#/$defs/url_string" }
       }
     },
@@ -156,6 +174,7 @@
         "name": { "$ref": "#/$defs/line_text" },
         "location": { "$ref": "#/$defs/line_text" },
         "summary": { "$ref": "#/$defs/long_text" },
+        "direct_email_address": { "$ref": "#/$defs/email_address_string" },
         "resumePdfPath": { "$ref": "#/$defs/nullable_document_asset_path" },
         "contact_links": {
           "type": "array",

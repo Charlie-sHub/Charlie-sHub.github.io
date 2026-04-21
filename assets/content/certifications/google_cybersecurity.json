@@ -42,7 +42,8 @@
     "proof": [
       {
         "label": "Credly badge: Google Cybersecurity Professional Certificate",
-        "url": "https://www.credly.com/badges/312c559d-f01f-4475-be32-25015a9c1936"
+        "url": "https://www.credly.com/badges/312c559d-f01f-4475-be32-25015a9c1936",
+        "kind": "credential"
       }
     ]
   }

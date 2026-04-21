@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
@@ -314,6 +315,7 @@ void main() {
                 linkReference: LinkReference(
                   label: SingleLineText('Repository'),
                   url: UrlValue('https://example.com/project'),
+                  kind: LinkReferenceKind.repository,
                 ),
                 onTap: () => tapped = true,
               ),
@@ -326,6 +328,45 @@ void main() {
           expect(find.text('Repository'), findsOneWidget);
           expect(find.text('https://example.com/project'), findsNothing);
           expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'uses explicit link semantics instead of inferring the icon',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedLinkButton(
+                linkReference: LinkReference(
+                  label: SingleLineText('Profile'),
+                  url: UrlValue('https://example.com/profile'),
+                  kind: LinkReferenceKind.linkedin,
+                ),
+              ),
+            ),
+          );
+
+          expect(find.byIcon(Icons.badge_outlined), findsOneWidget);
+          expect(find.byIcon(Icons.link_rounded), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'falls back to the neutral external-link icon when no kind is set',
+        (tester) async {
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedLinkButton(
+                linkReference: LinkReference(
+                  label: SingleLineText('Profile'),
+                  url: UrlValue('https://example.com/profile'),
+                ),
+              ),
+            ),
+          );
+
+          expect(find.byIcon(Icons.link_rounded), findsOneWidget);
+          expect(find.byIcon(Icons.badge_outlined), findsNothing);
         },
       );
 
@@ -603,10 +644,12 @@ void main() {
                   LinkReference(
                     label: SingleLineText('Repository'),
                     url: UrlValue('https://example.com/project'),
+                    kind: LinkReferenceKind.repository,
                   ),
                   LinkReference(
                     label: SingleLineText('Documentation'),
                     url: UrlValue('https://example.com/docs'),
+                    kind: LinkReferenceKind.documentation,
                   ),
                 ],
                 onLinkTap: (link) {
@@ -638,6 +681,7 @@ void main() {
                   LinkReference(
                     label: SingleLineText('Repository'),
                     url: UrlValue('https://example.com/project'),
+                    kind: LinkReferenceKind.repository,
                   ),
                 ],
               ),

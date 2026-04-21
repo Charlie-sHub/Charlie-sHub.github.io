@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/data/core/dtos/resume_dto.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -29,8 +30,19 @@ void main() {
             'Media Mechanics',
           );
           expect(
+            resume.directEmailAddress?.getOrCrash(),
+            'carlosrafael-mg@hotmail.com',
+          );
+          expect(
             resume.contactLinks.map((link) => link.label.getOrCrash()).toList(),
             <String>['LinkedIn', 'GitHub'],
+          );
+          expect(
+            resume.contactLinks.map((link) => link.kind).toList(),
+            <LinkReferenceKind>[
+              LinkReferenceKind.linkedin,
+              LinkReferenceKind.github,
+            ],
           );
         },
       );
@@ -45,6 +57,21 @@ void main() {
             () => ResumeDto.fromJson(json),
             throwsA(isA<CheckedFromJsonException>()),
           );
+        },
+      );
+
+      test(
+        'maps an invalid direct email address into an invalid domain object',
+        () {
+          final json = loadJsonFixture('assets/content/resume/resume.json');
+          final content = json['content'] as Map<String, dynamic>;
+          content['direct_email_address'] = 'not-an-email';
+
+          final dto = ResumeDto.fromJson(json);
+          final resume = dto.toDomain();
+
+          expect(resume.isValid, isFalse);
+          expect(resume.failureOption.isSome(), isTrue);
         },
       );
 

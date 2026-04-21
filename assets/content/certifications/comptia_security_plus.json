@@ -39,7 +39,8 @@
     "proof": [
       {
         "label": "Credly badge: CompTIA Security+",
-        "url": "https://www.credly.com/badges/650cf195-1bfb-4dca-b5a6-a6b7058d9d43"
+        "url": "https://www.credly.com/badges/650cf195-1bfb-4dca-b5a6-a6b7058d9d43",
+        "kind": "credential"
       }
     ]
   }

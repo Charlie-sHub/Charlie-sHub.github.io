@@ -3,6 +3,7 @@ import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
@@ -10,12 +11,12 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_style
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/contact_action_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const _profileSummaryImageAsset = 'assets/media/notion_icon.png';
 const _profileSummaryImageKey = ValueKey<String>('profile-summary-image');
 const _profileSummaryInnerCardKey = ValueKey<String>(
   'profile-summary-inner-card',
@@ -96,8 +97,10 @@ class _ProfileSummaryContentCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.size12),
-                    const _ProfileSummaryImage(),
+                    if (_profileImagePath != null) ...[
+                      const SizedBox(width: AppSpacing.size12),
+                      _ProfileSummaryImage(path: _profileImagePath!),
+                    ],
                   ],
                 ),
                 ValidatedText(
@@ -111,6 +114,7 @@ class _ProfileSummaryContentCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.size16),
           ContactActionList(
+            directEmailAddress: resume.directEmailAddress,
             links: resume.contactLinks,
           ),
         ],
@@ -120,6 +124,8 @@ class _ProfileSummaryContentCard extends StatelessWidget {
 
   NonEmptyText get _summaryField =>
       about?.professionalSummaryShort ?? resume.summary;
+
+  AssetPath? get _profileImagePath => about?.profileImagePath;
 }
 
 class _ProfileSummaryStatusCard extends StatelessWidget {
@@ -144,15 +150,28 @@ class _ProfileSummaryStatusCard extends StatelessWidget {
 }
 
 class _ProfileSummaryImage extends StatelessWidget {
-  const _ProfileSummaryImage();
+  const _ProfileSummaryImage({
+    required this.path,
+  });
+
+  final AssetPath path;
 
   @override
-  Widget build(BuildContext context) => SizedBox.square(
-    key: _profileSummaryImageKey,
-    dimension: AppLayout.homeProfileSummaryImageSize,
-    child: Image.asset(
-      _profileSummaryImageAsset,
-      fit: BoxFit.cover,
+  Widget build(BuildContext context) => path.value.fold(
+    (failure) => SizedBox.square(
+      key: _profileSummaryImageKey,
+      dimension: AppLayout.homeProfileSummaryImageSize,
+      child: FieldFailureWidget(
+        failure: failure,
+      ),
+    ),
+    (value) => SizedBox.square(
+      key: _profileSummaryImageKey,
+      dimension: AppLayout.homeProfileSummaryImageSize,
+      child: Image.asset(
+        value,
+        fit: BoxFit.cover,
+      ),
     ),
   );
 }

@@ -77,6 +77,19 @@
       "required": ["label", "url"],
       "properties": {
         "label": { "$ref": "#/$defs/line_text" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "external",
+            "github",
+            "linkedin",
+            "portfolio",
+            "repository",
+            "documentation",
+            "credential",
+            "resume"
+          ]
+        },
         "url": { "$ref": "#/$defs/url_string" }
       }
     }

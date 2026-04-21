@@ -25,8 +25,7 @@ class CaseStudyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => EntityDisclosureCard(
-    expandLabel: 'View case study details',
-    collapseLabel: 'Hide case study details',
+    entityLabel: 'case study',
     preview: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -3,6 +3,7 @@
 // ignore_for_file: sort_unnamed_constructors_first
 
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,6 +23,7 @@ abstract class LinkReferenceDto with _$LinkReferenceDto {
   const factory LinkReferenceDto({
     required String label,
     required String url,
+    String? kind,
   }) = _LinkReferenceDto;
 
   /// Creates a link reference DTO from raw JSON.
@@ -32,5 +34,6 @@ abstract class LinkReferenceDto with _$LinkReferenceDto {
   LinkReference toDomain() => LinkReference(
     label: SingleLineText(label),
     url: UrlValue(url),
+    kind: LinkReferenceKind.fromString(kind),
   );
 }

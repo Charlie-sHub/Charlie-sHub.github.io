@@ -1,13 +1,13 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/email_address.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_button_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/field_failure_widget.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/link_button.dart';
 import 'package:flutter/material.dart';
-
-const _directEmailAddress = 'carlosrafael-mg@hotmail.com';
 
 /// Shared layout arrangements for contact action groups.
 enum ContactActionLayout {
@@ -32,6 +32,7 @@ class ContactActionList extends StatelessWidget {
   /// Creates a contact action list.
   const ContactActionList({
     required this.links,
+    this.directEmailAddress,
     this.collectionFailure,
     this.size = ContactActionSize.compact,
     this.layout = ContactActionLayout.stacked,
@@ -40,6 +41,9 @@ class ContactActionList extends StatelessWidget {
 
   /// Structured contact links sourced from the resume content.
   final List<LinkReference> links;
+
+  /// Direct email CTA sourced from the resume content.
+  final EmailAddress? directEmailAddress;
 
   /// The collection-level validation failure to render, if any.
   final ValueFailure<dynamic>? collectionFailure;
@@ -59,14 +63,17 @@ class ContactActionList extends StatelessWidget {
     }
 
     final visibleLinks = links.where(_shouldKeepContactLink).toList();
-    final actions = <Widget>[
-      LinkButton(
-        label: 'Email',
-        url: 'mailto:$_directEmailAddress',
-        icon: Icons.mail_outline_rounded,
-        size: _resolvedButtonSize,
-      ),
-    ];
+    final actions = <Widget>[];
+
+    final emailAddress = directEmailAddress;
+    if (emailAddress != null) {
+      actions.add(
+        ValidatedEmailLinkButton(
+          emailAddress: emailAddress,
+          size: _resolvedButtonSize,
+        ),
+      );
+    }
 
     for (final link in visibleLinks) {
       actions.add(
@@ -103,10 +110,8 @@ class ContactActionList extends StatelessWidget {
     return _buildStackedActions(actions);
   }
 
-  bool _shouldKeepContactLink(LinkReference link) => link.label.value.fold(
-    (_) => true,
-    (label) => label.toLowerCase() != 'portfolio',
-  );
+  bool _shouldKeepContactLink(LinkReference link) =>
+      link.kind != LinkReferenceKind.portfolio;
 
   LinkButtonSize get _resolvedButtonSize => switch (size) {
     ContactActionSize.compact => LinkButtonSize.compact,

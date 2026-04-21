@@ -2,6 +2,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/about_skill_group.da
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -28,6 +29,7 @@ abstract class About with _$About {
     required NonEmptyText howIBuildSoftware,
     required NonEmptyText howDevelopmentAndSecurityConnect,
     NonEmptyText? professionalSummaryShort,
+    AssetPath? profileImagePath,
   }) = _About;
   const About._();
 
@@ -38,6 +40,7 @@ abstract class About with _$About {
         sourcePath.failureOrNull,
         title.failureOrNull,
         professionalSummaryShort?.failureOrNull,
+        profileImagePath?.failureOrNull,
         whoIAmProfessionally.failureOrNull,
         currentPositioning.failureOrNull,
         developmentBackground.failureOrNull,

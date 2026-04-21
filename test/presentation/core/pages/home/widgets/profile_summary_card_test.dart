@@ -1,6 +1,7 @@
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
 import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
@@ -30,6 +31,7 @@ void main() {
               LinkReference(
                 label: SingleLineText('Portfolio'),
                 url: UrlValue('https://charlie-shub.github.io'),
+                kind: LinkReferenceKind.portfolio,
               ),
             ],
           );
@@ -39,6 +41,7 @@ void main() {
             child: const ProfileSummaryCard(),
             state: ContentState.initial().copyWith(
               status: ContentStatus.loaded,
+              aboutOption: some(right(buildAbout())),
               resumeOption: some(right(resume)),
             ),
           );
@@ -73,6 +76,7 @@ void main() {
             child: const ProfileSummaryCard(),
             state: ContentState.initial().copyWith(
               status: ContentStatus.loaded,
+              aboutOption: some(right(buildAbout())),
               resumeOption: some(right(buildResume())),
             ),
             width: 320,
@@ -98,10 +102,12 @@ void main() {
               LinkReference(
                 label: SingleLineText('LinkedIn'),
                 url: UrlValue('https://example.com/linkedin'),
+                kind: LinkReferenceKind.linkedin,
               ),
               LinkReference(
                 label: SingleLineText('GitHub'),
                 url: UrlValue('https://example.com/github'),
+                kind: LinkReferenceKind.github,
               ),
             ],
           );
@@ -111,6 +117,7 @@ void main() {
             child: const ProfileSummaryCard(),
             state: ContentState.initial().copyWith(
               status: ContentStatus.loaded,
+              aboutOption: some(right(buildAbout())),
               resumeOption: some(right(resume)),
             ),
             width: 320,
@@ -139,10 +146,12 @@ void main() {
               LinkReference(
                 label: SingleLineText('LinkedIn'),
                 url: UrlValue('https://example.com/linkedin'),
+                kind: LinkReferenceKind.linkedin,
               ),
               LinkReference(
                 label: SingleLineText('GitHub'),
                 url: UrlValue('https://example.com/github'),
+                kind: LinkReferenceKind.github,
               ),
             ],
           );
@@ -152,6 +161,7 @@ void main() {
             child: const ProfileSummaryCard(),
             state: ContentState.initial().copyWith(
               status: ContentStatus.loaded,
+              aboutOption: some(right(buildAbout())),
               resumeOption: some(right(resume)),
             ),
             width: 320,
@@ -259,6 +269,52 @@ void main() {
             find.text('Resume summary fallback for the sticky profile card.'),
             findsOneWidget,
           );
+        },
+      );
+
+      testWidgets(
+        'omits the profile image when the about content does not define one',
+        (tester) async {
+          final about = buildAbout().copyWith(
+            profileImagePath: null,
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProfileSummaryCard(),
+            state: ContentState.initial().copyWith(
+              status: ContentStatus.loaded,
+              aboutOption: some(right(about)),
+              resumeOption: some(right(buildResume())),
+            ),
+          );
+
+          expect(
+            find.byKey(const ValueKey<String>('profile-summary-image')),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'omits the email action when the resume does not define one',
+        (tester) async {
+          final resume = buildResume().copyWith(
+            directEmailAddress: null,
+          );
+
+          await pumpWithContentState(
+            tester,
+            child: const ProfileSummaryCard(),
+            state: ContentState.initial().copyWith(
+              status: ContentStatus.loaded,
+              aboutOption: some(right(buildAbout())),
+              resumeOption: some(right(resume)),
+            ),
+          );
+
+          expect(find.text('Email'), findsNothing);
+          expect(find.text('LinkedIn'), findsOneWidget);
         },
       );
     },

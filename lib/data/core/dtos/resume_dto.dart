@@ -11,6 +11,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_language_item
 import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/language_proficiency.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/email_address.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -47,6 +48,9 @@ abstract class ResumeDto with _$ResumeDto {
     name: SingleLineText(content.name),
     location: SingleLineText(content.location),
     summary: NonEmptyText(content.summary),
+    directEmailAddress: content.directEmailAddress == null
+        ? null
+        : EmailAddress(content.directEmailAddress!),
     resumePdfPath: content.resumePdfPath == null
         ? null
         : DocumentPath(content.resumePdfPath!),
@@ -105,6 +109,7 @@ abstract class ResumeContentJson with _$ResumeContentJson {
     required String location,
     required String summary,
     @JsonKey(name: 'resumePdfPath') String? resumePdfPath,
+    String? directEmailAddress,
     required List<LinkReferenceDto> contactLinks,
     required List<ResumeSkillGroupDto> coreSkills,
     required List<ResumeExperienceItemDto> professionalExperience,

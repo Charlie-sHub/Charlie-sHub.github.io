@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
+import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/url_value.dart';
 import 'package:dartz/dartz.dart';
@@ -14,6 +15,7 @@ abstract class LinkReference with _$LinkReference {
   const factory LinkReference({
     required SingleLineText label,
     required UrlValue url,
+    @Default(LinkReferenceKind.external) LinkReferenceKind kind,
   }) = _LinkReference;
   const LinkReference._();
 

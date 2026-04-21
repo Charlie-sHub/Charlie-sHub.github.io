@@ -1,8 +1,7 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
-import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/presentation/content/about/widgets/about_narrative_card.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/app_failure_card.dart';
+import 'package:charlie_shub_portfolio/presentation/content/section_state_builders.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -23,30 +22,18 @@ class AboutSection extends StatelessWidget {
         text: 'About',
         icon: Icons.tune_rounded,
       ),
-      children: _buildSectionChildren(state),
+      children: buildSingleEntrySectionChildren(
+        overallStatus: state.status,
+        sectionOption: state.aboutOption,
+        loadingMessage: 'Loading about content...',
+        interruptedLoadingMessage:
+            'About content could not be requested because content loading '
+            'was interrupted.',
+        unavailableTitle: 'About section unavailable',
+        loadedBuilder: (about) => <Widget>[
+          AboutNarrativeCard(about: about),
+        ],
+      ),
     ),
   );
-
-  List<Widget> _buildSectionChildren(ContentState state) =>
-      state.aboutOption.fold(
-        () => <Widget>[
-          SectionSupportingText(
-            text: state.status == ContentStatus.failure
-                ? 'About content could not be requested because content '
-                      'loading was interrupted.'
-                : 'Loading about content...',
-          ),
-        ],
-        (sectionLoad) => sectionLoad.fold(
-          (failure) => <Widget>[
-            AppFailureCard(
-              failure: failure,
-              title: 'About section unavailable',
-            ),
-          ],
-          (about) => <Widget>[
-            AboutNarrativeCard(about: about),
-          ],
-        ),
-      );
 }

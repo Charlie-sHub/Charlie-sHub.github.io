@@ -38,7 +38,8 @@
     "proof": [
       {
         "label": "Credly badge: ISC2 Certified in Cybersecurity (CC)",
-        "url": "https://www.credly.com/earner/earned/badge/8c089697-9a2f-4f8d-bf25-6ca955972e03"
+        "url": "https://www.credly.com/earner/earned/badge/8c089697-9a2f-4f8d-bf25-6ca955972e03",
+        "kind": "credential"
       }
     ]
   }

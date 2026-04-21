@@ -7,6 +7,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume_skill_group.d
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/content_entry_type.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/document_path.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/email_address.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/non_empty_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/single_line_text.dart';
 import 'package:charlie_shub_portfolio/domain/core/validation/objects/slug.dart';
@@ -30,6 +31,7 @@ abstract class Resume with _$Resume {
     required List<ResumeExperienceItem> professionalExperience,
     required List<ResumeEducationItem> education,
     required List<ResumeLanguageItem> languages,
+    EmailAddress? directEmailAddress,
     DocumentPath? resumePdfPath,
   }) = _Resume;
   const Resume._();
@@ -43,6 +45,7 @@ abstract class Resume with _$Resume {
         location.failureOrNull,
         summary.failureOrNull,
         resumePdfPath?.failureOrNull,
+        directEmailAddress?.failureOrNull,
         collectionFailureOrNull(contactLinks, minLength: 1),
         collectionFailureOrNull(coreSkills, minLength: 1),
         collectionFailureOrNull(professionalExperience, minLength: 1),

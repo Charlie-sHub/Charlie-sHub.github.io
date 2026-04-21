@@ -60,12 +60,12 @@ void main() {
           expect(find.text('CompTIA'), findsNWidgets(2));
           expect(find.byType(AssetMediaCard), findsOneWidget);
           expect(find.byType(PdfPreviewTile), findsOneWidget);
-          expect(find.text('View details'), findsOneWidget);
+          expect(find.text('View certification details'), findsOneWidget);
           expect(find.text('Credential proof'), findsNothing);
-          await tester.ensureVisible(find.text('View details'));
-          await tester.tap(find.text('View details'));
+          await tester.ensureVisible(find.text('View certification details'));
+          await tester.tap(find.text('View certification details'));
           await tester.pump();
-          expect(find.text('Hide details'), findsOneWidget);
+          expect(find.text('Hide certification details'), findsOneWidget);
           expect(find.text('Credential proof'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
@@ -125,13 +125,13 @@ void main() {
 
           expect(find.byType(AssetMediaCard), findsNothing);
           expect(find.byType(PdfPreviewTile), findsNothing);
-          expect(find.text('View details'), findsOneWidget);
+          expect(find.text('View certification details'), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
         },
       );
 
       testWidgets(
-        'places View details directly below the PDF preview',
+        'places View certification details directly below the PDF preview',
         (tester) async {
           final certification = buildCertification().copyWith(
             certificatePdfPath: DocumentPath(
@@ -150,7 +150,9 @@ void main() {
           );
 
           final previewRect = tester.getRect(find.byType(PdfPreviewTile));
-          final buttonRect = tester.getRect(find.text('View details'));
+          final buttonRect = tester.getRect(
+            find.text('View certification details'),
+          );
 
           expect(buttonRect.top, greaterThan(previewRect.bottom));
         },
@@ -256,7 +258,7 @@ void main() {
             ),
           );
 
-          await tester.tap(find.text('View details'));
+          await tester.tap(find.text('View certification details'));
           await tester.pump();
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);

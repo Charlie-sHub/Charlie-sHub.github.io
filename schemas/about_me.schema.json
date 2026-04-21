@@ -44,6 +44,17 @@
       "minLength": 1,
       "maxLength": 12000
     },
+    "media_asset_path": {
+      "type": "string",
+      "maxLength": 160,
+      "pattern": "^assets/media/[^\\r\\n]+$"
+    },
+    "nullable_media_asset_path": {
+      "anyOf": [
+        { "$ref": "#/$defs/media_asset_path" },
+        { "type": "null" }
+      ]
+    },
     "meta": {
       "type": "object",
       "additionalProperties": false,
@@ -88,6 +99,9 @@
         "title": { "$ref": "#/$defs/title_text" },
         "professional_summary_short": {
           "$ref": "#/$defs/nullable_short_paragraph_text"
+        },
+        "profile_image_path": {
+          "$ref": "#/$defs/nullable_media_asset_path"
         },
         "who_i_am_professionally": { "$ref": "#/$defs/long_text" },
         "current_positioning": { "$ref": "#/$defs/long_text" },

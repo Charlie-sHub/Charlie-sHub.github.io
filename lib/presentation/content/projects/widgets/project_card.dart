@@ -28,8 +28,7 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => EntityDisclosureCard(
-    expandLabel: 'View project details',
-    collapseLabel: 'Hide project details',
+    entityLabel: 'project',
     preview: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
