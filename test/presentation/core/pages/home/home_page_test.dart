@@ -155,7 +155,7 @@ void main() {
             initialSectionId: 'resume',
           );
 
-          await tester.pumpAndSettle();
+          await tester.pump(const Duration(seconds: 1));
 
           final aboutRect = tester.getRect(find.text('About'));
           final resumeRect = tester.getRect(find.text('Resume'));

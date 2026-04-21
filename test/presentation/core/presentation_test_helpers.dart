@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/application/content/content_cubit.dart';
 import 'package:charlie_shub_portfolio/application/content/content_state.dart';
+import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_load_types.dart';
 import 'package:charlie_shub_portfolio/domain/content/content_repository_interface.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/about.dart';
@@ -11,6 +12,7 @@ import 'package:charlie_shub_portfolio/domain/core/entities/resume.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/app_failure.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_theme.dart';
+import 'package:charlie_shub_portfolio/presentation/core/widgets/content_load_completion_scope.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,9 +48,17 @@ Future<TestContentCubit> pumpWithContentState(
   await tester.pumpWidget(
     BlocProvider<ContentCubit>.value(
       value: cubit,
-      child: buildPresentationTestApp(
-        child,
-        width: width,
+      child: BlocBuilder<ContentCubit, ContentState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (context, currentState) => ContentLoadCompletionScope(
+          isComplete:
+              currentState.status != ContentStatus.initial &&
+              currentState.status != ContentStatus.loading,
+          child: buildPresentationTestApp(
+            child,
+            width: width,
+          ),
+        ),
       ),
     ),
   );

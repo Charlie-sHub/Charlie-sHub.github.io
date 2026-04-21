@@ -1,3 +1,5 @@
+import 'package:charlie_shub_portfolio/application/content/content_state.dart';
+import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
@@ -23,6 +25,7 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.d
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
     show
         Column,
@@ -32,7 +35,9 @@ import 'package:flutter/material.dart'
         Icons,
         SizedBox,
         TextButton,
+        ValueKey,
         WidgetState;
+import 'package:flutter/widgets.dart' show HtmlElementView;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../presentation_test_helpers.dart';
@@ -579,7 +584,8 @@ void main() {
     'ValidatedPdfPreviewTile',
     () {
       testWidgets(
-        'renders a PDF preview tile and triggers the tap callback',
+        'renders a PDF preview tile, shows a loading state first, '
+        'and triggers the tap callback',
         (tester) async {
           var tapped = false;
 
@@ -593,16 +599,24 @@ void main() {
             ),
           );
 
+          expect(
+            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
+            findsOneWidget,
+          );
+          expect(find.text('Loading preview...'), findsOneWidget);
+
+          await tester.pump();
+
           expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(find.text('Resume PDF'), findsOneWidget);
           expect(find.text('resume.pdf'), findsOneWidget);
           expect(find.text('Open PDF'), findsOneWidget);
-          expect(find.text('PDF preview'), findsOneWidget);
           expect(find.byIcon(Icons.open_in_new), findsOneWidget);
           expect(
             tester.getSize(find.byType(PdfPreviewFrame)).height,
             AppLayout.pdfPreviewHeight,
           );
+          _expectResolvedPdfPreviewSurface();
 
           await tester.tap(find.text('Resume PDF'));
           await tester.pump();
@@ -625,6 +639,47 @@ void main() {
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.byType(PdfPreviewTile), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'defers preview initialization until main content loading completes',
+        (tester) async {
+          final initialState = ContentState.initial().copyWith(
+            status: ContentStatus.loading,
+          );
+
+          final cubit = await pumpWithContentState(
+            tester,
+            child: ValidatedPdfPreviewTile(
+              path: DocumentPath('assets/documents/resume/resume.pdf'),
+              title: 'Resume PDF',
+            ),
+            state: initialState,
+          );
+
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
+          expect(
+            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
+            findsOneWidget,
+          );
+          expect(find.text('Loading preview...'), findsOneWidget);
+
+          cubit.emitState(
+            initialState.copyWith(
+              status: ContentStatus.loaded,
+            ),
+          );
+          await tester.pump();
+
+          expect(
+            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
+            findsOneWidget,
+          );
+
+          await tester.pump();
+
+          _expectResolvedPdfPreviewSurface();
         },
       );
     },
@@ -871,3 +926,11 @@ void main() {
 }
 
 String _heroLabelBuilder(String value) => 'Project media available: $value';
+
+void _expectResolvedPdfPreviewSurface() {
+  if (kIsWeb) {
+    expect(find.byType(HtmlElementView), findsOneWidget);
+  } else {
+    expect(find.text('PDF preview'), findsOneWidget);
+  }
+}

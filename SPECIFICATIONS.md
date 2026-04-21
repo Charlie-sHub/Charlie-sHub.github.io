@@ -526,6 +526,7 @@ Preferred direction:
 - link and download tiles should favor human-readable labels rather than raw URLs as the primary visible affordance
 - PDF-backed assets may show a small in-page preview, while full viewing or downloading should open in a new tab
 - PDF previews should frame the full first page, even at small display sizes, rather than showing only a cropped subsection
+- PDF previews should behave as post-load supporting enhancements rather than first-paint requirements, with a restrained loading state while the preview surface initializes
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity and used to support hierarchy and orientation rather than decoration
 

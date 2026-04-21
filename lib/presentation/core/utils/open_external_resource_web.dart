@@ -4,7 +4,13 @@
 
 import 'dart:html' as html;
 
+import 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource_config.dart';
+
 /// Opens the provided resource in a new browser tab on Flutter Web.
 void openExternalResource(String url) {
-  html.window.open(url, '_blank', 'noopener,noreferrer');
+  html.window.open(
+    url,
+    externalResourceWindowTarget,
+    externalResourceWindowFeatures,
+  );
 }

@@ -19,6 +19,9 @@ class _CodersRankSupportingSectionWebState
   final List<StreamSubscription<html.Event>> _subscriptions =
       <StreamSubscription<html.Event>>[];
 
+  Completer<bool>? _registrationCompleter;
+  Timer? _registrationPollTimer;
+  Timer? _registrationTimeoutTimer;
   Timer? _renderPollTimer;
   Timer? _renderTimeoutTimer;
   _CodersRankRenderStatus _status = _CodersRankRenderStatus.checking;
@@ -48,6 +51,7 @@ class _CodersRankSupportingSectionWebState
   @override
   void dispose() {
     widget.shouldPrepare.removeListener(_handlePreparationSignalChanged);
+    _cancelRegistrationWait();
     _cancelReadinessTracking();
     _rankHandle.host.remove();
     super.dispose();
@@ -106,10 +110,13 @@ class _CodersRankSupportingSectionWebState
       );
       _listenForWidgetLifecycle(_rankHandle);
       _renderPollTimer = Timer.periodic(
-        _registrationPollInterval,
+        CodersRankSupportingSectionConfig.registrationPollInterval,
         (_) => _checkRenderHeuristics(),
       );
-      _renderTimeoutTimer = Timer(_renderTimeout, _handleRenderTimeout);
+      _renderTimeoutTimer = Timer(
+        CodersRankSupportingSectionConfig.renderTimeout,
+        _handleRenderTimeout,
+      );
       _checkRenderHeuristics();
     } else {
       _hideSection();
@@ -128,9 +135,12 @@ class _CodersRankSupportingSectionWebState
   _CodersRankEmbedHandle _createRankHandle() {
     final isCompact = _isCompactViewport();
     final host = _createHostElement();
-    final element = html.document.createElement('codersrank-summary')
-      ..setAttribute('username', _codersRankUsername)
-      ..setAttribute('show-header', 'false');
+    final element =
+        html.document.createElement(
+            CodersRankSupportingSectionConfig.summaryTagName,
+          )
+          ..setAttribute('username', CodersRankSupportingSectionConfig.username)
+          ..setAttribute('show-header', 'false');
 
     _applyCssVariables(
       element,
@@ -153,7 +163,9 @@ class _CodersRankSupportingSectionWebState
   }
 
   bool _ensureWidgetScriptRequested() {
-    if (_customElementIsRegistered('codersrank-summary')) {
+    if (_customElementIsRegistered(
+      CodersRankSupportingSectionConfig.summaryTagName,
+    )) {
       return true;
     }
 
@@ -162,10 +174,13 @@ class _CodersRankSupportingSectionWebState
       return false;
     }
 
-    if (html.document.getElementById(_codersRankSummaryScriptId) == null) {
+    if (html.document.getElementById(
+          CodersRankSupportingSectionConfig.summaryScriptId,
+        ) ==
+        null) {
       final script = html.ScriptElement()
-        ..id = _codersRankSummaryScriptId
-        ..src = _codersRankSummaryScriptUrl
+        ..id = CodersRankSupportingSectionConfig.summaryScriptId
+        ..src = CodersRankSupportingSectionConfig.summaryScriptUrl
         ..defer = true;
 
       head.append(script);
@@ -270,7 +285,9 @@ class _CodersRankSupportingSectionWebState
 
   void _cancelReadinessTracking() {
     _renderPollTimer?.cancel();
+    _renderPollTimer = null;
     _renderTimeoutTimer?.cancel();
+    _renderTimeoutTimer = null;
 
     for (final subscription in _subscriptions) {
       unawaited(subscription.cancel());
@@ -326,15 +343,81 @@ class _CodersRankSupportingSectionWebState
   }
 
   Future<bool> _waitForWidgetRegistration() async {
-    final deadline = DateTime.now().add(_registrationTimeout);
-    var widgetRegistered = _customElementIsRegistered('codersrank-summary');
+    final isRegistered = _customElementIsRegistered(
+      CodersRankSupportingSectionConfig.summaryTagName,
+    );
 
-    while (!widgetRegistered && DateTime.now().isBefore(deadline)) {
-      await Future<void>.delayed(_registrationPollInterval);
-      widgetRegistered = _customElementIsRegistered('codersrank-summary');
+    if (isRegistered) {
+      return true;
     }
 
-    return widgetRegistered;
+    final existingCompleter = _registrationCompleter;
+    if (existingCompleter != null) {
+      return existingCompleter.future;
+    }
+
+    final completer = Completer<bool>();
+    _registrationCompleter = completer;
+
+    void complete({
+      required bool didRegister,
+    }) {
+      if (completer.isCompleted) {
+        return;
+      }
+
+      _registrationPollTimer?.cancel();
+      _registrationPollTimer = null;
+      _registrationTimeoutTimer?.cancel();
+      _registrationTimeoutTimer = null;
+      _registrationCompleter = null;
+      completer.complete(didRegister);
+    }
+
+    void checkRegistration() {
+      if (!mounted) {
+        complete(didRegister: false);
+
+        return;
+      }
+
+      if (_customElementIsRegistered(
+        CodersRankSupportingSectionConfig.summaryTagName,
+      )) {
+        complete(didRegister: true);
+      }
+    }
+
+    _registrationPollTimer = Timer.periodic(
+      CodersRankSupportingSectionConfig.registrationPollInterval,
+      (_) => checkRegistration(),
+    );
+    _registrationTimeoutTimer = Timer(
+      CodersRankSupportingSectionConfig.registrationTimeout,
+      () => complete(
+        didRegister: _customElementIsRegistered(
+          CodersRankSupportingSectionConfig.summaryTagName,
+        ),
+      ),
+    );
+
+    checkRegistration();
+
+    return completer.future;
+  }
+
+  void _cancelRegistrationWait() {
+    _registrationPollTimer?.cancel();
+    _registrationPollTimer = null;
+    _registrationTimeoutTimer?.cancel();
+    _registrationTimeoutTimer = null;
+
+    final completer = _registrationCompleter;
+    _registrationCompleter = null;
+
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(false);
+    }
   }
 
   void _applyCssVariables(
