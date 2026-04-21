@@ -14,6 +14,7 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_motion.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/ambient_background_motion.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/initial_load_reveal.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,14 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     _resumeSectionId: GlobalKey(),
     _codersRankSectionId: GlobalKey(),
   };
+  final ValueNotifier<bool> _codersRankShouldPrepare = ValueNotifier(false);
   bool _hasHandledInitialSectionScroll = false;
+
+  @override
+  void dispose() {
+    _codersRankShouldPrepare.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -124,21 +132,27 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 return _WideHomePageFrame(
                   maxWidth: constraints.maxWidth,
                   maxHeight: constraints.maxHeight,
+                  onLowerPageScrollStarted: _requestCodersRankPreparation,
                   sectionKeys: _sectionKeys,
+                  shouldPrepareCodersRank: _codersRankShouldPrepare,
                 );
               }
 
-              return SingleChildScrollView(
-                padding: AppSpacing.pagePadding,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: AppLayout.maxContentWidth,
-                    ),
-                    child: _HomePageContent(
-                      includeInlineProfileSummary: true,
-                      sectionKeys: _sectionKeys,
+              return NotificationListener<ScrollNotification>(
+                onNotification: _handleHomeScrollNotification,
+                child: SingleChildScrollView(
+                  padding: AppSpacing.pagePadding,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: AppLayout.maxContentWidth,
+                      ),
+                      child: _HomePageContent(
+                        includeInlineProfileSummary: true,
+                        sectionKeys: _sectionKeys,
+                        shouldPrepareCodersRank: _codersRankShouldPrepare,
+                      ),
                     ),
                   ),
                 ),
@@ -173,18 +187,42 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       _ => null,
     };
   }
+
+  bool _handleHomeScrollNotification(ScrollNotification notification) {
+    if (notification.metrics.axis != Axis.vertical) {
+      return false;
+    }
+
+    if (notification.metrics.pixels > 0) {
+      _requestCodersRankPreparation();
+    }
+
+    return false;
+  }
+
+  void _requestCodersRankPreparation() {
+    if (_codersRankShouldPrepare.value) {
+      return;
+    }
+
+    _codersRankShouldPrepare.value = true;
+  }
 }
 
 class _WideHomePageFrame extends StatefulWidget {
   const _WideHomePageFrame({
     required this.maxWidth,
     required this.maxHeight,
+    required this.onLowerPageScrollStarted,
     required this.sectionKeys,
+    required this.shouldPrepareCodersRank,
   });
 
   final double maxWidth;
   final double maxHeight;
+  final VoidCallback onLowerPageScrollStarted;
   final Map<String, GlobalKey> sectionKeys;
+  final ValueListenable<bool> shouldPrepareCodersRank;
 
   @override
   State<_WideHomePageFrame> createState() => _WideHomePageFrameState();
@@ -230,19 +268,24 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.size24,
-                    ),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        key: _mainContentKey,
-                        width: centeredContentWidth,
-                        child: _HomePageContent(
-                          includeInlineProfileSummary: false,
-                          sectionKeys: widget.sectionKeys,
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: _handleWidePageScrollNotification,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.size24,
+                      ),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          key: _mainContentKey,
+                          width: centeredContentWidth,
+                          child: _HomePageContent(
+                            includeInlineProfileSummary: false,
+                            sectionKeys: widget.sectionKeys,
+                            shouldPrepareCodersRank:
+                                widget.shouldPrepareCodersRank,
+                          ),
                         ),
                       ),
                     ),
@@ -304,16 +347,30 @@ class _WideHomePageFrameState extends State<_WideHomePageFrame> {
 
     return viewportRect.contains(globalPosition);
   }
+
+  bool _handleWidePageScrollNotification(ScrollNotification notification) {
+    if (notification.metrics.axis != Axis.vertical) {
+      return false;
+    }
+
+    if (notification.metrics.pixels > 0) {
+      widget.onLowerPageScrollStarted();
+    }
+
+    return false;
+  }
 }
 
 class _HomePageContent extends StatelessWidget {
   const _HomePageContent({
     required this.includeInlineProfileSummary,
     required this.sectionKeys,
+    required this.shouldPrepareCodersRank,
   });
 
   final bool includeInlineProfileSummary;
   final Map<String, GlobalKey> sectionKeys;
+  final ValueListenable<bool> shouldPrepareCodersRank;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -362,7 +419,9 @@ class _HomePageContent extends StatelessWidget {
             const SizedBox(height: AppSpacing.size24),
             KeyedSubtree(
               key: sectionKeys[_codersRankSectionId],
-              child: const CodersRankSupportingSection(),
+              child: CodersRankSupportingSection(
+                shouldPrepare: shouldPrepareCodersRank,
+              ),
             ),
           ],
         ),

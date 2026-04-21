@@ -8,9 +8,13 @@ import 'dart:ui_web' as ui_web;
 import 'package:charlie_shub_portfolio/presentation/core/pages/home/sections/codersrank_supporting_section_content.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_codersrank_theme.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const _codersRankUsername = 'charlie-shub';
+const _codersRankSummaryScriptUrl =
+    'https://unpkg.com/@codersrank/summary@0.9.13/codersrank-summary.min.js';
+const _codersRankSummaryScriptId = 'codersrank-summary-script';
 const _registrationPollInterval = Duration(milliseconds: 150);
 const _registrationTimeout = Duration(seconds: 8);
 const _renderTimeout = Duration(seconds: 8);
@@ -21,8 +25,9 @@ const _errorEventProvider = html.EventStreamProvider<html.Event>('error');
 int _codersRankViewCounter = 0;
 
 /// Builds the CodersRank section for Flutter Web.
-Widget buildCodersRankSupportingSection() =>
-    const _CodersRankSupportingSectionWeb();
+Widget buildCodersRankSupportingSection({
+  required ValueListenable<bool> shouldPrepare,
+}) => _CodersRankSupportingSectionWeb(shouldPrepare: shouldPrepare);
 
 enum _CodersRankRenderStatus {
   checking,
@@ -31,7 +36,11 @@ enum _CodersRankRenderStatus {
 }
 
 class _CodersRankSupportingSectionWeb extends StatefulWidget {
-  const _CodersRankSupportingSectionWeb();
+  const _CodersRankSupportingSectionWeb({
+    required this.shouldPrepare,
+  });
+
+  final ValueListenable<bool> shouldPrepare;
 
   @override
   State<_CodersRankSupportingSectionWeb> createState() =>
@@ -48,16 +57,32 @@ class _CodersRankSupportingSectionWebState
   Timer? _renderPollTimer;
   Timer? _renderTimeoutTimer;
   _CodersRankRenderStatus _status = _CodersRankRenderStatus.checking;
+  bool _hasStartedPreparing = false;
 
   @override
   void initState() {
     super.initState();
     _rankHandle = _createRankHandle();
-    unawaited(_prepareEmbed());
+    widget.shouldPrepare.addListener(_handlePreparationSignalChanged);
+    _handlePreparationSignalChanged();
+  }
+
+  @override
+  void didUpdateWidget(covariant _CodersRankSupportingSectionWeb oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.shouldPrepare == widget.shouldPrepare) {
+      return;
+    }
+
+    oldWidget.shouldPrepare.removeListener(_handlePreparationSignalChanged);
+    widget.shouldPrepare.addListener(_handlePreparationSignalChanged);
+    _handlePreparationSignalChanged();
   }
 
   @override
   void dispose() {
+    widget.shouldPrepare.removeListener(_handlePreparationSignalChanged);
     _cancelReadinessTracking();
     _rankHandle.host.remove();
     super.dispose();
@@ -94,6 +119,13 @@ class _CodersRankSupportingSectionWebState
   }
 
   Future<void> _prepareEmbed() async {
+    final scriptRequested = _ensureWidgetScriptRequested();
+    if (!scriptRequested) {
+      _hideSection();
+
+      return;
+    }
+
     final widgetRegistered = await _waitForWidgetRegistration();
 
     if (!mounted) {
@@ -117,6 +149,15 @@ class _CodersRankSupportingSectionWebState
     } else {
       _hideSection();
     }
+  }
+
+  void _handlePreparationSignalChanged() {
+    if (_hasStartedPreparing || !widget.shouldPrepare.value) {
+      return;
+    }
+
+    _hasStartedPreparing = true;
+    unawaited(_prepareEmbed());
   }
 
   _CodersRankEmbedHandle _createRankHandle() {
@@ -144,6 +185,28 @@ class _CodersRankSupportingSectionWebState
     final definition = registry?.get(tagName);
 
     return definition != null;
+  }
+
+  bool _ensureWidgetScriptRequested() {
+    if (_customElementIsRegistered('codersrank-summary')) {
+      return true;
+    }
+
+    final head = html.document.head;
+    if (head == null) {
+      return false;
+    }
+
+    if (html.document.getElementById(_codersRankSummaryScriptId) == null) {
+      final script = html.ScriptElement()
+        ..id = _codersRankSummaryScriptId
+        ..src = _codersRankSummaryScriptUrl
+        ..defer = true;
+
+      head.append(script);
+    }
+
+    return true;
   }
 
   void _attachHostOffstage(

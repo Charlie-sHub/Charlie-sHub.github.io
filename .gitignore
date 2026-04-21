@@ -21,3 +21,6 @@ build/
 *.g.dart
 *.gr.dart
 *.mocks.dart
+
+# Temporary working documentation
+docs/

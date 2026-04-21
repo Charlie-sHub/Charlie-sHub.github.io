@@ -189,6 +189,10 @@ fvm flutter build web
 
 The repository uses FVM, with `.fvmrc` as the expected Flutter SDK version.
 
+For first-deployment release checks, keep the web renderer path deliberate:
+- use the pinned SDK's standard `fvm flutter build web` release output
+- do not opt into alternate WebAssembly or custom-renderer build paths unless they have been re-measured against startup cost and visual requirements for launch
+
 ---
 
 ## Design and UX Direction

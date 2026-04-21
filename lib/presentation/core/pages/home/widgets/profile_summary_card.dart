@@ -28,6 +28,10 @@ class ProfileSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ContentCubit, ContentState>(
+    buildWhen: (previous, current) =>
+        previous.status != current.status ||
+        previous.aboutOption != current.aboutOption ||
+        previous.resumeOption != current.resumeOption,
     builder: (context, state) {
       final about = _loadedAbout(state);
 

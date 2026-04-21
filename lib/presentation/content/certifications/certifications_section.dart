@@ -19,6 +19,9 @@ class CertificationsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ContentCubit, ContentState>(
+    buildWhen: (previous, current) =>
+        previous.status != current.status ||
+        previous.certificationsOption != current.certificationsOption,
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Certifications',

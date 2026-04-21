@@ -19,6 +19,9 @@ class CoursesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ContentCubit, ContentState>(
+    buildWhen: (previous, current) =>
+        previous.status != current.status ||
+        previous.coursesOption != current.coursesOption,
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Courses',

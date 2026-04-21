@@ -24,6 +24,9 @@ class CaseStudiesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ContentCubit, ContentState>(
+    buildWhen: (previous, current) =>
+        previous.status != current.status ||
+        previous.caseStudiesOption != current.caseStudiesOption,
     builder: (context, state) => SectionContainer(
       heading: const SectionHeadingText(
         text: 'Case Studies',

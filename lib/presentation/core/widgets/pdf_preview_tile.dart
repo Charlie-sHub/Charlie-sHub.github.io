@@ -44,7 +44,10 @@ class PdfPreviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolvedOnTap = resolveOpenExternalResource(path, onTap: onTap);
+    final resolvedOnTap = resolveOpenExternalResource(
+      path,
+      onTap: onTap,
+    );
     final borderColor = Theme.of(context).colorScheme.outlineVariant;
 
     return ContentCard(
