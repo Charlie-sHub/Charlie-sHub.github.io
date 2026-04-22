@@ -4,7 +4,7 @@ Public repository for my portfolio website and its content structure.
 
 This project is intentionally treated as a real software project, not just a visual landing page. Its purpose is to present software development work, security-oriented engineering thinking, certifications, technical learning, and the way I plan, structure, and communicate technical work.
 
-The site is being built with Flutter Web and is designed to stay content-driven, maintainable, and easy to extend over time.
+The site is built with Flutter Web and is designed to stay content-driven, maintainable, and easy to extend over time.
 
 ---
 
@@ -37,7 +37,7 @@ This repository is expected to evolve, but the first-deployment direction is now
 
 It is also more engineered than a simple static portfolio strictly needs to be. That is intentional: part of the project is to show architecture, maintainability, validation, engineering habits, and the way I normally structure software.
 
-Some legacy site code and assets also remain temporarily in the repository while the Flutter replacement is still being completed.
+The pre-Flutter root static site is archived under `legacy/root_static_site/` for reference only. It is not part of the launch deployment surface.
 
 ---
 
@@ -192,7 +192,22 @@ The repository uses FVM, with `.fvmrc` as the expected Flutter SDK version.
 
 For first-deployment release checks, keep the web renderer path deliberate:
 - use the pinned SDK's standard `fvm flutter build web` release output
+- for the root-hosted GitHub Pages user-site deployment path, verify with `fvm flutter build web --release --base-href /`
 - do not opt into alternate WebAssembly or custom-renderer build paths unless they have been re-measured against startup cost and visual requirements for launch
+
+---
+
+## Deployment
+
+Launch deployment is intentionally single-source:
+
+- the only deployed site is the Flutter Web release artifact in `build/web/`
+- `.github/workflows/deploy_github_pages.yml` is the authoritative GitHub Pages workflow for launch
+- the workflow reads the pinned Flutter version from `.fvmrc`, builds the root-hosted user-site release with `--base-href /`, and publishes only the generated Pages artifact
+- GitHub Pages should use `GitHub Actions` as its source; branch or repository-root publishing is not part of the launch path
+- the deployment-time browser-hardening baseline is documented in `SPECIFICATIONS.md` and is intended to be enforced at the hosting layer rather than duplicated in the web shell
+- `web/` is the active web bootstrap surface in source control; the repository root is not a live site surface
+- `legacy/root_static_site/` archives the former root `index.html`, `main.css`, and `i/` assets for reference only and is never deployed
 
 ---
 

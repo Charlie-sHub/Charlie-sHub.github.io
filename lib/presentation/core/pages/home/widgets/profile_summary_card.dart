@@ -24,8 +24,7 @@ class ProfileSummaryCard extends StatelessWidget {
       return state.resumeOption.fold(
         () => ProfileSummaryStatusCard(
           message: state.status == ContentStatus.failure
-              ? 'Profile summary could not be requested because content '
-                    'loading was interrupted.'
+              ? 'Profile summary is temporarily unavailable.'
               : 'Loading profile summary...',
         ),
         (resumeLoad) => resumeLoad.fold(

@@ -31,10 +31,9 @@ class CertificationsSection extends StatelessWidget {
         sectionOption: state.certificationsOption,
         loadingMessage: 'Loading certification content...',
         interruptedLoadingMessage:
-            'Certifications could not be requested because content loading '
-            'was interrupted.',
+            'Certifications are temporarily unavailable.',
         unavailableTitle: 'Certifications section unavailable',
-        emptyMessage: 'No certification entries are available yet.',
+        emptyMessage: 'No certifications are available yet.',
         selectorBuilder: (items) =>
             EntrySelectorPanel<SectionItemLoad<Certification>>(
               entries: items,

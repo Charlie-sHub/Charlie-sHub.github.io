@@ -9,11 +9,11 @@
   },
   "content": {
     "title": "PAMi",
-    "summary": "PAMi is a location-aware exchange platform built around temporary shout-outs that help nearby users connect in real life for quick, lightweight exchanges. The MVP includes shout-out creation, map-based discovery, messaging, transaction verification, karma, notifications, onboarding, and lightweight analytics, with a clear focus on maintainability, privacy, and progressive delivery.",
+    "summary": "PAMi is a location-aware exchange platform built around short-lived shout-outs that help nearby users connect for simple in-person exchanges. The MVP includes shout-out creation, map-based discovery, messaging, transaction verification, karma, notifications, onboarding, and lightweight analytics, with a clear focus on maintainability, privacy, and progressive delivery.",
     "thumbnailPath": null,
     "heroImagePath": null,
     "galleryImagePaths": [],
-    "role_and_scope": "The strongest current evidence is in the engineering work itself: architecture, domain modeling, data flows, CI quality gates, release planning, and security- and privacy-related decisions across the MVP. At this stage, the value is best reflected in implementation quality and delivery discipline rather than adoption metrics.",
+    "role_and_scope": "My role is best reflected in the engineering work itself: architecture, domain modeling, data flows, CI quality gates, release planning, and security- and privacy-related decisions across the MVP. At this stage, the strongest proof is implementation quality and delivery discipline rather than adoption metrics.",
     "product_context": "The product is a nearby exchange platform where users can post temporary shout-outs, discover relevant opportunities on a map, express interest, chat, verify an exchange, and leave karma feedback. The direction is centered on utility, trust, and proximity rather than long-form social networking.\n\nThe MVP scope includes:\n\n- account and profile management\n- map filtering by category, proximity, and recency\n- shout-out posting and editing\n- text chat\n- QR or manual transaction verification\n- simplified karma\n- smart notifications\n- exchange history\n- in-app feedback\n- onboarding\n- minimal analytics",
     "stack": [
       "Flutter and Dart",
@@ -35,7 +35,7 @@
     ],
     "implementation": "PAMi follows Domain-Driven Design with vertical feature slices across domain, application, data, and views, plus shared core utilities. The domain layer defines entities, value objects, failures, and repository interfaces without Flutter or Firebase imports. The application layer uses explicit BLoC roles for forms, watchers, and actors. The data layer contains production repositories, development fakes, DTOs, and a FirestoreX-style adapter pattern for access, pagination, converters, batched writes, and geo helpers. The presentation layer is feature-scoped, uses Auto Route, and keeps business logic out of widgets.\n\nOther implementation details already visible in the source material include:\n\n- explicit freezed and json_serializable DTO conventions\n- UTC timestamps and enums stored as strings\n- fromDomain and toDomain mapping patterns\n- Firestore collections for users, shout-outs, transactions, transaction messages, karma, notifications, and feedback\n- geo indexing and shout-out recency or category filtering in the planned data model\n- CI flows covering code generation, linting, tests, coverage enforcement, and staged release expectations",
     "outcomes": [
-      "The product does not yet have user traction, so its current portfolio value comes from engineering quality rather than adoption metrics.",
+      "The product is still early, so its current portfolio value comes from engineering quality rather than adoption metrics.",
       "The source material shows a layered, feature-first architecture with explicit domain modeling and strong separation between UI, application, domain, and data concerns.",
       "The project enforces linting, testing, code generation, branch conventions, and CI quality gates, with coverage enforced around an 80% threshold.",
       "It supports both development fakes and production repositories, plus structured release, security, and observability expectations."

@@ -37,9 +37,9 @@
       "Released the Android app to a closed beta through the Play Store.",
       "Supported small-scale real user testing with a few dozen users.",
       "Iterated on UX/UI from development feedback.",
-      "Did not progress to a finished iOS release or large-scale adoption."
+      "The project remained at Android closed beta rather than expanding to a finished iOS release or broader adoption."
     ],
-    "security_and_quality": "- Authentication was handled through Firebase Auth.\n- The app involved location-based discovery, which made privacy and data handling relevant from a practical standpoint.\n- User-generated content introduced moderation and abuse-risk considerations.\n- Creator-defined rewards created trust and abuse concerns that would matter more at scale.\n\nThis was not a project built around advanced security architecture, but it already involved practical concerns around auth, permissions, privacy, and user behavior controls.",
+    "security_and_quality": "- Authentication was handled through Firebase Auth.\n- Location-based discovery made privacy and data handling part of the core implementation.\n- User-generated content introduced moderation and abuse-risk considerations.\n- Creator-defined rewards created trust and abuse concerns that would matter more at scale.\n\nSecurity was not the main proof point in this project, but it still involved practical concerns around auth, permissions, privacy, and user behavior controls.",
     "lessons": [
       "Building from scratch forces clarity in product structure and technical priorities.",
       "Strong execution matters more than endless ideation.",

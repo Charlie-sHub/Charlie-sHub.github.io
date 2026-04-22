@@ -6,7 +6,8 @@ void main() {
     'renders the portfolio app shell without placeholder home scaffolding',
     (tester) async {
       await tester.pumpWidget(const PortfolioApp());
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.text('Carlos Mendez'), findsAtLeastNWidgets(1));
       expect(find.text('About'), findsOneWidget);

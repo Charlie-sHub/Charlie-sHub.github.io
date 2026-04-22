@@ -30,11 +30,9 @@ class ProjectsSection extends StatelessWidget {
         overallStatus: state.status,
         sectionOption: state.projectsOption,
         loadingMessage: 'Loading project content...',
-        interruptedLoadingMessage:
-            'Projects could not be requested because content loading was '
-            'interrupted.',
+        interruptedLoadingMessage: 'Projects are temporarily unavailable.',
         unavailableTitle: 'Projects section unavailable',
-        emptyMessage: 'No project entries are available yet.',
+        emptyMessage: 'No projects are available yet.',
         selectorBuilder: (items) =>
             EntrySelectorPanel<SectionItemLoad<Project>>(
               entries: items,

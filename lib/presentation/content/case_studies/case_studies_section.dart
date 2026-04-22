@@ -41,8 +41,7 @@ class CaseStudiesSection extends StatelessWidget {
           sectionOption: state.caseStudiesOption,
           loadingMessage: 'Loading case study content...',
           interruptedLoadingMessage:
-              'Case studies could not be requested because content loading '
-              'was interrupted.',
+              'Case studies are temporarily unavailable.',
           unavailableTitle: 'Case studies section unavailable',
           emptyMessage: 'No case studies are available yet.',
           selectorBuilder: (items) =>

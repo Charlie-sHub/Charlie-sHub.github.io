@@ -97,7 +97,7 @@ void main() {
           );
           expect(
             find.text(
-              'A required site asset could not be loaded.',
+              'Some content for this section is unavailable right now.',
             ),
             findsOneWidget,
           );

@@ -30,11 +30,9 @@ class CoursesSection extends StatelessWidget {
         overallStatus: state.status,
         sectionOption: state.coursesOption,
         loadingMessage: 'Loading course content...',
-        interruptedLoadingMessage:
-            'Courses could not be requested because content loading was '
-            'interrupted.',
+        interruptedLoadingMessage: 'Courses are temporarily unavailable.',
         unavailableTitle: 'Courses section unavailable',
-        emptyMessage: 'No course entries are available yet.',
+        emptyMessage: 'No courses are available yet.',
         selectorBuilder: (items) => EntrySelectorPanel<SectionItemLoad<Course>>(
           entries: items,
           initialSelectedIndex: preferredSuccessfulSectionItemIndex(items),

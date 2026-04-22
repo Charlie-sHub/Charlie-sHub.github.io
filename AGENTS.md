@@ -33,7 +33,9 @@ If the spec leaves something open, choose the smallest reversible implementation
 - `assets/media/` and `assets/documents/`: supporting public assets
 - `schemas/`: design-time contracts for structured content
 - `test/`: automated coverage
-- `web/` plus root legacy site files: migration or bootstrapping surfaces; do not treat them as the default target for new Flutter UI work unless the task explicitly calls for them
+- `web/`: Flutter web bootstrapping surface for the launch site
+- `.github/workflows/deploy_github_pages.yml`: authoritative launch deployment workflow; publishes the Flutter release artifact from `build/web`
+- `legacy/root_static_site/`: archived pre-Flutter root static site kept for reference only and not part of the launch deployment surface
 
 ## Workflow
 

@@ -1,4 +1,5 @@
 # Local tooling
+.DS_Store
 .codex
 .codex/
 .fvm/
@@ -21,6 +22,3 @@ build/
 *.g.dart
 *.gr.dart
 *.mocks.dart
-
-# Temporary working documentation
-docs/

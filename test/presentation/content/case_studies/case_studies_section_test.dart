@@ -264,8 +264,12 @@ void main() {
           expect(find.text('Cutting Edge'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);
           expect(
-            find.textContaining('assets/content/case_studies/missing.json'),
+            find.text('A required site asset could not be loaded.'),
             findsOneWidget,
+          );
+          expect(
+            find.textContaining('assets/content/case_studies/missing.json'),
+            findsNothing,
           );
         },
       );

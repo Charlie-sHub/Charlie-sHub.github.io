@@ -26,9 +26,7 @@ class AboutSection extends StatelessWidget {
         overallStatus: state.status,
         sectionOption: state.aboutOption,
         loadingMessage: 'Loading about content...',
-        interruptedLoadingMessage:
-            'About content could not be requested because content loading '
-            'was interrupted.',
+        interruptedLoadingMessage: 'About content is temporarily unavailable.',
         unavailableTitle: 'About section unavailable',
         loadedBuilder: (about) => <Widget>[
           AboutNarrativeCard(about: about),

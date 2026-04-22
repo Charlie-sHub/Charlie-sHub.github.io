@@ -328,8 +328,12 @@ void main() {
           expect(find.text('Security+'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);
           expect(
-            find.textContaining('assets/content/certifications/missing.json'),
+            find.text('A required site asset could not be loaded.'),
             findsOneWidget,
+          );
+          expect(
+            find.textContaining('assets/content/certifications/missing.json'),
+            findsNothing,
           );
         },
       );

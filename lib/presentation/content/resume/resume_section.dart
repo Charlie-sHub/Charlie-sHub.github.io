@@ -32,9 +32,7 @@ class ResumeSection extends StatelessWidget {
         overallStatus: state.status,
         sectionOption: state.resumeOption,
         loadingMessage: 'Loading resume content...',
-        interruptedLoadingMessage:
-            'Resume content could not be requested because content loading '
-            'was interrupted.',
+        interruptedLoadingMessage: 'Resume content is temporarily unavailable.',
         unavailableTitle: 'Resume section unavailable',
         loadedBuilder: (resume) => <Widget>[
           ResumeOverviewCard(resume: resume),

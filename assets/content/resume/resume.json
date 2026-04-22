@@ -7,7 +7,7 @@
   "content": {
     "name": "Carlos Mendez",
     "location": "Bilbao, Spain",
-    "summary": "Flutter software developer with 5+ years of experience building cross-platform applications for mobile and web. Strong in structured planning, clean implementation, automated testing, and building maintainable systems from the ground up. Recently added formal cybersecurity training and certifications, and now targeting roles where software development and security reinforce each other.",
+    "summary": "Software developer with 5+ years building cross-platform mobile and web applications with Flutter. Strong in structured planning, clean implementation, automated testing, and building maintainable systems from the ground up. Backed by formal cybersecurity training and certifications, and now targeting roles where software development and security reinforce each other.",
     "direct_email_address": "carlosrafael-mg@hotmail.com",
     "resumePdfPath": "assets/documents/resume/carlos_mendez_dev.pdf",
     "contact_links": [
@@ -54,17 +54,17 @@
           "Domain-Driven Design (DDD)",
           "Clean Architecture",
           "API integration",
-          "database design",
-          "scalable application structure"
+          "Database design",
+          "Scalable application structure"
         ]
       },
       {
         "label": "Security Knowledge & Frameworks",
         "items": [
           "Secure software development",
-          "application security fundamentals",
-          "validation",
-          "risk-aware engineering",
+          "Application security fundamentals",
+          "Validation",
+          "Risk-aware engineering",
           "MITRE ATT&CK",
           "MITRE D3FEND",
           "MITRE ATLAS"
@@ -93,7 +93,7 @@
         "highlights": [
           "Built two software products from scratch, owning architecture, implementation, testing, deployment, and iteration.",
           "Developed cross-platform applications with Flutter and Firebase across frontend, application logic, backend integration, and release preparation.",
-          "Integrated AI functionality into one product as part of the user experience.",
+          "Integrated AI-assisted features into one product's user experience.",
           "Applied a structured development approach focused on maintainability, clear architecture, and reliable execution.",
           "Reached 80%+ automated test coverage in core application work."
         ]

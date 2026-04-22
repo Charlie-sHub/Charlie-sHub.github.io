@@ -59,10 +59,11 @@ class AppFailureCard extends StatelessWidget {
   }
 
   String _buildPublicMessage() => switch (failure) {
-    AssetNotFound() => 'A required site asset could not be loaded.',
+    AssetNotFound() =>
+      'Some content for this section is unavailable right now.',
     ContentLoadError() => 'This content is temporarily unavailable.',
-    MediaLoadError() => 'This media could not be displayed right now.',
-    DocumentOpenError() => 'This document could not be opened right now.',
-    UnexpectedError() => 'Something went wrong while loading this section.',
+    MediaLoadError() => 'This media is temporarily unavailable.',
+    DocumentOpenError() => 'This document is temporarily unavailable.',
+    UnexpectedError() => 'This section could not be loaded right now.',
   };
 }
