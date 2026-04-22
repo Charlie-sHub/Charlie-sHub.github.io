@@ -203,7 +203,7 @@ Launch deployment is intentionally single-source:
 
 - the only deployed site is the Flutter Web release artifact in `build/web/`
 - `.github/workflows/deploy_github_pages.yml` is the authoritative GitHub Pages workflow for launch
-- the workflow reads the pinned Flutter version from `.fvmrc`, builds the root-hosted user-site release with `--base-href /`, and publishes only the generated Pages artifact
+- the workflow reads the pinned Flutter version from `.fvmrc`, regenerates source files, runs analysis and tests, then builds the root-hosted user-site release with `--base-href /` and publishes only the generated Pages artifact
 - GitHub Pages should use `GitHub Actions` as its source; branch or repository-root publishing is not part of the launch path
 - the deployment-time browser-hardening baseline is documented in `SPECIFICATIONS.md` and is intended to be enforced at the hosting layer rather than duplicated in the web shell
 - `web/` is the active web bootstrap surface in source control; the repository root is not a live site surface

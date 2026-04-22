@@ -23,7 +23,7 @@ void main() {
           expect(professionalSummaryShort, isNotNull);
           expect(
             professionalSummaryShort!.getOrCrash(),
-            contains('Flutter developer with 5+ years'),
+            contains('Flutter software developer with 5+ years'),
           );
           expect(
             about.profileImagePath?.getOrCrash(),

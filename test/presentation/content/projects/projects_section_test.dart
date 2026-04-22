@@ -274,7 +274,9 @@ void main() {
           expect(find.text('PAMi'), findsOneWidget);
           expect(find.byType(AppFailureCard), findsOneWidget);
           expect(
-            find.text('A required site asset could not be loaded.'),
+            find.text(
+              'Some content for this section is unavailable right now.',
+            ),
             findsOneWidget,
           );
           expect(
