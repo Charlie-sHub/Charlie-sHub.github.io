@@ -5,6 +5,7 @@
 import 'dart:html' as html;
 import 'dart:ui_web' as ui_web;
 
+import 'package:charlie_shub_portfolio/presentation/core/utils/browser_facing_asset_url.dart';
 import 'package:flutter/material.dart';
 
 int _pdfPreviewCounter = 0;
@@ -25,8 +26,9 @@ String _registerPreviewView(
   required VoidCallback onReady,
 }) {
   final viewType = 'pdf-preview-${_pdfPreviewCounter++}';
+  final previewAssetUrl = resolveBrowserFacingAssetUrl(path);
   final previewUrl =
-      '$path#page=1&toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit';
+      '$previewAssetUrl#page=1&toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit';
 
   ui_web.platformViewRegistry.registerViewFactory(
     viewType,
