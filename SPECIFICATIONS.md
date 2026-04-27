@@ -795,7 +795,13 @@ Defines project direction, scope, principles, and architectural constraints.
 Introduces the project clearly to a public reader.
 
 ### 16.3 AGENTS.md
-Provides repo-specific guidance for AI-assisted work on this repository.
+Provides repo-specific operating guidance for AI-assisted work on this
+repository, including workflow, verification, scope discipline, security
+handling, and review expectations.
+
+Product behavior, architecture decisions, domain rules, UX/UI decisions,
+deployment facts, and open project questions belong in this specification or
+another appropriate spec document rather than in agent workflow guidance.
 
 These documents should stay aligned without unnecessary duplication.
 
