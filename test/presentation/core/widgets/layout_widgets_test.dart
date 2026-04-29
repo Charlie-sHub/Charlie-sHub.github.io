@@ -1,4 +1,5 @@
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_surface_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_block.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/content_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/section_container.dart';
@@ -124,6 +125,7 @@ void main() {
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Section body'), findsOneWidget);
           expect(find.byType(BackdropFilter), findsOneWidget);
+          expect(AppSurfaceStyles.sectionBlurSigma, 12);
           expect(
             find.descendant(
               of: find.byType(BackdropFilter),
