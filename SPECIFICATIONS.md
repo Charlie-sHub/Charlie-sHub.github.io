@@ -534,9 +534,9 @@ Preferred direction:
 - for desktop and tablet layouts, the selector should sit to the left of the active entry content
 - for smaller screens, the selector should adapt to a simple responsive fallback rather than forcing a left-rail layout
 - link and download tiles should favor human-readable labels rather than raw URLs as the primary visible affordance
-- PDF-backed assets may show a small in-page preview, while full viewing or downloading should open in a new tab
-- PDF previews should frame the full first page, even at small display sizes, rather than showing only a cropped subsection
-- PDF previews should behave as post-load supporting enhancements rather than first-paint requirements, with a restrained loading state while the preview surface initializes
+- PDF-backed assets should use static first-page image previews for launch,
+  while full viewing or downloading should open the original PDF in a new tab
+- embedded PDF iframes are not part of the launch render path
 - strong flagship proof should remain easy to scan directly rather than being hidden behind selector panels by default
 - scrolling, hover, and reveal effects kept secondary to content clarity and used to support hierarchy and orientation rather than decoration
 

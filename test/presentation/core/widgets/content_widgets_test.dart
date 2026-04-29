@@ -1,5 +1,3 @@
-import 'package:charlie_shub_portfolio/application/content/content_state.dart';
-import 'package:charlie_shub_portfolio/application/content/content_status.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/link_reference.dart';
 import 'package:charlie_shub_portfolio/domain/core/failures/value_failure.dart';
 import 'package:charlie_shub_portfolio/domain/core/misc/enums/link_reference_kind.dart';
@@ -25,7 +23,6 @@ import 'package:charlie_shub_portfolio/presentation/core/widgets/tag_chip_list.d
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_asset_media_card.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_bullet_list.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/validated_text.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
     show
         Column,
@@ -33,11 +30,10 @@ import 'package:flutter/material.dart'
         EdgeInsets,
         Icon,
         Icons,
+        Image,
         SizedBox,
         TextButton,
-        ValueKey,
         WidgetState;
-import 'package:flutter/widgets.dart' show HtmlElementView;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../presentation_test_helpers.dart';
@@ -584,7 +580,7 @@ void main() {
     'ValidatedPdfPreviewTile',
     () {
       testWidgets(
-        'renders a PDF preview tile, shows a loading state first, '
+        'renders a PDF preview tile with a static image preview '
         'and triggers the tap callback',
         (tester) async {
           var tapped = false;
@@ -593,19 +589,14 @@ void main() {
             buildPresentationTestApp(
               ValidatedPdfPreviewTile(
                 path: DocumentPath('assets/documents/resume/resume.pdf'),
+                previewImagePath: AssetPath(
+                  'assets/media/content/resume/resume_preview.png',
+                ),
                 title: 'Resume PDF',
                 onTap: () => tapped = true,
               ),
             ),
           );
-
-          expect(
-            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
-            findsOneWidget,
-          );
-          expect(find.text('Loading preview...'), findsOneWidget);
-
-          await tester.pump();
 
           expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(find.text('Resume PDF'), findsOneWidget);
@@ -616,7 +607,7 @@ void main() {
             tester.getSize(find.byType(PdfPreviewFrame)).height,
             AppLayout.pdfPreviewHeight,
           );
-          _expectResolvedPdfPreviewSurface();
+          expect(find.byType(Image), findsOneWidget);
 
           await tester.tap(find.text('Resume PDF'));
           await tester.pump();
@@ -643,43 +634,34 @@ void main() {
       );
 
       testWidgets(
-        'defers preview initialization until main content loading completes',
+        'renders a lightweight fallback when the preview image path is invalid '
+        'while keeping the PDF action available',
         (tester) async {
-          final initialState = ContentState.initial().copyWith(
-            status: ContentStatus.loading,
-          );
+          var tapped = false;
 
-          final cubit = await pumpWithContentState(
-            tester,
-            child: ValidatedPdfPreviewTile(
-              path: DocumentPath('assets/documents/resume/resume.pdf'),
-              title: 'Resume PDF',
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              ValidatedPdfPreviewTile(
+                path: DocumentPath('assets/documents/resume/resume.pdf'),
+                previewImagePath: AssetPath('invalid/preview.png'),
+                title: 'Resume PDF',
+                onTap: () => tapped = true,
+              ),
             ),
-            state: initialState,
           );
 
           expect(find.byType(PdfPreviewTile), findsOneWidget);
           expect(
-            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
+            find.byKey(pdfPreviewImageFallbackKey),
             findsOneWidget,
           );
-          expect(find.text('Loading preview...'), findsOneWidget);
+          expect(find.text('Preview image unavailable'), findsOneWidget);
+          expect(find.text('Open PDF'), findsOneWidget);
 
-          cubit.emitState(
-            initialState.copyWith(
-              status: ContentStatus.loaded,
-            ),
-          );
+          await tester.tap(find.text('Resume PDF'));
           await tester.pump();
 
-          expect(
-            find.byKey(const ValueKey<String>('pdf-preview-loading-state')),
-            findsOneWidget,
-          );
-
-          await tester.pump();
-
-          _expectResolvedPdfPreviewSurface();
+          expect(tapped, isTrue);
         },
       );
     },
@@ -926,11 +908,3 @@ void main() {
 }
 
 String _heroLabelBuilder(String value) => 'Project media available: $value';
-
-void _expectResolvedPdfPreviewSurface() {
-  if (kIsWeb) {
-    expect(find.byType(HtmlElementView), findsOneWidget);
-  } else {
-    expect(find.text('PDF preview'), findsOneWidget);
-  }
-}

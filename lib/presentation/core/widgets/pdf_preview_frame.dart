@@ -1,150 +1,95 @@
-import 'package:charlie_shub_portfolio/presentation/core/theme/app_motion.dart';
+import 'package:charlie_shub_portfolio/presentation/core/theme/app_colors.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/content_load_completion_scope.dart';
-import 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_frame_stub.dart'
-    if (dart.library.html) 'package:charlie_shub_portfolio/presentation/core/widgets/pdf_preview_frame_web.dart'
-    as impl;
 import 'package:charlie_shub_portfolio/presentation/core/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 
-/// Renders a lightweight in-page PDF preview where supported.
-class PdfPreviewFrame extends StatefulWidget {
-  /// Creates a PDF preview frame.
+/// Renders a static first-page image preview for a PDF-backed asset.
+class PdfPreviewFrame extends StatelessWidget {
+  /// Creates a static PDF preview frame.
   const PdfPreviewFrame({
-    required this.path,
+    required this.previewImagePath,
     required this.height,
     super.key,
   });
 
-  /// Relative repository path for the bundled PDF asset.
-  final String path;
+  /// Relative repository path for the static first-page preview image.
+  final String? previewImagePath;
 
   /// Height of the preview frame.
   final double height;
 
   @override
-  State<PdfPreviewFrame> createState() => _PdfPreviewFrameState();
-}
+  Widget build(BuildContext context) => SizedBox(
+    height: height,
+    width: double.infinity,
+    child: _buildPreview(context),
+  );
 
-class _PdfPreviewFrameState extends State<PdfPreviewFrame> {
-  bool _didResolveInitialActivation = false;
-  bool _shouldInitializePreview = false;
-  bool _isPreviewReady = false;
-  int _previewGeneration = 0;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final isContentLoadComplete = ContentLoadCompletionScope.isCompleteOf(
-      context,
-    );
-    if (!_didResolveInitialActivation) {
-      _didResolveInitialActivation = true;
-      _shouldInitializePreview = isContentLoadComplete;
-
-      return;
+  Widget _buildPreview(BuildContext context) {
+    final path = previewImagePath;
+    if (path == null || path.isEmpty) {
+      return const _PdfPreviewImageFallback();
+    } else {
+      return Image.asset(
+        path,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            const _PdfPreviewImageFallback(),
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded || frame != null) {
+            return child;
+          } else {
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                const _PdfPreviewImageFallback(),
+                Center(
+                  child: SizedBox.square(
+                    dimension: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      );
     }
-
-    if (_shouldInitializePreview != isContentLoadComplete) {
-      setState(() {
-        _shouldInitializePreview = isContentLoadComplete;
-
-        if (!isContentLoadComplete) {
-          _previewGeneration += 1;
-          _isPreviewReady = false;
-        }
-      });
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant PdfPreviewFrame oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.path != widget.path) {
-      _previewGeneration += 1;
-      _isPreviewReady = false;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final motionDuration = context.resolveMotionDuration(
-      AppMotion.durationStandard,
-    );
-    final motionCurve = context.resolveMotionCurve(AppMotion.curveSmooth);
-    final previewGeneration = _previewGeneration;
-    final showLoadingState = !_shouldInitializePreview || !_isPreviewReady;
-
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (_shouldInitializePreview)
-          AnimatedOpacity(
-            opacity: _isPreviewReady ? 1 : 0,
-            duration: motionDuration,
-            curve: motionCurve,
-            child: impl.buildPdfPreviewFrame(
-              path: widget.path,
-              height: widget.height,
-              onReady: () => _handlePreviewReady(previewGeneration),
-            ),
-          ),
-        IgnorePointer(
-          ignoring: !showLoadingState,
-          child: AnimatedOpacity(
-            opacity: showLoadingState ? 1 : 0,
-            duration: motionDuration,
-            curve: motionCurve,
-            child: const _PdfPreviewLoadingState(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _handlePreviewReady(int previewGeneration) {
-    if (_isPreviewReady ||
-        !_shouldInitializePreview ||
-        !mounted ||
-        previewGeneration != _previewGeneration) {
-      return;
-    }
-
-    setState(() {
-      _isPreviewReady = true;
-    });
   }
 }
 
-const _pdfPreviewLoadingStateKey = ValueKey<String>(
-  'pdf-preview-loading-state',
+/// Finder key for the static PDF-preview fallback body.
+const pdfPreviewImageFallbackKey = ValueKey<String>(
+  'pdf-preview-image-fallback',
 );
 
-class _PdfPreviewLoadingState extends StatelessWidget {
-  const _PdfPreviewLoadingState();
+class _PdfPreviewImageFallback extends StatelessWidget {
+  const _PdfPreviewImageFallback();
 
   @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Center(
-      key: _pdfPreviewLoadingStateKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox.square(
-            dimension: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.5,
-              color: colorScheme.secondary,
+  Widget build(BuildContext context) => ColoredBox(
+    key: pdfPreviewImageFallbackKey,
+    color: AppColors.surfaceSecondary,
+    child: Center(
+      child: Padding(
+        padding: AppSpacing.contentCardPadding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.picture_as_pdf_outlined,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-          ),
-          const SizedBox(height: AppSpacing.size10),
-          const SupportingText(text: 'Loading preview...'),
-        ],
+            const SizedBox(height: AppSpacing.size10),
+            const SupportingText(
+              text: 'Preview image unavailable',
+            ),
+          ],
+        ),
       ),
-    );
-  }
+    ),
+  );
 }

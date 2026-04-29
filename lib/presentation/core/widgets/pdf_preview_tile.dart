@@ -17,6 +17,7 @@ class PdfPreviewTile extends StatelessWidget {
   const PdfPreviewTile({
     required this.path,
     required this.title,
+    this.previewImagePath,
     this.subtitle,
     this.onTap,
     this.previewHeight = AppLayout.pdfPreviewHeight,
@@ -29,6 +30,9 @@ class PdfPreviewTile extends StatelessWidget {
 
   /// Human-readable title for the preview tile.
   final String title;
+
+  /// Static first-page preview image for the PDF, when available.
+  final String? previewImagePath;
 
   /// Optional secondary label shown under the title.
   final String? subtitle;
@@ -62,7 +66,7 @@ class PdfPreviewTile extends StatelessWidget {
             color: AppColors.surfaceSecondary,
             border: Border.all(color: borderColor),
             child: PdfPreviewFrame(
-              path: path,
+              previewImagePath: previewImagePath,
               height: previewHeight,
             ),
           ),
@@ -85,6 +89,7 @@ class ValidatedPdfPreviewTile extends StatelessWidget {
   const ValidatedPdfPreviewTile({
     required this.path,
     required this.title,
+    this.previewImagePath,
     this.subtitleBuilder = _defaultSubtitleBuilder,
     this.onTap,
     this.previewHeight = AppLayout.pdfPreviewHeight,
@@ -97,6 +102,9 @@ class ValidatedPdfPreviewTile extends StatelessWidget {
 
   /// Human-readable title for the preview tile.
   final String title;
+
+  /// Validated static first-page preview image for the PDF, when available.
+  final ValueObject<String>? previewImagePath;
 
   /// Builds the secondary label from the trusted path value.
   final String Function(String value) subtitleBuilder;
@@ -118,6 +126,7 @@ class ValidatedPdfPreviewTile extends StatelessWidget {
     (value) => PdfPreviewTile(
       path: value,
       title: title,
+      previewImagePath: _trustedPreviewImagePath,
       subtitle: subtitleBuilder(value),
       onTap: onTap,
       previewHeight: previewHeight,
@@ -126,4 +135,9 @@ class ValidatedPdfPreviewTile extends StatelessWidget {
   );
 
   static String _defaultSubtitleBuilder(String value) => value.split('/').last;
+
+  String? get _trustedPreviewImagePath => previewImagePath?.value.fold(
+    (_) => null,
+    (value) => value,
+  );
 }

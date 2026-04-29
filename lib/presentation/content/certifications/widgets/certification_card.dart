@@ -1,5 +1,6 @@
 import 'package:charlie_shub_portfolio/domain/core/entities/certification.dart';
 import 'package:charlie_shub_portfolio/domain/core/entities/entity_validation.dart';
+import 'package:charlie_shub_portfolio/domain/core/validation/objects/asset_path.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_spacing.dart';
 import 'package:charlie_shub_portfolio/presentation/core/theme/app_text_styles.dart';
 import 'package:charlie_shub_portfolio/presentation/core/widgets/contact/link_button_list.dart';
@@ -77,6 +78,7 @@ class CertificationCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.size16),
             ValidatedPdfPreviewTile(
               path: certification.certificatePdfPath!,
+              previewImagePath: _certificatePreviewImagePath,
               title: 'Certificate PDF',
             ),
           ],
@@ -135,4 +137,11 @@ class CertificationCard extends StatelessWidget {
 
   static String _buildBadgeLabel(String value) =>
       'Certification media available: ${value.split('/').last}';
+
+  AssetPath get _certificatePreviewImagePath => certification.slug.value.fold(
+    (_) => AssetPath('invalid/preview.png'),
+    (slug) => AssetPath(
+      'assets/media/content/certifications/$slug/preview.png',
+    ),
+  );
 }

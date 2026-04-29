@@ -46,7 +46,7 @@ class PortfolioApp extends StatelessWidget {
             ),
             theme: buildAppTheme(),
             themeMode: ThemeMode.light,
-            title: 'Carlos Mendez Portfolio',
+            title: 'Carlos Mendez',
           ),
         ),
       );

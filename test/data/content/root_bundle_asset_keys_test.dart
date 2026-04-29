@@ -20,6 +20,9 @@ void main() {
           final projectImage = await rootBundle.load(
             'assets/media/content/projects/world_on/world_on_login.png',
           );
+          final resumePreviewImage = await rootBundle.load(
+            'assets/media/content/resume/resume_preview.png',
+          );
           final resumePdf = await rootBundle.load(
             'assets/documents/resume/carlos_mendez_dev.pdf',
           );
@@ -27,6 +30,7 @@ void main() {
           expect(aboutIndex, contains('"file": "about_me.json"'));
           expect(profileImage.lengthInBytes, greaterThan(0));
           expect(projectImage.lengthInBytes, greaterThan(0));
+          expect(resumePreviewImage.lengthInBytes, greaterThan(0));
           expect(resumePdf.lengthInBytes, greaterThan(0));
         },
       );
