@@ -36,7 +36,7 @@ flutter:
     - assets/content/courses/
     - assets/content/projects/
     - assets/content/resume/
-    - assets/media/background.jpg
+    - assets/media/background_web.jpg
     - assets/media/content/about/about_me/
     - assets/media/content/certifications/comptia_security_plus/
     - assets/media/content/certifications/google_cybersecurity/

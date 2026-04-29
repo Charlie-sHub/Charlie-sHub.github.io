@@ -2,7 +2,7 @@ import 'package:charlie_shub_portfolio/presentation/core/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 
 /// Wallpaper asset used by the home-page shell background.
-const homeAppShellWallpaperAsset = 'assets/media/background.jpg';
+const homeAppShellWallpaperAsset = 'assets/media/background_web.jpg';
 
 /// Shared key for the sticky or inline home-page profile summary.
 const homeProfileSummaryKey = ValueKey<String>('home-profile-summary');

@@ -148,7 +148,9 @@ Current structured content areas under `assets/content/` should reflect the repo
 
 Recommended supporting asset conventions:
 - UI or decorative imagery such as backgrounds, textures, and icons should normally live under `assets/media/ui/...`
-- the current first-pass app-shell wallpaper is an approved exception at `assets/media/background.jpg`
+- the current first-pass app-shell wallpaper source image is an approved
+  exception at `assets/media/background.jpg`, while runtime builds should use a
+  web-optimized wallpaper asset
 - content-tied images such as project screenshots, thumbnails, hero images, and certification badges should live under `assets/media/content/<section>/<slug>/...`
 - downloadable PDFs such as certification PDFs and CV or resume PDFs should live under `assets/documents/<section>/...`
 
@@ -574,7 +576,8 @@ Preferred characteristics:
 The current first-deployment theme direction should guide implementation:
 - the first pass is light-theme only
 - do not add dark mode, `darkTheme`, or theme switching in this pass
-- the app shell should use `assets/media/background.jpg` as its first-pass wallpaper image
+- the app shell should use a web-optimized runtime variant of the first-pass
+  wallpaper image
 - the wallpaper should remain fully visible; do not add a global shell overlay or tint layer
 - section titles should sit inside the section cards, aligned at the top-left of the card, rather than outside on the wallpaper
 - the first-pass palette should be derived from that image, using `#1A2225`, `#0D4449`, `#A64C23`, and `#E6E6E4` as the current approved palette anchors

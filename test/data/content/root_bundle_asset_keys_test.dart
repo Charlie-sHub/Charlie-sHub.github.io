@@ -14,6 +14,9 @@ void main() {
           final aboutIndex = await rootBundle.loadString(
             'assets/content/about/index.json',
           );
+          final runtimeWallpaper = await rootBundle.load(
+            'assets/media/background_web.jpg',
+          );
           final profileImage = await rootBundle.load(
             'assets/media/content/about/about_me/profile_summary.png',
           );
@@ -28,10 +31,25 @@ void main() {
           );
 
           expect(aboutIndex, contains('"file": "about_me.json"'));
+          expect(runtimeWallpaper.lengthInBytes, greaterThan(0));
           expect(profileImage.lengthInBytes, greaterThan(0));
           expect(projectImage.lengthInBytes, greaterThan(0));
           expect(resumePreviewImage.lengthInBytes, greaterThan(0));
           expect(resumePdf.lengthInBytes, greaterThan(0));
+        },
+      );
+
+      test(
+        'does not bundle the full-resolution wallpaper source image',
+        () async {
+          Future<void> loadFullResolutionWallpaper() async {
+            await rootBundle.load('assets/media/background.jpg');
+          }
+
+          await expectLater(
+            loadFullResolutionWallpaper,
+            throwsA(anything),
+          );
         },
       );
 
