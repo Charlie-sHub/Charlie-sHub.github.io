@@ -586,8 +586,8 @@ The current first-deployment theme direction should guide implementation:
 - section titles inside cards should use the warm or orange accent treatment
 - blur and transparency are approved for section-card surfaces rather than the full shell background, with more transparency than the current implementation so the wallpaper comes through more strongly
 - first-deployment blur intensity should stay restrained enough to preserve
-  scroll performance; the current runtime section blur is lighter than the
-  earlier heavier pass
+  scroll performance; the current runtime section blur is performance-budgeted,
+  centralized, and intentionally lighter than the earlier heavier glass pass
 - inner content surfaces should remain opaque or near-opaque where needed for reliable readability
 - buttons should use the warm or orange accent in their default non-hovered state so they read clearly as buttons without overpowering the surrounding content
 

@@ -125,7 +125,7 @@ void main() {
           expect(find.text('Projects'), findsOneWidget);
           expect(find.text('Section body'), findsOneWidget);
           expect(find.byType(BackdropFilter), findsOneWidget);
-          expect(AppSurfaceStyles.sectionBlurSigma, 12);
+          expect(AppSurfaceStyles.sectionBlurSigma, 6);
           expect(
             find.descendant(
               of: find.byType(BackdropFilter),

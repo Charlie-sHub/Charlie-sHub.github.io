@@ -22,7 +22,7 @@ enum AppSurfaceVariant {
 final class AppSurfaceStyles {
   const AppSurfaceStyles._();
 
-  static const double sectionBlurSigma = 12;
+  static const double sectionBlurSigma = 6;
 
   static BorderRadius radiusFor(AppSurfaceVariant variant) => switch (variant) {
     AppSurfaceVariant.section => AppRadii.section,
