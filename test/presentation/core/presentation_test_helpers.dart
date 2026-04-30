@@ -21,10 +21,12 @@ import 'package:flutter_test/flutter_test.dart';
 Widget buildPresentationTestApp(
   Widget child, {
   double width = 960,
+  ScrollController? scrollController,
 }) => MaterialApp(
   theme: buildAppTheme(),
   home: Scaffold(
     body: SingleChildScrollView(
+      controller: scrollController,
       child: Padding(
         padding: AppSpacing.pagePadding,
         child: SizedBox(

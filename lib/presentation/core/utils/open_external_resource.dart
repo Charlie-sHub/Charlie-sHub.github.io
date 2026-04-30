@@ -1,6 +1,6 @@
 import 'package:charlie_shub_portfolio/presentation/core/utils/browser_facing_asset_url.dart';
 import 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource_stub.dart'
-    if (dart.library.html) 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource_web.dart'
+    if (dart.library.js_interop) 'package:charlie_shub_portfolio/presentation/core/utils/open_external_resource_web.dart'
     as impl;
 import 'package:flutter/foundation.dart';
 

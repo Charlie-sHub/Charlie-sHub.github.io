@@ -31,6 +31,7 @@ import 'package:flutter/material.dart'
         Icon,
         Icons,
         Image,
+        ScrollController,
         SizedBox,
         TextButton,
         WidgetState;
@@ -599,6 +600,8 @@ void main() {
           );
 
           expect(find.byType(PdfPreviewTile), findsOneWidget);
+          await tester.pump();
+
           expect(find.text('Resume PDF'), findsOneWidget);
           expect(find.text('resume.pdf'), findsOneWidget);
           expect(find.text('Open PDF'), findsOneWidget);
@@ -613,6 +616,44 @@ void main() {
           await tester.pump();
 
           expect(tapped, isTrue);
+        },
+      );
+
+      testWidgets(
+        'defers a static image preview until the frame is near the viewport',
+        (tester) async {
+          final scrollController = ScrollController();
+          addTearDown(scrollController.dispose);
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              Column(
+                children: [
+                  const SizedBox(height: 1200),
+                  ValidatedPdfPreviewTile(
+                    path: DocumentPath('assets/documents/resume/resume.pdf'),
+                    previewImagePath: AssetPath(
+                      'assets/media/content/resume/resume_preview.png',
+                    ),
+                    title: 'Resume PDF',
+                  ),
+                ],
+              ),
+              scrollController: scrollController,
+            ),
+          );
+
+          await tester.pump();
+
+          expect(find.byType(PdfPreviewTile), findsOneWidget);
+          expect(find.byType(Image), findsNothing);
+          expect(find.text('Preview image loading...'), findsOneWidget);
+
+          scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          await tester.pump();
+          await tester.pump();
+
+          expect(find.byType(Image), findsOneWidget);
         },
       );
 
