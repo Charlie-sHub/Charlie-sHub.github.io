@@ -135,6 +135,9 @@ Preferred direction:
   optional `order`, not a parallel rich metadata layer
 - the system should support surfacing the most important items first without presentation-layer rewiring
 - supporting images and documents do not need to participate in the same structured parsing and validation flow as JSON content files
+- content-tied media previews should be mounted with stable dimensions but defer
+  image loading until they are visible, near the viewport, selected, expanded,
+  or otherwise useful to the reader
 - project image fields may remain optional so unfinished projects, including PAMi, do not require fake placeholders
 - the CV or resume PDF should be treated as a site-level downloadable document under `assets/documents/resume/`, while structured resume metadata may still live under `assets/content/resume/`
 
@@ -442,6 +445,9 @@ Preferred implementation direction:
   `loadAllContent` request is already in progress, additional calls should
   reuse the in-flight work rather than start a second overlapping
   orchestration, while a later call after completion may start a fresh load
+- the domain/content architecture remains the runtime path for now; current
+  structured JSON volume is small enough that media, reveal, and rendering work
+  should be optimized before bypassing the domain layer
 - presentation should still provide robust fallback handling for missing or failed content states, including local section failures, but fallback rendering should not replace proper validation
 - PDFs may still be handled as supporting assets outside this structured JSON validation flow where that is more appropriate
 - a separate mapper layer is not required unless later complexity clearly justifies it
@@ -588,6 +594,8 @@ The current first-deployment theme direction should guide implementation:
 - first-deployment blur intensity should stay restrained enough to preserve
   scroll performance; the current runtime section blur is performance-budgeted,
   centralized, and intentionally lighter than the earlier heavier glass pass
+- glass card surfaces should remain part of the visual identity, but blur and
+  reveal effects should stay inside a practical runtime performance budget
 - inner content surfaces should remain opaque or near-opaque where needed for reliable readability
 - buttons should use the warm or orange accent in their default non-hovered state so they read clearly as buttons without overpowering the surrounding content
 
@@ -634,6 +642,8 @@ Intended behavior within that scope:
 - selector, tab, or entry-switch transitions should use active-state movement or highlight transition plus a subtle content fade or slide
 - anchor scrolling should feel smooth but not exaggerated
 - section reveals should be soft, one-time reveals for major sections only
+- section reveals should avoid animating the full blurred card surface where a
+  stable surface with revealed inner content preserves the same hierarchy
 - background motion, if added later, should be extremely subtle and must never compete with readability
 
 Motion constraints:

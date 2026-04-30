@@ -37,10 +37,10 @@ class SectionContainer extends StatelessWidget {
 
     sectionChildren.addAll(children);
 
-    return ViewportEntryReveal(
-      child: ContentCard(
-        variant: AppSurfaceVariant.section,
-        padding: AppSpacing.sectionPadding,
+    return ContentCard(
+      variant: AppSurfaceVariant.section,
+      padding: AppSpacing.sectionPadding,
+      child: ViewportEntryReveal(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: sectionChildren,

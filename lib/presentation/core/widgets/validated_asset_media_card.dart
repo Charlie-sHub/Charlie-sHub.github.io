@@ -64,7 +64,7 @@ class ValidatedAssetMediaCard extends StatelessWidget {
 }
 
 /// Renders an asset-backed media card with a graceful inline fallback.
-class AssetMediaCard extends StatelessWidget {
+class AssetMediaCard extends StatefulWidget {
   /// Creates an asset media card.
   const AssetMediaCard({
     required this.path,
@@ -99,26 +99,55 @@ class AssetMediaCard extends StatelessWidget {
   final String? tooltip;
 
   @override
+  State<AssetMediaCard> createState() => _AssetMediaCardState();
+}
+
+class _AssetMediaCardState extends State<AssetMediaCard> {
+  static const _activationViewportMargin = 160.0;
+
+  ScrollPosition? _scrollPosition;
+  bool _shouldLoadImage = false;
+  bool _hasCompletedInitialCheck = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _attachScrollListener();
+    _scheduleInitialVisibilityCheck();
+  }
+
+  @override
+  void didUpdateWidget(covariant AssetMediaCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.path != oldWidget.path) {
+      _shouldLoadImage = false;
+      _hasCompletedInitialCheck = false;
+      _attachScrollListener();
+      _scheduleInitialVisibilityCheck();
+    }
+  }
+
+  @override
+  void dispose() {
+    _detachScrollListener();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final card = ContentCard(
       padding: AppSpacing.zero,
-      onTap: onTap,
+      onTap: widget.onTap,
       child: PreviewFrameSurface(
-        height: height,
+        height: widget.height,
         borderRadius: AppRadii.card,
         color: AppColors.surfaceSecondary,
-        child: Image.asset(
-          path,
-          fit: fit,
-          errorBuilder: (context, error, stackTrace) => _MediaFallbackBody(
-            label: label,
-            icon: icon,
-          ),
-        ),
+        child: _buildMediaContent(),
       ),
     );
 
-    final tooltipMessage = tooltip;
+    final tooltipMessage = widget.tooltip;
     if (tooltipMessage == null || tooltipMessage.isEmpty) {
       return card;
     }
@@ -127,5 +156,124 @@ class AssetMediaCard extends StatelessWidget {
       message: tooltipMessage,
       child: card,
     );
+  }
+
+  Widget _buildMediaContent() {
+    if (!_shouldLoadImage) {
+      return _MediaPlaceholderBody(
+        label: widget.label,
+        icon: widget.icon,
+      );
+    } else {
+      return Image.asset(
+        widget.path,
+        fit: widget.fit,
+        semanticLabel: widget.label,
+        errorBuilder: (context, error, stackTrace) => _MediaFallbackBody(
+          label: widget.label,
+          icon: widget.icon,
+        ),
+      );
+    }
+  }
+
+  void _attachScrollListener() {
+    if (_shouldLoadImage) {
+      _detachScrollListener();
+
+      return;
+    }
+
+    final scrollableState = Scrollable.maybeOf(context);
+    final nextPosition = scrollableState?.position;
+
+    if (_scrollPosition == nextPosition) {
+      return;
+    }
+
+    _detachScrollListener();
+    _scrollPosition = nextPosition;
+    _scrollPosition?.addListener(_handleScrollChanged);
+
+    if (_scrollPosition == null) {
+      _activateImage();
+    }
+  }
+
+  void _detachScrollListener() {
+    _scrollPosition?.removeListener(_handleScrollChanged);
+    _scrollPosition = null;
+  }
+
+  void _handleScrollChanged() {
+    _checkImageVisibility();
+  }
+
+  void _scheduleInitialVisibilityCheck() {
+    if (_shouldLoadImage || _hasCompletedInitialCheck) {
+      return;
+    }
+
+    _hasCompletedInitialCheck = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      _checkImageVisibility();
+    });
+  }
+
+  void _checkImageVisibility() {
+    if (_shouldLoadImage) {
+      return;
+    }
+
+    if (_isNearViewport()) {
+      _activateImage();
+    }
+  }
+
+  void _activateImage() {
+    if (_shouldLoadImage) {
+      return;
+    }
+
+    _detachScrollListener();
+
+    if (mounted) {
+      setState(() {
+        _shouldLoadImage = true;
+      });
+    } else {
+      _shouldLoadImage = true;
+    }
+  }
+
+  bool _isNearViewport() {
+    final renderObject = context.findRenderObject();
+    final scrollableState = Scrollable.maybeOf(context);
+    final viewportRenderObject = scrollableState?.context.findRenderObject();
+
+    if (renderObject is! RenderBox ||
+        viewportRenderObject is! RenderBox ||
+        !renderObject.hasSize) {
+      return false;
+    }
+
+    if (!viewportRenderObject.hasSize) {
+      return false;
+    }
+
+    final targetRect =
+        renderObject.localToGlobal(Offset.zero) & renderObject.size;
+    final viewportRect =
+        viewportRenderObject.localToGlobal(Offset.zero) &
+        viewportRenderObject.size;
+    final activationRect = viewportRect.inflate(_activationViewportMargin);
+
+    return targetRect.bottom > activationRect.top &&
+        targetRect.top < activationRect.bottom;
   }
 }

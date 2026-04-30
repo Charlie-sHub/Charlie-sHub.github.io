@@ -35,42 +35,39 @@ class HomePageContent extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.size24),
       ],
-      InitialLoadReveal(
-        delay: homeSubtleMotionDelay,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            KeyedSubtree(
-              key: sectionKeys[aboutSectionId],
-              child: const AboutSection(),
-            ),
-            const SizedBox(height: AppSpacing.size24),
-            KeyedSubtree(
-              key: sectionKeys[projectsSectionId],
-              child: const ProjectsSection(),
-            ),
-            const SizedBox(height: AppSpacing.size24),
-            KeyedSubtree(
-              key: sectionKeys[certificationsSectionId],
-              child: const CertificationsSection(),
-            ),
-            const SizedBox(height: AppSpacing.size24),
-            KeyedSubtree(
-              key: sectionKeys[caseStudiesSectionId],
-              child: const CaseStudiesSection(),
-            ),
-            const SizedBox(height: AppSpacing.size24),
-            KeyedSubtree(
-              key: sectionKeys[coursesSectionId],
-              child: const CoursesSection(),
-            ),
-            const SizedBox(height: AppSpacing.size24),
-            KeyedSubtree(
-              key: sectionKeys[resumeSectionId],
-              child: const ResumeSection(),
-            ),
-          ],
-        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          KeyedSubtree(
+            key: sectionKeys[aboutSectionId],
+            child: const AboutSection(),
+          ),
+          const SizedBox(height: AppSpacing.size24),
+          KeyedSubtree(
+            key: sectionKeys[projectsSectionId],
+            child: const ProjectsSection(),
+          ),
+          const SizedBox(height: AppSpacing.size24),
+          KeyedSubtree(
+            key: sectionKeys[certificationsSectionId],
+            child: const CertificationsSection(),
+          ),
+          const SizedBox(height: AppSpacing.size24),
+          KeyedSubtree(
+            key: sectionKeys[caseStudiesSectionId],
+            child: const CaseStudiesSection(),
+          ),
+          const SizedBox(height: AppSpacing.size24),
+          KeyedSubtree(
+            key: sectionKeys[coursesSectionId],
+            child: const CoursesSection(),
+          ),
+          const SizedBox(height: AppSpacing.size24),
+          KeyedSubtree(
+            key: sectionKeys[resumeSectionId],
+            child: const ResumeSection(),
+          ),
+        ],
       ),
     ],
   );

@@ -96,6 +96,11 @@ void main() {
 
           expect(find.byType(AssetMediaCard), findsOneWidget);
           expect(find.byType(FieldFailureWidget), findsNothing);
+          expect(find.text('Media loading...'), findsOneWidget);
+
+          await tester.pump();
+
+          expect(find.byType(Image), findsOneWidget);
         },
       );
 
@@ -113,6 +118,44 @@ void main() {
 
           expect(find.byType(FieldFailureWidget), findsOneWidget);
           expect(find.byType(AssetMediaCard), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'defers image loading until the media card is near the viewport',
+        (tester) async {
+          final scrollController = ScrollController();
+          addTearDown(scrollController.dispose);
+
+          await tester.pumpWidget(
+            buildPresentationTestApp(
+              Column(
+                children: [
+                  const SizedBox(height: 1200),
+                  ValidatedAssetMediaCard(
+                    path: AssetPath(
+                      'assets/media/content/projects/world_on/'
+                      'world_on_login.png',
+                    ),
+                    labelBuilder: _heroLabelBuilder,
+                  ),
+                ],
+              ),
+              scrollController: scrollController,
+            ),
+          );
+
+          await tester.pump();
+
+          expect(find.byType(AssetMediaCard), findsOneWidget);
+          expect(find.byType(Image), findsNothing);
+          expect(find.text('Media loading...'), findsOneWidget);
+
+          scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          await tester.pump();
+          await tester.pump();
+
+          expect(find.byType(Image), findsOneWidget);
         },
       );
     },
