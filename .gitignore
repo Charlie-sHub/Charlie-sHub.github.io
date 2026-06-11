@@ -2,7 +2,7 @@
 .DS_Store
 .codex
 .codex/
-.fvm/
+.puro/
 .idea/
 .vscode/
 *.iml

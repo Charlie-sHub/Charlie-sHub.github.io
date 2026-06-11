@@ -6,23 +6,23 @@ Task: perform a controlled dependency update for this Flutter project.
 
 Process:
 1. Run commands strictly in sequence. Do not run package-management, build, analyzer, or test commands in parallel.
-2. Start with `fvm dart pub outdated`.
+2. Start with `puro dart pub outdated`.
 3. Review the outdated results and update `pubspec.yaml` conservatively.
    - Prefer the newest compatible versions that are likely to resolve cleanly.
    - Treat this as a quality-gated audit, not a blind mass-upgrade.
-4. After each dependency change pass, run `fvm flutter pub get`.
+4. After each dependency change pass, run `puro flutter pub get`.
 5. If `pub get` fails:
    - identify the blocking package or packages
    - revert only the problematic dependency changes
    - keep compatible upgrades
-   - rerun `fvm flutter pub get`
+   - rerun `puro flutter pub get`
    - repeat until resolution succeeds or no further safe upgrades remain
 6. After dependency resolution succeeds, run this validation sequence in order:
-   - `fvm flutter clean`
-   - `fvm flutter pub get`
-   - `fvm dart run build_runner build --delete-conflicting-outputs`
-   - `fvm flutter analyze`
-   - `fvm flutter test test`
+   - `puro flutter clean`
+   - `puro flutter pub get`
+   - `puro dart run build_runner build --delete-conflicting-outputs`
+   - `puro flutter analyze`
+   - `puro flutter test test`
 7. If `build_runner`, analyzer, or tests fail:
    - inspect the cause
    - apply only minor, localized fixes that are clearly caused by the dependency update

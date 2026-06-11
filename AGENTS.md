@@ -43,11 +43,37 @@ open product, UX, UI, schema, or architecture question.
 - Do not create extra workflow documents such as `PLANS.md` or
   `code_review.md` unless the user explicitly asks for them.
 
+## Architecture And Boundaries
+
+- This is a Flutter Web project using a horizontal `presentation`,
+  `application`, `domain`, and `data` structure. Preserve that structure unless
+  the user explicitly asks for an architectural change and the specification is
+  updated.
+- The current state-management pattern is lightweight `flutter_bloc` `Cubit`
+  orchestration, with `ContentCubit` loading public content through
+  `ContentRepositoryInterface`. Do not introduce BLoC event classes,
+  ChangeNotifier/Provider view models, Riverpod, service locators, new
+  repository layers, or feature-slice architecture unless the project already
+  moves that way or the task explicitly requires it.
+- Keep widgets focused on rendering state, local interaction, and dispatching
+  callbacks or Cubit calls. Keep content loading, orchestration, validation, and
+  business rules out of reusable widgets.
+- Keep external data access behind the established domain/data boundary:
+  repositories and data sources load assets, DTOs deserialize raw JSON, domain
+  values/entities express validation, and presentation handles display and
+  fallback states.
+- Use `RepositoryProvider`/`BlocProvider` where the app already does. Do not add
+  `get_it` or another dependency-injection mechanism unless the user requests it
+  and the project direction is updated.
+- Keep validation rules in shared validators, value objects, DTO-to-domain
+  mapping, and entity construction. Do not scatter validation decisions through
+  UI code, Cubits, or repositories.
+
 ## Implementation Conventions
 
-- Use FVM for Flutter and Dart commands. Treat `.fvmrc` as the Flutter SDK
-  source of truth.
-- Prefer `fvm flutter ...` and `fvm dart ...`.
+- Use Puro for Flutter and Dart commands. Treat `.puro.json` as the Flutter SDK
+  environment source of truth.
+- Prefer `puro flutter ...` and `puro dart ...`.
 - Keep styling values centralized when working in presentation code, especially
   under `lib/presentation/core/theme/` and shared presentation widgets.
 - Use descriptive names, centralized constants, and avoid scattered magic
@@ -56,6 +82,52 @@ open product, UX, UI, schema, or architecture question.
 - Avoid early-return chains when they make flow harder to follow.
 - Use `Option` and `Either` where existing domain patterns call for them.
 - Add comments only when intent or constraints would otherwise be unclear.
+
+## Flutter UI Work
+
+- Prefer responsive layouts derived from incoming constraints. Use
+  `LayoutBuilder` for local adaptive decisions and `MediaQuery.sizeOf` only for
+  app- or window-level sizing needs.
+- Use `Flexible`, `Expanded`, `ConstrainedBox`, `Align`, and scroll views based
+  on clear parent/child constraint reasoning. Do not fix unclear overflow by
+  guessing random widths, heights, `Expanded` placements, or scroll wrappers.
+- Keep reusable widgets small and purpose-driven. Extract focused widgets when a
+  build method becomes deeply nested or mixes unrelated rendering concerns.
+- Keep styling values centralized under `lib/presentation/core/theme/` and
+  shared presentation widgets. Hardcoded dimensions are acceptable only when
+  they are intentional design constants and belong in the theme/layout tokens
+  when reused.
+- Do not put remote requests, asset/database writes, plugin calls, or
+  business-rule decisions directly in reusable presentation widgets.
+
+## DevTools And Runtime Diagnosis
+
+- Coding agents cannot inspect Flutter DevTools directly. Inspect code, tests,
+  constraints, and widget composition first.
+- For layout overflow, render-size, constraint, rebuild, or widget-tree issues
+  that cannot be solved confidently from code and tests alone, tell the
+  developer exactly what to inspect in DevTools, such as parent constraints, the
+  overflowing render object, Layout Explorer output, widget tree position,
+  rebuild behavior, or runtime error details.
+- When recommending a layout fix, explain the constraint path that makes the fix
+  appropriate.
+
+## Data, Packages, And Platform Integration
+
+- Keep APIs, platform services, external SDKs, browser interop, and Flutter
+  plugins isolated behind the project's established data/service/repository or
+  presentation utility boundaries. Follow existing conditional-import patterns
+  for web-specific behavior.
+- Prefer maintained Flutter packages/plugins for platform features when they add
+  clear value, but keep dependency additions conservative and consistent with
+  `SPECIFICATIONS.md`.
+- Check current package documentation before using package-specific APIs when
+  docs or tooling are available. If current docs are unavailable, state the
+  assumption in the final handoff and isolate the package-specific code behind
+  the appropriate boundary.
+- Keep structured content JSON-first under `assets/content/`; supporting media
+  and documents stay in the asset/document paths described by
+  `SPECIFICATIONS.md`.
 
 ## Test conventions
 
@@ -68,9 +140,15 @@ open product, UX, UI, schema, or architecture question.
   while a surface is intentionally scaffolded without real behavior.
 - Use `mockito` for generated test mocks. Prefer the
   `@GenerateNiceMocks([...])` approach over hand-written mocks.
-- Use `get_it` for dependency injection. Keep dependency setup explicit in
-  tests, and reset test registrations after each test that mutates the
-  container.
+- Keep dependency setup explicit in tests. Use existing `BlocProvider`,
+  `RepositoryProvider`, test Cubits, fake repositories, and generated mocks
+  before introducing new test infrastructure.
+- Add or update unit tests for business, validation, mapping, repository, or
+  application logic changes.
+- Add or update widget tests for meaningful UI behavior, content-driven
+  rendering, fallback states, and interaction changes. Add integration tests
+  only when the existing setup supports them or the requested change justifies
+  the extra surface.
 - Keep common test variables, such as mocked dependencies, near the top of the
   file so all tests can use them.
 - Keep variables that are common only to one group near the top of that group;
@@ -115,13 +193,15 @@ Use the lightest validation that proves the change:
 
 - Docs or prompt-only changes: proofread the edited files and run
   `git diff --check`.
-- Dart or Flutter code changes: run `fvm dart format <paths>`,
-  `fvm flutter analyze`, and relevant tests under `test/`.
+- Dart or Flutter code changes: run `puro dart format <paths>`,
+  `puro flutter analyze`, and relevant tests under `test/`.
+- Package, lint, or dependency changes: run the relevant Puro-backed pub,
+  analyzer, formatter, and test commands needed to prove the changed surface.
 - Changes to `freezed`, DTO, or generated-model surfaces: run
-  `fvm dart run build_runner build --delete-conflicting-outputs`.
-- Release-output or deployment changes: run `fvm flutter build web` unless the
+  `puro dart run build_runner build --delete-conflicting-outputs`.
+- Release-output or deployment changes: run `puro flutter build web` unless the
   user asks for a narrower check.
-- Interactive local run when needed: `fvm flutter run -d chrome` or another
+- Interactive local run when needed: `puro flutter run -d chrome` or another
   available web target.
 
 If a relevant check cannot be run, state the limitation in the final handoff.

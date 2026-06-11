@@ -22,40 +22,34 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Read pinned Flutter version
-        id: fvmrc
-        run: |
-          version=$(sed -n 's/.*"flutter"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' .fvmrc)
-          if [ -z "$version" ]; then
-            echo "Unable to read Flutter version from .fvmrc" >&2
-            exit 1
-          fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ steps.fvmrc.outputs.version }}
-          channel: stable
-          cache: true
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install Puro
+        run: |
+          dart pub global activate puro
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+
+      - name: Create Puro environment
+        run: puro create stable
 
       - name: Restore packages
-        run: flutter pub get
+        run: puro flutter pub get
 
       - name: Run code generation
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: puro dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze project
-        run: flutter analyze
+        run: puro flutter analyze
 
       - name: Run tests
-        run: flutter test
+        run: puro flutter test
 
       - name: Build Flutter Web release for root-hosted Pages
-        run: flutter build web --release --base-href /
+        run: puro flutter build web --release --base-href /
 
       - name: Disable Jekyll processing
         run: touch build/web/.nojekyll

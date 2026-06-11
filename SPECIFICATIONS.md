@@ -363,10 +363,10 @@ That temporary allowance is now closed for the launch baseline.
 
 Current deployment contract:
 - the only intended launch surface is the Flutter Web application
-- the deployable release artifact is the output of `fvm flutter build web`, published from `build/web`
+- the deployable release artifact is the output of `puro flutter build web`, published from `build/web`
 - for this repository's root-hosted GitHub Pages user-site launch path, the release build should use `--base-href /`
 - for this repository's GitHub Pages launch path, `.github/workflows/deploy_github_pages.yml` is the authoritative deployment workflow, GitHub Pages should deploy from GitHub Actions rather than a branch, and the repository root is not a deployment surface
-- authoritative launch inputs are the Flutter app and assets under `lib/`, `assets/`, and `web/`, together with the pinned SDK version in `.fvmrc`
+- authoritative launch inputs are the Flutter app and assets under `lib/`, `assets/`, and `web/`, together with the Puro environment selection in `.puro.json`
 - the pre-Flutter root static site is archived under `legacy/root_static_site/` for reference only and must not be treated as active site code or a deployment input
 
 Replace or remove legacy code, structure, and assets once they no longer support the new implementation. Adapt legacy material only where it has clear implementation value.
