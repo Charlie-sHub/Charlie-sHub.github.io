@@ -18,6 +18,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PURO_ENV_NAME: portfolio_web
+      FLUTTER_VERSION: stable
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,31 +28,39 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
-
       - name: Install Puro
-        run: |
-          dart pub global activate puro
-          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+        env:
+          PURO_VERSION: 1.5.0
+        run: curl -o- https://puro.dev/install.sh | bash
+
+      - name: Add Puro to PATH
+        run: echo "$HOME/.puro/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Puro installation
+        run: puro --version
 
       - name: Create Puro environment
-        run: puro create stable
+        run: puro create "$PURO_ENV_NAME" "$FLUTTER_VERSION"
+
+      - name: Verify Puro Flutter environment
+        run: |
+          puro --env="$PURO_ENV_NAME" --version
+          puro --env="$PURO_ENV_NAME" flutter --version
 
       - name: Restore packages
-        run: puro flutter pub get
+        run: puro --env="$PURO_ENV_NAME" flutter pub get
 
       - name: Run code generation
-        run: puro dart run build_runner build --delete-conflicting-outputs
+        run: puro --env="$PURO_ENV_NAME" flutter pub run build_runner build
 
       - name: Analyze project
-        run: puro flutter analyze
+        run: puro --env="$PURO_ENV_NAME" flutter analyze
 
       - name: Run tests
-        run: puro flutter test
+        run: puro --env="$PURO_ENV_NAME" flutter test
 
       - name: Build Flutter Web release for root-hosted Pages
-        run: puro flutter build web --release --base-href /
+        run: puro --env="$PURO_ENV_NAME" flutter build web --release --base-href /
 
       - name: Disable Jekyll processing
         run: touch build/web/.nojekyll
